@@ -1,0 +1,223 @@
+<!-- <app-header></app-header> -->
+
+<search-bar [config]="config"></search-bar>
+<!-- main content sections starts -->
+
+<section class="sm-padding">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+        <h2 class="color-light-black" translate>Choose your favorite category</h2>
+        <p class="content-title mt-3" translate>Learn difficult concepts in an intuitive and fun digital classroom.</p>
+      </div>
+    </div>
+    <div class="row mt-3" *ngFor="let catChunk of listCategories">
+      <div class="col-md-4" *ngFor="let item of catChunk">
+        <div class="language-card">
+          <a [routerLink]="['/tutors/subject']" [queryParams]="{ category: item.alias }">
+            <img
+              src="{{ item.image && item.image.thumbUrl }}"
+              onerror="this.src='/assets/images/no-image.jpg'"
+              class="position-relative lang-image"
+              style="object-fit: cover"
+            />
+            <div class="language-content">
+              <p class="language m-0 font-md font-weight-bold">{{ item.name }}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12 text-center">
+        <a [routerLink]="['/tutors/subject']" class="btn btn-default border-radius-md" translate>View All</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-color-light sm-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h5 class="color-light-red" translate>COURSES CATEGORIES</h5>
+        <h2 class="color-light-black" translate>Browse Trending Categories</h2>
+      </div>
+      <div class="col-md-4 text-right rtxt-left">
+        <a [routerLink]="['/categories']" class="btn btn-default"
+          ><i class="fas fa-eye mr-2 font-sm"></i>
+          <span translate>View All</span>
+        </a>
+      </div>
+    </div>
+    <div class="row mt-5 mb-3">
+      <div class="col-md-12">
+        <h3 translate>Group Classes</h3>
+      </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3">
+      <app-card-webinar
+        class="col mb-4"
+        *ngFor="let webinar of webinars"
+        [webinar]="webinar"
+        [hidden]="!webinars.length"
+      ></app-card-webinar>
+    </div>
+  </div>
+</section>
+<section class="sm-padding text-center" id="testimonial">
+  <div class="row no-margin outer">
+    <div class="container">
+      <div class="row no-margin">
+        <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+          <h2 class="color-light-black" translate>Verified Teachers - Connect Instantly</h2>
+          <p class="content-title mt-3" translate>
+            Top-notch teachers, limitless learning. Explore any interest over live video chat! Discover fun, social, and
+            safe learning experiences led by passionate teachers
+          </p>
+        </div>
+        <ngx-slick-carousel
+          class="col-md-12 col-sm-12 col-xs-12 mt-5 testimonial-slide"
+          #slickModal="slick-carousel"
+          [config]="slideConfig"
+        >
+          <div ngxSlickItem *ngFor="let tutor of tutors" class="testimonial-list position-relative">
+            <div class="teachers-img">
+              <img src="{{ tutor.avatarUrl }}" />
+            </div>
+            <div class="outer">
+              <div class="inner">
+                <div class="content text-center">
+                  <h5 class="card-title">{{ tutor.name }}</h5>
+                  <div class="rating-stars text-center">
+                    <ul id="stars">
+                      <star-rating [rate]="tutor?.ratingAvg"></star-rating>
+                      <span>{{ tutor?.ratingAvg }} ({{ tutor?.totalRating }})</span>
+                    </ul>
+                  </div>
+                  <hr />
+                </div>
+                <div class="tutor-list text-left">
+                  <h6 translate>I Can Tutor:</h6>
+                  <p class="color-blue text-line-break">
+                    <a
+                      [routerLink]="['/tutors/subject']"
+                      [queryParams]="{ subject: subject.alias }"
+                      *ngFor="let subject of tutor.subjects; let i = index"
+                      >{{ subject.name }}<span *ngIf="i < tutor.subjects.length - 1">, </span>
+                    </a>
+                  </p>
+                </div>
+              </div>
+              <a class="btn btn-footer btn-block" [routerLink]="['/appointments', tutor.username]"
+                ><i class="far fa-paper-plane color-white mr-2"></i>
+                <span> <span translate>Free Trial</span></span>
+              </a>
+            </div>
+          </div>
+        </ngx-slick-carousel>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sm-padding bg-color-light">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12">
+        <h2 class="color-light-black" translate>What students say about our tutors</h2>
+      </div>
+    </div>
+    <div id="testimonial-slider" class="flex-slider row no-margin">
+      <ul class="slides">
+        <li *ngFor="let t of testimonials">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="profile">
+                <img [src]="t?.image?.thumbUrl" class="float-left cate-profile box-shadow-lg" alt="" />
+                <div class="pl-md">
+                  <h4 class="font-weight-bold">{{ t.name }}</h4>
+                  <p
+                    class="font-md mt-n3 color-light-red font-weight-bold"
+                    style="text-transform: capitalize"
+                    translate
+                  >
+                    {{ t.type }}
+                  </p>
+                </div>
+              </div>
+              <div class="mt-5">
+                <img src="assets/images/testimonil-qoute.png" alt="" />
+                <p class="sub-content mt-3 font-weight-bold">
+                  {{ t.description }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="embed-responsive embed-responsive-16by9 video-frame">
+                <iframe class="embed-responsive-item" [src]="t.urlYoutube" allowfullscreen></iframe>
+                <iframe
+                  width="100%"
+                  height="100%"
+                  [src]="t.urlYoutube"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12 rmt-4">
+        <p class="font-sm color-light-red font-weight-bold mb-n3" translate>More Videos</p>
+        <hr />
+        <div id="testimonial-slider-nav" class="flexslider">
+          <ul class="list-unstyled testimonial-slider-nav slides">
+            <li class="thumbnail" *ngFor="let t of testimonials">
+              <img [src]="t?.image?.thumbUrl" alt="" />
+              <div class="mt-2">
+                <h6 class="mb-0">{{ t.name }}</h6>
+                <p class="card-text mb-0 mt-n1" style="text-transform: capitalize" translate>{{ t.type }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="">
+  <div class="row m-0">
+    <div
+      class="col-md-6 padding-all-sm d-flex justify-content-center align-items-center"
+      style="background-image: url(assets/images/bg-red-pattern.png)"
+    >
+      <div class="">
+        <h2 class="color-white" translate>How Pinlearn works</h2>
+        <p class="sub-text max-width-500 font-weight-bold color-white" translate>
+          Learn online with the world's best tutors
+        </p>
+        <a class="btn btn-white mt-2" [routerLink]="'/pages/how-does-it-work'" translate>Know More</a>
+      </div>
+    </div>
+    <div class="col-md-6 p-0">
+      <img src="assets/images/tutors01.jpg" alt="" />
+    </div>
+    <div class="col-md-6 p-0">
+      <img src="assets/images/tutors02.png" alt="" />
+    </div>
+    <div class="col-md-6 padding-all-sm d-flex justify-content-center align-items-center bg-vector">
+      <div class="">
+        <h2 class="" translate>Tutor with Pinlearn</h2>
+        <p class="sub-text max-width-500 font-weight-bold" translate>
+          Earn money sharing your expert knowledge with students
+        </p>
+        <a class="btn btn-default mt-2" [routerLink]="'/pages/teach-with-us'" translate>Become a tutor</a>
+      </div>
+    </div>
+  </div>
+</section>

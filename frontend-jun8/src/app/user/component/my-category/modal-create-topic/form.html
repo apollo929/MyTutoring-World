@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <h2 class="modal-title" translate>My Topic</h2>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #frm="ngForm" (submit)="submit(frm)">
+    <div class="form-group">
+      <label translate>Select Topic</label>
+      <ng-select
+        [items]="topics"
+        bindLabel="name"
+        name="topic"
+        placeholder="{{'Choose topic' | translate}}"
+        [(ngModel)]="myTopic.originalTopicId"
+        bindValue="_id"
+        #topicId="ngModel"
+        required
+        [disabled]="myTopic._id"
+      >
+      </ng-select>
+      <div *ngIf="topicId.errors && (topicId.dirty || topicId.touched || submitted)">
+        <p [hidden]="!topicId.errors.required" class="error" translate>Topic is required</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Price</label>
+      <input
+        style="border-radius: 4px; border: 1px solid #ccc; height: 2.1em"
+        type="number"
+        name="price"
+        class="form-control"
+        placeholder="Enter price"
+        [(ngModel)]="myTopic.price"
+        required
+        #price_="ngModel"
+      />
+      <div *ngIf="price_.errors && (price_.dirty || price_.touched || submitted)">
+        <p [hidden]="!price_.errors.required" class="error" translate>Price is required</p>
+      </div>
+      <div *ngIf="myTopic.price<=0">
+        <p class="error" translate>Price must be equal or greater than 0</p>
+      </div>
+    </div>
+    <div class="form-group">Active <input type="checkbox" name="isActive" [(ngModel)]="myTopic.isActive" /></div>
+    <div class="col-md-12 mt-3">
+      <button type="submit" class="btn btn-danger mr-3" translate>Submit</button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')" translate>
+        Close
+      </button>
+    </div>
+  </form>
+</div>

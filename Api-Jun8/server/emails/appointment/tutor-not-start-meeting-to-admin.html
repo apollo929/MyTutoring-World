@@ -1,0 +1,8 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello</p>
+<p>{{tutorName}} did not start meeting for the class #{{appointment.code}}.</p>
+<p><strong>Appointment code: </strong>#{{appointment.code}}</p>
+<p><strong>Tutor: </strong>{{tutorName}}</p>
+<p><strong>Student: </strong>{{userName}}</p>
+<p><strong>Time: {{startTime}} - {{toTime}}</strong> <br /></p>
+{% endblock %}

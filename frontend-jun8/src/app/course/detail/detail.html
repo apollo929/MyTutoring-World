@@ -1,0 +1,383 @@
+<section class="pt-5 pb-5">
+  <div class="container" *ngIf="course">
+    <div class="row">
+      <div class="col-md-12 col-12 col-lg-12">
+        <div class="card-horizontal">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="img-square-wrapper mt-2">
+                <img src="{{course?.mainImage?.fileUrl}}" alt="" class="border-radius-default object-fit-cover h-350" />
+              </div>
+            </div>
+            <div class="col-md-6 rmt-3">
+              <h4 class="font-weight-bold">{{course.name}}</h4>
+              <div class="mb-3">
+                <a
+                  *ngFor="let cat of course.categories; let i = index"
+                  [routerLink]="['/categories']"
+                  [queryParams]="{ categoryIds: cat._id }"
+                  ><span class="badge badge-default mr-2">{{ cat.name }}</span></a
+                >
+              </div>
+              <div class="row row-cols-md-1 row-cols-lg-2">
+                <div class="col-md-6">
+                  <div class="profile">
+                    <a [routerLink]="['/tutors', course?.tutor?.username]">
+                      <img
+                        src="{{course?.tutor?.avatarUrl | defaultImage}}"
+                        class="float-left cate-profile-sm box-shadow-lg mr-2"
+                        alt=""
+                      />
+                      <h5 class="pt-3 font-sm">{{course?.tutor?.name}}</h5>
+                    </a>
+                  </div>
+                  <div class="rating-stars pt-4">
+                    <star-rating [rate]="course?.tutor?.ratingAvg"></star-rating> {{course?.tutor?.ratingAvg}}
+                    ({{course?.tutor?.totalRating}})
+                  </div>
+                  <h4 class="color-light-red mt-3" *ngIf="!appliedCoupon">
+                    <strong
+                      >{{ (course.price + (course.price * config.applicationFee)) | currency : (config?.currencySymbol ?
+                      config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}</strong
+                    >
+                  </h4>
+                  <h4 class="color-light-red mt-3" *ngIf="appliedCoupon">
+                    <small class="text-line-through mr-1"
+                      >{{ (course?.price + (course?.price * config.applicationFee)) | currency : (config?.currencySymbol
+                      ? config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0' }}</small
+                    >
+                    <strong
+                      >{{(salePrice + (salePrice * config.applicationFee)) | currency : (config?.currencySymbol ?
+                      config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}</strong
+                    >
+                  </h4>
+                </div>
+                <div class="col-md-6 mt-2">
+                  <!-- <p class="card-text text-right rtxt-left">
+                    <img src="assets/images/course/participants.svg" alt="" class="mr-2 image-sm" /><span translate
+                      >Participants:</span
+                    >
+                    {{ course?.numberParticipants }}
+                  </p> -->
+                  <!-- <p class="card-text mt-4 text-right rtxt-left">
+                    <img src="assets/images/course/certified-img.svg" alt="" class="mr-2 image-sm" translate /><span
+                      translate
+                      >Completed by</span
+                    ><span> {{course?.tutor?.completedByLearner}} </span>
+                    <span translate>Learners</span>
+                  </p> -->
+                  <!-- <p class="card-text mt-4 text-right rtxt-left">
+                    <img src="assets/images/course/clock.png" alt="" class="mr-2 image-sm" /><span translate
+                      >{{slotLeft}} </span
+                    ><span translate *ngIf="1<slotLeft"> Slots left </span>
+                    <span translate *ngIf="1>=slotLeft"> Slot left </span>
+                  </p> -->
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-12">
+                  <app-apply-coupon
+                    *ngIf="course && course.coupon && course.coupon._id"
+                    [options]="optionsCoupon"
+                    (onApply)="applyCoupon($event)"
+                    (isUsed)="checkUsedCoupon($event)"
+                  ></app-apply-coupon>
+                </div>
+                <div class="col-md-12" *ngIf="salePrice<=0">
+                  <input
+                    style="border: 1.2px solid grey; margin-bottom: 0.5em; height: 3em"
+                    type="email"
+                    class="form-control"
+                    placeholder="{{'Recipient\'s email id' | translate}}"
+                    name="email"
+                    [(ngModel)]="emailRecipient"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                    #emailId="ngModel"
+                  />
+                  <div *ngIf="emailId.errors && (emailId.dirty || emailId.touched)">
+                    <p [hidden]="!emailId?.errors.pattern" class="error" translate>Email is invalid format</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <button
+                    [disabled]=" !canBooking || (currentUser && currentUser._id === course.tutorId) || booked"
+                    class="btn btn-green mr-2"
+                    (click)="enrollCourse(course, 'booking')"
+                  >
+                    <i class="far fa-paper-plane color-white mr-2"></i>
+                    <span *ngIf="!booked" translate>Purchase</span>
+                    <span *ngIf="booked" translate>Purchased</span>
+                  </button>
+                  <button
+                    [disabled]="course.numberParticipants >= course.maximumStrength || !canBooking || (currentUser && currentUser._id === course.tutorId) || emailRecipient === (currentUser && currentUser.email)"
+                    class="btn btn-blue mr-2"
+                    (click)="enrollCourse(course, 'gift')"
+                  >
+                    <i class="fas fa-gift color-white mr-2"></i>
+                    <span translate>Gift Course</span>
+                  </button>
+                  <a class="btn btn-white rmt-3" *ngIf="!course?.isFavorite" (click)="favorite()">
+                    <i class="far fa-heart color-light-red"></i>
+                  </a>
+                  <a class="btn btn-white rmt-3" *ngIf="course?.isFavorite" (click)="unFavorite()">
+                    <i class="fas fa-heart color-light-red"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row mt-5">
+          <div class="col-md-12 col-12 col-lg-12">
+            <div class="card-horizontal">
+              <h5>All the end of my course, students will be able to</h5>
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="p-0 list-unstyled unorder-list term-list list-more-text">
+                    <ng-container *ngFor="let g of goals">
+                      <li *ngIf="g.type == 'able_to'">
+                        <i class="fas fa-check text-success mr-2 font-sm"></i>{{g.name}}
+                      </li>
+                    </ng-container>
+                    <!---->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-md-12 col-12 col-lg-12">
+            <div class="card-horizontal">
+              <h5>Who should take this course? Who should not?</h5>
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="p-0 list-unstyled unorder-list term-list list-more-text">
+                    <ng-container *ngFor="let g of goals">
+                      <li *ngIf="g.type == 'age'"><i class="fas fa-check text-success mr-2 font-sm"></i>{{g.name}}</li>
+                    </ng-container>
+                    <!---->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-md-12 col-12 col-lg-12">
+            <div class="card-horizontal">
+              <h5>What will students need to know or do before starting this course?</h5>
+              <div class="row">
+                <div class="col-md-12">
+                  <ul class="p-0 list-unstyled unorder-list term-list list-more-text">
+                    <ng-container *ngFor="let g of goals">
+                      <li *ngIf="g.type == 'pre'"><i class="fas fa-check text-success mr-2 font-sm"></i>{{g.name}}</li>
+                    </ng-container>
+                    <!---->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3" *ngIf="course.booked">
+          <div class="col-md-12">
+            <div class="card-horizontal mt-5">
+              <h4 translate="" class="card-title">Progress</h4>
+              <!---->
+              <div class="mb-3">
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    [ngStyle]="{'width': getProgressValue() + '%'}"
+                    [attr.aria-valuenow]="getProgressValue()"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    {{getProgressValue()}}%
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <h4 translate="" class="card-title">Course content</h4>
+              <p class="card-text font-xs">
+                {{sections ? sections.length : 0}} <span translate="">sections</span> • {{ lectures ? lectures.length :
+                0}} <span translate="">lectures</span> • {{getTotalDurationCourse()}}
+                <span translate="">total length</span>
+              </p>
+              <div id="accordion-lectures" class="myaccordion">
+                <div class="card" *ngFor="let item of sections">
+                  <div [id]="'hd' + item._id" class="card-header">
+                    <h3 class="mb-0">
+                      <button
+                        data-toggle="collapse"
+                        class="d-flex align-items-center justify-content-between btn btn-link btn-collapse"
+                        [attr.data-target]="'#collapse' + item._id"
+                        [attr.aria-controls]="'#collapse' + item._id"
+                      >
+                        {{item.title}}
+                        <p class="mb-0 font-xs font-weight-500">
+                          <span
+                            >{{ getTotalLectures(item._id)}} <span translate="">lectures</span> •
+                            {{getTotalDurationSection(item._id)}} </span
+                          ><span class="fa-stack fa-2x"><i class="fas fa-stack-1x fa-minus"></i></span>
+                        </p>
+                      </button>
+                    </h3>
+                  </div>
+                  <div
+                    data-parent="#accordion-lectures"
+                    class="collapse"
+                    [id]="'collapse' + item._id"
+                    [attr.aria-labelledby]="'hd' + item._id"
+                    style=""
+                  >
+                    <div class="card-body">
+                      <div>
+                        <!---->
+                        <div *ngFor="let l of lectures">
+                          <div *ngIf="l.sectionId == item._id">
+                            <div class="d-flex justify-content-between">
+                              <a (click)="setVisibleLecture(l._id)" class="font-sm js-video-button"
+                                ><i class="far fa-file mr-2 font-sm"></i>{{l.title}}
+                              </a>
+                              <p class="font-sm text-secondary">{{getTotalDurationLecture(l._id)}}</p>
+                            </div>
+                            <div *ngIf="visibleLecture == l._id">
+                              <div class="lecture-items">
+                                <div *ngFor="let m of l.media, let i = index">
+                                  <!---->
+                                  <div
+                                    (click)="updateProgress(getMediaValue(m._id, l)?.duration, getMediaValue(m._id, l)?.media_id, getMediaValue(m._id, l))"
+                                    class="d-flex justify-content-between"
+                                  >
+                                    <p class="font-xs text-secondary">
+                                      <i
+                                        [ngClass]="{'far fa-file': getMediaValue(m._id, l)?.type == 'pdf', 'far fa-play-circle': getMediaValue(m._id, l)?.type == 'video', 'fas fa-headphones': getMediaValue(m._id, l)?.type == 'audio'}"
+                                        class="mr-2 font-xs"
+                                      ></i
+                                      >{{m?.name}}
+                                    </p>
+                                    <div class="font-xs">
+                                      <span translate="" class="label label-light-warning"
+                                        >{{getMediaValue(m._id, l)?.type}}</span
+                                      ><span class="label label-light-primary ml-1"
+                                        >{{getMediaValue(m._id, l)?.duration}}</span
+                                      >
+                                    </div>
+                                  </div>
+                                  <!----><!---->
+                                </div>
+                              </div>
+                            </div>
+                            <!---->
+                          </div>
+                          <!---->
+                        </div>
+                      </div>
+
+                      <!---->
+                    </div>
+                  </div>
+                </div>
+                <!---->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-5" *ngIf="course.description">
+          <div class="col-md-12 col-12 col-lg-12">
+            <div class="card-horizontal">
+              <div class="row">
+                <div class="col-md-12">
+                  <h4 class="card-title" translate>Description</h4>
+                  <app-card-text [content]="course.description" [showChar]="500"></app-card-text>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-horizontal card-sticky mt-5">
+          <h4 class="color-light-red mt-3" *ngIf="!course.isFree">
+            <strong
+              >{{ (course.price + (course.price * (config.applicationFee ? config.applicationFee : 0))) | currency :
+              (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}</strong
+            >
+          </h4>
+          <h4 class="color-light-red mt-3" *ngIf="course.isFree">
+            <strong>FREE</strong>
+          </h4>
+
+          <p class="color-light-red mt-2"></p>
+          <button
+            [disabled]=" !canBooking || (currentUser && currentUser._id === course.tutorId) || booked"
+            class="btn btn-green mr-2"
+            (click)="enrollCourse(course, 'booking')"
+          >
+            <i class="far fa-paper-plane color-white mr-2"></i>
+            <span *ngIf="!booked" translate>Purchase</span>
+            <span *ngIf="booked" translate>Purchased</span>
+          </button>
+          <h5 translate="" class="mt-3">This course includes:</h5>
+          <ul class="p-0 list-unstyled unorder-list">
+            <li><i class="far fa-play-circle mr-2 font-sm"></i>13m2s</li>
+            <li><i class="fas fa-infinity mr-2 font-sm"></i><span translate="">Full lifetime access</span></li>
+            <li><i class="fas fa-mobile-alt mr-2 font-sm"></i><span translate="">Access on mobile and TV</span></li>
+          </ul>
+          <!---->
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12 col-12 col-lg-12">
+        <div class="card-horizontal">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="profile">
+                <a [routerLink]="['/tutors', course?.tutor?.username]">
+                  <img
+                    src="{{course?.tutor?.avatarUrl | defaultImage}}"
+                    class="float-left profile-md box-shadow-lg"
+                    alt=""
+                  />
+                  <div class="profile-content-sm pt-4">
+                    <h5 class="profile-name">
+                      {{course?.tutor?.name}}<i class="fas fa-check-circle color-blue ml-2"></i>
+                    </h5>
+                  </div>
+                </a>
+
+                <div>
+                  <div class="img-flag-tutor">
+                    <img src="{{course?.tutor?.country?.flag}}" alt="" class="mr-2 image-sm" />
+                  </div>
+                  <h5 style="margin-left: 5px; display: inline-block">{{course?.tutor?.country?.name}}</h5>
+                </div>
+              </div>
+              <div class="pt-70">
+                <h4 class="card-title" translate>About Me</h4>
+                <app-card-text [content]="course?.tutor?.bio" [showChar]="500"></app-card-text>
+              </div>
+            </div>
+            <div class="col-md-6 rmt-4">
+              <review-list
+                [options]="optionsReview"
+                [stats]="statsReview"
+                [canWriteReview]="course.booked"
+              ></review-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<p>Hello {{ user.name }}</p>
+<br />
+<p>
+  Your appointment {{ appointment.code }} has started at {{ startTimeNow }}. You can click
+  <a href="{{appointment.zoomData.join_url}}">this link</a> to join. <br />
+  Copy this link and open in the browser if you can not open <br />
+  {{appointment.zoomData.join_url}}.
+</p>
+<br />
+<p>
+  <strong>Tutor: </strong> {{tutor.name}} <br />
+  <!-- <strong>Webinar name: </strong> {{webinar.name}} <br /> -->
+  <strong>Code: </strong> {{appointment.code}} <br />
+  <strong>Time: </strong> {{startTime}} - {{toTime}} <br />
+</p>
+
+{% endblock %}

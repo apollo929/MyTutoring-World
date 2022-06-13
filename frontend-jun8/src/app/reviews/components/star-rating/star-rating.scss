@@ -1,0 +1,33 @@
+.no-outline {
+  outline: transparent;
+}
+.star {
+  position: relative;
+  display: inline-block;
+  color: #d3d3d3;
+  margin-right: 0;
+  &:focus {
+    border: none;
+  }
+}
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: #fe980f;
+}
+.pos-line-star {
+  position: relative;
+  display: inline-block;
+  .pos-line-total {
+    position: absolute;
+    margin-left: 5px;
+  }
+}
+.star.filled {
+  color: #fe980f;
+}
+
+.font-22 {
+  font-size: 22px;
+}

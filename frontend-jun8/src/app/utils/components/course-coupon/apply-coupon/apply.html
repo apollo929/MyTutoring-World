@@ -1,0 +1,26 @@
+<div class="cta-input rm-0 cta-input-mg-0" *ngIf="!usedCoupon">
+  <div class="input-group mb-1">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Coupon"
+      aria-label="Recipient's username"
+      aria-describedby="basic-addon2"
+      [(ngModel)]="couponCode"
+      required
+      #coupon="ngModel"
+      name="coupon-code"
+      disabled="{{appliedCoupon}}"
+    />
+    <div class="input-group-append">
+      <span class="input-group-text" id="basic-addon2" (click)="applyCoupon()" *ngIf="!appliedCoupon">Apply</span>
+      <span class="input-group-text" id="basic-addon2" (click)="applyCoupon()" *ngIf="appliedCoupon">Cancel</span>
+    </div>
+  </div>
+  <div *ngIf="coupon.errors && (coupon.dirty || coupon.touched)">
+    <p [hidden]="!coupon.errors.required" class="error" translate>Coupon code is required</p>
+  </div>
+  <small class="mb-1" style="color: grey"
+    >(*) Apply for enroll or gift. Only used once. Will apply coupon when payment success .</small
+  >
+</div>

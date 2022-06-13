@@ -1,0 +1,59 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h4 translate>
+    <span *ngIf="type==='tutor'" translate>Tutor's Rating</span>
+    <span *ngIf="type!=='tutor'" translate>Student's Rating</span> &amp; <span translate>Review</span>
+  </h4>
+  <a translate class="review-text color-blue" (click)="writeReview=!writeReview" [hidden]="!canWriteReview"
+    >Write Review</a
+  >
+</div>
+<div class="rating-stars pt-3">
+  <ul id="stars">
+    <star-rating [rate]="stats.ratingAvg"></star-rating>
+    <span>{{stats.ratingAvg}} ({{stats.totalRating}})</span>
+  </ul>
+</div>
+<h5 class="text-secondary mt-3">{{reviews.length}} <span translate>Reviews</span></h5>
+<hr />
+<div *ngIf="writeReview && canWriteReview">
+  <review-card [options]="options" [reviews]="reviews" (onRating)="onRating($event)" class="inline"></review-card>
+  <hr />
+</div>
+<ul style="list-style: none; padding-left: 0" *ngIf="reviews">
+  <li *ngFor="let review of reviews, let i = index">
+    <div>
+      <star-rating [rate]="review?.rating"></star-rating>
+      <a class="pull-right" [hidden]="review.rateBy && userId !== review.rateBy" (click)="update(review, i)">
+        <i class="far fa-edit"></i>
+      </a>
+    </div>
+    <div>
+      <h4 class="mt-2">
+        <img
+          class="media-object mr-2 header-profile"
+          [src]="review?.rater?.avatarUrl"
+          alt="img"
+          class="header-profile"
+        />
+        {{review?.rater?.name}}
+      </h4>
+    </div>
+    <p class="comment-text">{{review?.comment}}</p>
+    <p class="card-text">Posted {{review?.createdAt |dstFormat | date:'mediumDate'}}</p>
+    <hr />
+  </li>
+</ul>
+<div class="row mt-5">
+  <div class="col-md-12 text-center">
+    <p *ngIf="!reviews.length" translate>There is no reviews.</p>
+    <div class="display-inline" [hidden]="total < pageSize">
+      <ngb-pagination
+        [collectionSize]="total"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        (pageChange)="query()"
+        class="card-pagination pagination"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

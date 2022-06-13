@@ -1,0 +1,120 @@
+<div class="header-bottom">
+  <div class="pn-ProductNav_Wrapper bg-color-light-gray">
+    <div class="container">
+      <nav id="pnProductNav" class="pn-ProductNav navbar">
+        <div id="pnProductNavContents" class="pn-ProductNav_Contents">
+          <a
+            [routerLink]="['/users/dashboard']"
+            class="pn-ProductNav_Link"
+            [routerLinkActive]="'active'"
+            aria-selected="true"
+          >
+            <i class="far fa-address-card mr-2"></i>
+            <span translate>Dashboard</span>
+          </a>
+
+          <a [routerLink]="['/users/payment-connect']" [routerLinkActive]="'active'" class="pn-ProductNav_Link">
+            <i class="fas fa-dollar-sign mr-2"></i>
+            <span translate>Payment connect</span>
+          </a>
+          <a [routerLink]="['/users/messages/conversations']" [routerLinkActive]="'active'" class="pn-ProductNav_Link">
+            <i class="far fa-envelope mr-2"></i>
+            <span translate>My Message</span>
+          </a>
+          <a
+            [routerLink]="['/users/my-categories']"
+            [routerLinkActive]="'active'"
+            class="pn-ProductNav_Link"
+            *ngIf="type === 'tutor'"
+          >
+            <i class="far fa-list-alt mr-2"></i>
+            <span translate>My Categories</span>
+          </a>
+          <a [routerLink]="['/users/profile']" class="pn-ProductNav_Link" [routerLinkActive]="'active'">
+            <i class="far fa-address-card mr-2"></i>
+            <span translate>Profile</span>
+          </a>
+          <a [routerLink]="['/users/favorites', 'tutor']" class="pn-ProductNav_Link" [routerLinkActive]="'active'">
+            <i class="far fa-heart mr-2"></i>
+            <span translate>Favorite tutor</span>
+          </a>
+          <a [routerLink]="['/users/favorites', 'webinar']" class="pn-ProductNav_Link" [routerLinkActive]="'active'">
+            <i class="far fa-heart mr-2"></i>
+            <span translate>Favorite webinar</span>
+          </a>
+          <a [routerLink]="['/users/favorites', 'course']" class="pn-ProductNav_Link" [routerLinkActive]="'active'">
+            <i class="far fa-heart mr-2"></i>
+            <span translate>Favorite Course</span>
+          </a>
+          <a
+            *ngIf="type === 'tutor'"
+            [routerLink]="['/users/webinars']"
+            [routerLinkActive]="'active'"
+            class="pn-ProductNav_Link"
+          >
+            <i class="fas fa-desktop mr-2"></i>
+            <span translate>My Group Classes</span>
+          </a>
+          <a
+            *ngIf="type === 'tutor'"
+            [routerLink]="['/users/schedule']"
+            [routerLinkActive]="'active'"
+            class="pn-ProductNav_Link"
+          >
+            <i class="fas fa-book-reader mr-2"></i>
+            <span translate>My 1 on 1 Classes</span>
+          </a>
+          <a [routerLink]="['/users/transaction/list']" [routerLinkActive]="'active'" class="pn-ProductNav_Link">
+            <i class="fas fa-credit-card mr-2"></i>
+            <span translate>My Transactions</span>
+          </a>
+          <a [routerLink]="['/users/lessons']" [routerLinkActive]="'active'" class="pn-ProductNav_Link">
+            <i class="fas fa-book mr-2"></i>
+            <span translate>My Lessons</span>
+          </a>
+          <a [routerLink]="['/users/my-course']" [routerLinkActive]="'active'" class="pn-ProductNav_Link">
+            <i class="fas fa-book mr-2"></i>
+            <span translate>My Courses</span>
+          </a>
+          <a
+            *ngIf="type === 'tutor'"
+            [routerLink]="['/users/appointments']"
+            [routerLinkActive]="'active'"
+            class="pn-ProductNav_Link"
+          >
+            <i class="far fa-calendar-check mr-2"></i>
+            <span translate>My Appointments</span>
+          </a>
+          <a
+            *ngIf="type === 'tutor'"
+            [routerLink]="['/users/payout/request']"
+            [routerLinkActive]="'active'"
+            class="pn-ProductNav_Link"
+          >
+            <i class="far fa-calendar-check mr-2"></i>
+            <span translate>Payout</span>
+          </a>
+          <a [routerLink]="['/users/refund/request']" [routerLinkActive]="'active'" class="pn-ProductNav_Link">
+            <i class="far fa-calendar-check mr-2"></i>
+            <span translate>Refund Request</span>
+          </a>
+          <span id="pnIndicator" class="pn-ProductNav_Indicator"></span>
+        </div>
+      </nav>
+      <button id="pnAdvancerLeft" class="pn-Advancer pn-Advancer_Left" type="button">
+        <i class="fa fa-chevron-left color-white font-sm"></i>
+      </button>
+      <button id="pnAdvancerRight" class="pn-Advancer pn-Advancer_Right" type="button">
+        <i class="fa fa-chevron-right color-white font-sm"></i>
+      </button>
+    </div>
+  </div>
+  <div class="pn-ProductNav_Wrapper" *ngIf="!currentUser?.isActive">
+    <div class="alert alert-warning" role="alert">
+      <i class="fas fa-exclamation-triangle"></i>
+      Your account has been deactivated by the admin, you can currently still be active on your dashboard, but your
+      profile and your products will be temporarily unavailable on the homepage. Please contact the Admin for more
+      details!
+    </div>
+  </div>
+</div>

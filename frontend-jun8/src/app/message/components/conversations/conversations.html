@@ -1,0 +1,73 @@
+<div class="sm-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card-horizontal box-conversation">
+          <div class="headind_srch">
+            <!-- <div class="recent_heading">
+              <h4 translate>Messages</h4>
+            </div> -->
+            <div class="srch_bar mb-2">
+              <div class="input-group">
+                <input
+                  autocomplete="off"
+                  type="text"
+                  class="search-bar form-control"
+                  placeholder="{{'Search' | translate}}"
+                  [(ngModel)]="q"
+                  name="q"
+                  (keypress)="enterToSend($event)"
+                />
+                <span class="input-group-addon">
+                  <button class="btn btn-outline-secondary" type="button" (click)="filter()">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="inbox_chat">
+            <div
+              class="chat_list"
+              *ngFor="let conversation of conversations"
+              [ngClass]="{active_chat: conversation._id === activeConversation?._id}"
+            >
+              <span
+                class="dot-message"
+                *ngIf="conversation && conversation.userMeta && conversation.userMeta.unreadMessage > 0"
+                ><i class="fas fa-circle"></i
+              ></span>
+              <div class="chat_people" (click)="selectConversation(conversation)">
+                <div class="chat_img">
+                  <img [src]="conversation?.member?.avatarUrl" [alt]="conversation?.member?.name" />
+                </div>
+                <div class="chat_ib">
+                  <h5>
+                    {{conversation.name}}
+                    <span class="chat_date" *ngIf="conversation.lastMessage"
+                      >{{conversation.lastMessage.createdAt|date}}</span
+                    >
+                  </h5>
+                  <p>
+                    <small *ngIf="!conversation?.lastMessage" translate>No message right now</small>
+                    <small *ngIf="conversation?.lastMessage">{{conversation.lastMessage.text}}</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card-horizontal box-message">
+          <div class="inbox_msg">
+            <div class="mesgs" *ngIf="!activeConversation">
+              <p translate>Please select conversation!</p>
+            </div>
+            <messages *ngIf="activeConversation" [conversation]="activeConversation"></messages>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

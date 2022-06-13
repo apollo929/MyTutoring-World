@@ -1,0 +1,9 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{user.name}}</p>
+<p>Your appointment (#{{appointment.code}}) has been rescheduled to {{startTime}} successfully.</p>
+<p>
+  <strong>User: </strong> {{user.name}} <br />
+  <strong>Time: </strong> {{startTime}} - {{toTime}}
+  <br />
+</p>
+{% endblock %}

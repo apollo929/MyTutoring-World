@@ -1,0 +1,48 @@
+<div class="sm-padding table-default">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="mb-4" translate>Detail Request</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table id="table_id" class="table table-horizontal tble-responsive">
+          <tbody>
+            <tr>
+              <td style="width: 32%" translate>Tutor name:</td>
+              <td style="width: 68%">
+                <a class="link-pink" [routerLink]="['/tutors', item.tutor._id]" *ngIf="item && item.tutor"
+                  >{{item?.tutor?.name }}
+                </a>
+              </td>
+            </tr>
+            <tr *ngIf="item.webinar">
+              <td translate>Group Class:</td>
+              <td><span>{{item?.webinar?.name || 'No name'}}</span></td>
+            </tr>
+            <tr *ngIf="item.subject">
+              <td translate>Subject:</td>
+              <td><span>{{item.subject?.name || 'No name'}}</span></td>
+            </tr>
+            <tr>
+              <td translate>Status Request:</td>
+              <td><app-status [status]="item?.status"></app-status></td>
+            </tr>
+            <tr>
+              <td translate>Amount Request:</td>
+              <td>
+                {{item?.amount | currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '): 'symbol' :
+                '1.0'}}
+              </td>
+            </tr>
+            <tr>
+              <td translate>Reason:</td>
+              <td>" {{item?.reason}} "</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

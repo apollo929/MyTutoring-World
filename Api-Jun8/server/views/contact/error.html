@@ -1,0 +1,20 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<div class="container">
+  <p>
+    Something went wrong, please try again later!
+  </p>
+  <script>
+    var second = 5;
+    setInterval(function () {
+      if (second > 0) {
+        second = second - 1;
+        return (document.getElementById('second').innerHTML = '' + second + 's');
+      } else {
+        window.location.href = document.getElementById('url-login').textContent;
+        clearInterval();
+      }
+    }, 1000);
+  </script>
+</div>
+{% endblock %}

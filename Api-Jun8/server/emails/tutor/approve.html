@@ -1,0 +1,40 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{tutor.name}},</p>
+<br />
+<p>Welcome to {{appName}}! We look forward to working with you and helping you grow as a tutor.</p>
+<br />
+<p>You're ready to get started!</p>
+<br />
+<p>
+  In a few minutes, you will receive an email from zoom. Please open this and accept your zoom account. You will need to do this in order to proceed
+  further.
+</p>
+<p>
+  <br />
+  <br />
+  <!-- <a
+    target="_blank"
+    style="
+      display: inline-block;
+      color: #ffffff;
+      background-color: #38cbec;
+      border: solid 1px #3498db;
+      border-radius: 30px;
+      box-sizing: border-box;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 25px;
+      margin: 0;
+      padding: 12px 25px;
+      text-transform: capitalize;
+      border-color: #3498db;
+    "
+    href="{{appConfig.userWebUrl}}/auth/login"
+    >SIGN IN</a
+  > -->
+</p>
+<br />
+<p>--- Sincerely,</p>
+<p>The {{appName}} Team</p>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+<form #frm="ngForm" (ngSubmit)="buy()" [formGroup]="stripeTest">
+  <!-- <input type="text" formControlName="cardName" placeholder="Jane Doe" name="cardHolderName">
+  <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
+  <button type="submit">
+    BUY
+  </button> -->
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      <span translate>Make your payment for</span>
+      <div *ngIf="webinar">{{webinar.name}}</div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close(null)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group fix-form" *ngIf="type === 'gift'">
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="{{'Recipient\s email id...' | translate }}"
+              name="email"
+              formControlName="emailRecipient"
+            />
+            <div
+              class="gift-courseErrors"
+              *ngIf="stripeTest.controls.emailRecipient.errors && (stripeTest.controls.emailRecipient.dirty || stripeTest.controls.emailRecipient.touched)"
+            >
+              <p
+                [hidden]="!stripeTest.controls.emailRecipient.errors.required"
+                class="error"
+                style="margin-bottom: 0"
+                translate
+              >
+                Email is required
+              </p>
+              <p
+                [hidden]="!stripeTest.controls.emailRecipient.errors.email"
+                class="error"
+                style="margin-bottom: 0"
+                translate
+              >
+                Email is invalid format
+              </p>
+            </div>
+          </div>
+        </div>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="cardName"
+          placeholder="Jane Doe"
+          name="cardHolderName"
+        />
+        <div
+          class="gift-courseErrors"
+          *ngIf="stripeTest.controls.cardName.errors && (stripeTest.controls.cardName.dirty || stripeTest.controls.cardName.touched)"
+        >
+          <p [hidden]="!stripeTest.controls.cardName.errors.required" class="error" style="margin-bottom: 0" translate>
+            Name is required
+          </p>
+        </div>
+        <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success btn-pink" type="submit" [disabled]="loading">
+      <i class="fa fa-refresh fa-spin fa-3x fa-fw" *ngIf="loading" style="font-size: 1rem"></i>
+      <span translate>PAY</span>
+      <div *ngIf="webinar">${{appliedCoupon && salePrice ? salePrice : webinar.price}}</div>
+    </button>
+  </div>
+</form>

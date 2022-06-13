@@ -1,0 +1,316 @@
+<section class="pt-5">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-3">
+      <div class="col-md-12 mb-4">
+        <div class="card h-100 box-shadow-md border-none">
+          <div class="video-play">
+            <iframe
+              width="100%"
+              height="100%"
+              [src]="urlYoutube"
+              frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-5 pr-0">
+                <div class="profile-card">
+                  <div class="row row-cols-2">
+                    <div class="col-md-6">
+                      <div class="profile mt-n5 text-center rtxt-left">
+                        <img src="{{tutor.avatarUrl}}" class="profile-lg box-shadow-lg" alt="" />
+                      </div>
+                    </div>
+                    <div class="col-md-6 ml-n2">
+                      <div class="mt-3">
+                        <h5 class="font-weight-bold">
+                          {{tutor.name}}<i class="fas fa-check-circle color-blue ml-1 font-sm"></i>
+                        </h5>
+                        <div class="rating-stars">
+                          <ul id="stars">
+                            <star-rating [rate]="tutor.ratingAvg"></star-rating>
+                            <span>{{tutor?.ratingAvg}} ({{tutor?.totalRating}})</span>
+                          </ul>
+                        </div>
+                        <div class="">
+                          <div class="img-flag-tutor">
+                            <img
+                              src="{{tutor?.country?.flag}}"
+                              alt=""
+                              class="image-sm"
+                              onerror="this.src='/assets/images/no-image.jpg'"
+                            />
+                          </div>
+                          <span class="ml-2 text-secondary" translate>{{tutor?.country?.name || 'Updating'}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <h5 translate>Languages</h5>
+                    <h6 class="text-line-break">{{languageNames.join(', ')}}</h6>
+                    <p class="font-weight-bold text-left">
+                      <img src="../assets/images/webinar/certified-img.svg" alt="" class="mr-2 image-sm" translate />
+                      <span translate>Completed by</span> {{tutor?.completedByLearner || 0}}
+                      <span translate>Learners</span>
+                    </p>
+                    <!-- <a class="btn btn-blue" href="#">
+                    <i class="far fa-envelope color-white mr-2"></i>
+                    <span translate>Send a Message</span>
+                    
+                  </a> -->
+                    <send-message-btn [recipientId]="tutor._id"></send-message-btn>
+                    <a class="btn btn-white ml-2" *ngIf="!tutor.isFavorite" (click)="favorite()">
+                      <i class="far fa-heart color-light-red"></i>
+                    </a>
+                    <a class="btn btn-white ml-2" *ngIf="tutor.isFavorite" (click)="unFavorite()">
+                      <i class="fas fa-heart color-light-red"></i>
+                    </a>
+                  </div>
+                  <div class="col-md-12 mt-3" *ngIf="tutor && tutor.username">
+                    <strong translate>Share me:</strong>
+                    <share-button
+                      button="facebook"
+                      theme="circles-light"
+                      [icon]="['fab', 'facebook-f']"
+                      [url]="webUrl + '/tutors/' + tutor.username"
+                      [image]="tutor.avatarUrl"
+                      [title]="tutor.name"
+                      [description]="tutor.bio"
+                    ></share-button>
+                    <share-button
+                      button="twitter"
+                      theme="circles-light"
+                      [icon]="['fab', 'twitter']"
+                      [url]="webUrl + '/tutors/' + tutor.username"
+                      [image]="tutor.avatarUrl"
+                      [title]="tutor.name"
+                    ></share-button>
+                    <!-- <share-button
+                      button="instagram"
+                      theme="circles-light"
+                      [icon]="['fab', 'instagram']"
+                    ></share-button> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-7 mt-3">
+                <div class="d-flex justify-content-between">
+                  <a class="btn btn-blue rmr-2" [routerLink]="['/appointments', tutor.username]">
+                    <img src="../assets/images/1-on-1.svg" alt="1 on 1" class="img-sm mt-n1 mr-1" translate />
+                    <span translate>1-on-1</span>
+                  </a>
+                  <a class="btn btn-blue rmr-2 scrollTo" id="btn-view-webinars">
+                    <img src="../assets/images/webinar.svg" alt="view webinars" class="img-sm mt-n1 mr-1" translate />
+                    <span translate>View Group Classes</span>
+                  </a>
+                </div>
+                <h5 class="rmt-4 mt-3" translate *ngIf="tutor.gradeItems.length">Grades which they take classes for</h5>
+                <h6 class="text-secondary">
+                  <span *ngFor="let grade of tutor.gradeItems, let i = index"
+                    >{{grade.name}}<span *ngIf="i < tutor.gradeItems.length - 1">, </span></span
+                  >
+                </h6>
+                <h5 translate *ngIf="tutor.subjects.length">Subjects which they specialize in</h5>
+                <h6 class="text-secondary">
+                  <span *ngFor="let subject of tutor.subjects; let i = index"
+                    >{{ subject.name }}<span *ngIf="i < tutor.subjects.length - 1">, </span></span
+                  >
+                </h6>
+                <!-- Tutor not option select category -->
+                <h5 translate *ngIf="tutor.categories && tutor.categories.length">Categories</h5>
+                <h6 class="text-secondary" *ngIf="tutor.categories && tutor.categories.length">
+                  <span *ngFor="let cat of tutor.categories, let i = index"
+                    >{{cat.name}}<span *ngIf="i < tutor.categories.length - 1">, </span></span
+                  >
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="mt-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card-horizontal">
+          <div class="row">
+            <div class="col-md-6">
+              <h4 class="card-tite" translate>Resume</h4>
+              <div class="row mb-4">
+                <div class="col-md-12">
+                  <h4><img src="../assets/images/tutor/book.svg" class="mr-2" /><span translate>Education</span></h4>
+                </div>
+                <app-certificate
+                  class="app-certificate"
+                  *ngFor="let cer of tutor.education"
+                  [certificate]="cer"
+                ></app-certificate>
+              </div>
+              <div class="row mb-4">
+                <div class="col-md-12">
+                  <h4>
+                    <img src="../assets/images/tutor/experience.svg" class="mr-2" /><span translate
+                      >Work Experience</span
+                    >
+                  </h4>
+                </div>
+                <app-certificate
+                  class="app-certificate"
+                  *ngFor="let cer of tutor.experience"
+                  [certificate]="cer"
+                ></app-certificate>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h4>
+                    <img src="../assets/images/tutor/certificate.svg" class="mr-2" /><span translate
+                      >Certifications</span
+                    >
+                  </h4>
+                </div>
+                <app-certificate
+                  class="app-certificate"
+                  *ngFor="let cer of tutor.certification"
+                  [certificate]="cer"
+                ></app-certificate>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="tutor && tutor.bio">
+              <h4 class="card-tite" translate>About Me</h4>
+              <app-card-text [content]="tutor?.bio" [showChar]="500"></app-card-text>
+              <!-- <p class="card-text more" [innerHTML]="tutor.bio"></p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-5 mb-5" id="view-webinars">
+  <div class="row no-margin outer">
+    <div class="container">
+      <div class="row no-margin">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+          <h3 class="color-light-black" translate>Group Classes</h3>
+        </div>
+        <div class="col-md-12" *ngIf="!webinars.length">
+          <p>No results!</p>
+        </div>
+        <ngx-slick-carousel
+          class="col-md-12 col-sm-12 col-xs-12 mt-3 testimonial-slide p-0"
+          #slickModal="slick-carousel"
+          [config]="slideConfig"
+          [hidden]="!webinars.length"
+        >
+          <div ngxSlickItem class="card h-100 border-none testimonial-list" *ngFor="let webinar of webinars">
+            <div class="outer">
+              <div class="badge-tag" *ngIf="webinar?.featured">
+                <span translate>Featured</span>
+              </div>
+              <a [routerLink]="['/webinars/detail',webinar.alias]" class="hyperlink">
+                <img
+                  src="{{webinar?.mainImage?.fileUrl}}"
+                  class="card-img-top"
+                  alt=""
+                  onerror="this.src='/assets/images/no-image.jpg'"
+                />
+              </a>
+              <div class="card-body">
+                <div class="row row-cols-2 mt-n5">
+                  <div class="col-md-7 pr-0">
+                    <div class="profile-card">
+                      <div class="profile">
+                        <img src="{{webinar?.tutor?.avatarUrl}}" class="float-left cate-profile box-shadow-lg" alt="" />
+                        <h5 class="cate-profile-name pt-sm">{{webinar?.tutor?.name}}</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5 pl-0">
+                    <div class="rating-stars text-right rating-pt font-xs">
+                      <ul id="stars">
+                        <star-rating [rate]="webinar?.tutor?.ratingAvg"></star-rating>
+                        <span>{{webinar?.tutor?.ratingAvg}} ({{webinar?.tutor?.totalRating}})</span>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-2" *ngIf="webinar.latestSlot">
+                    <span class="mr-2 text-secondary"
+                      ><i class="far fa-calendar mr-2"></i>{{ webinar?.latestSlot?.startTime|dstFormat | date:'MMM
+                      dd,yyyy'}}</span
+                    >
+                    <span class="text-secondary"
+                      ><i class="far fa-clock mr-2"></i>{{ webinar?.latestSlot?.startTime|dstFormat |
+                      date:'HH:mm'}}</span
+                    >
+                  </div>
+                </div>
+                <div class="card-content mt-3">
+                  <h5 class="card-title">{{webinar.name| ellipsis:60}}</h5>
+                  <div [hidden]="!webinar?.description">
+                    <app-text-ellipsis
+                      [content]="webinar.description"
+                      [showChar]="50"
+                      [path]="'/webinars/detail'"
+                      [param]="webinar.alias"
+                    ></app-text-ellipsis>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-transparent border-text-mute p-3">
+                <div class="row row-cols-2">
+                  <div class="col-md-8">
+                    <a
+                      *ngIf="!webinar.booked"
+                      class="btn btn-green"
+                      [routerLink]="['/webinars/detail',webinar?.alias]"
+                      translate
+                      >Book Now</a
+                    >
+                    <a
+                      *ngIf="webinar.booked"
+                      class="btn btn-purchased"
+                      [routerLink]="['/webinars/detail',webinar?.alias]"
+                      translate
+                      >Purchased</a
+                    >
+                  </div>
+                  <!-- <a class="btn btn-green" [routerLink]="['/webinars/detail',webinar._id]" translate>Book Now</a> -->
+
+                  <div class="col-md-4 text-right">
+                    <h4 class="color-light-red mt-2">
+                      <strong *ngIf="!webinar.price" translate>Free</strong>
+                      <strong *ngIf="webinar.price && webinar.price > 0"
+                        >{{ webinar.price | currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '):
+                        'symbol' : '1.0'}}</strong
+                      >
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ngx-slick-carousel>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="mt-5 p b-100">
+  <div class="container">
+    <div class="card-horizontal">
+      <div class="row">
+        <div class="col-md-12">
+          <review-list [options]="optionsReview" [canWriteReview]="false" [stats]="statsReview"></review-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

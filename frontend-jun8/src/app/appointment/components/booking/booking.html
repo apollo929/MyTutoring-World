@@ -1,0 +1,260 @@
+<section class="pt-5 pb-5">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-3">
+      <div class="col-md-12 mb-4">
+        <div class="card h-100 box-shadow-md border-none position-relative">
+          <!-- <div class="video-play" style="background-image: url(../assets/images/tutor/tutor-video-thumbnail.png)"></div>
+          <div class="card-play-icon">
+            <button class="js-video-button btn-transparent" data-video-id="7TUOI23spt0">
+              <i class="fa fa-play"></i>
+            </button>
+          </div> -->
+          <div class="video-play">
+            <iframe
+              width="100%"
+              height="100%"
+              [src]="urlYoutube"
+              frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 pr-0">
+                <div class="profile-card">
+                  <div class="profile mt-n5">
+                    <img src="{{tutor.avatarUrl}}" class="float-left profile-lg box-shadow-lg" alt="" />
+                    <div class="profile-content-md">
+                      <h5 class="pt-lg">{{tutor.name}}</h5>
+                      <div class="rating-stars">
+                        <ul id="stars">
+                          <star-rating [rate]="tutor.ratingAvg"></star-rating>
+                          <span>{{tutor?.ratingAvg}} ({{tutor?.totalRating}})</span>
+                        </ul>
+                      </div>
+                      <div class="">
+                        <div class="img-flag-tutor">
+                          <img
+                            src="{{tutor?.country?.flag}}"
+                            alt=""
+                            class="image-sm"
+                            onerror="this.src='/assets/images/no-image.jpg'"
+                          />
+                        </div>
+                        <span class="ml-2 text-secondary">{{tutor?.country?.name || 'Updating'}}</span>
+                        <h5 class="mt-3 text-line-break">{{languageNames.join(', ')}}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-12">
+                    <send-message-btn [recipientId]="tutor._id"></send-message-btn>
+                    <a class="btn btn-white ml-2" *ngIf="!tutor.isFavorite" (click)="favorite()">
+                      <i class="far fa-heart color-light-red"></i>
+                    </a>
+                    <a class="btn btn-white ml-2" *ngIf="tutor.isFavorite" (click)="unFavorite()">
+                      <i class="fas fa-heart color-light-red"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8 mt-2 rmt-4">
+                <h4 translate>About Me</h4>
+                <p class="card-text" [innerHTML]="tutor.bio | ellipsis: showChar" [hidden]="!showChar"></p>
+                <p class="card-text" [innerHTML]="tutor.bio" [hidden]="showChar"></p>
+                <a href="javascript:void(0)" class="morelink" *ngIf="showMore && showChar > 0" (click)="showChar = 0"
+                  ><span translate>Read More</span>...</a
+                >
+                <a href="javascript:void(0)" class="morelink" *ngIf="showMore && !showChar" (click)="showChar = 500"
+                  >...<span translate>Read Less</span></a
+                >
+                <div class="mt-3">
+                  <app-apply-coupon
+                    *ngIf="coupon && coupon._id && !booking.isFree"
+                    [options]="optionsCoupon"
+                    (onApply)="applyCoupon($event)"
+                    (isUsed)="checkUsedCoupon($event)"
+                  ></app-apply-coupon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="pb-100">
+  <div class="container">
+    <!-- <div class="row mb-5">
+          <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+              <h2 class="color-light-black">Book an appointment with <br> <span class="color-blue">Jack luvancy</span> today!</h2>
+              <p class="content-title mt-3">Amet minim mollit non dese ullamco eullamco est sit aliq <br>Amet minim mollit  st sit aliq Amet minim</p>
+          </div>
+      </div> -->
+    <div class="row mb-3" style="justify-content: space-around">
+      <div class="col-md-12 d-flex align-items-center justify-content-center classes">
+        <div class="d-flex justify-content-end">
+          <label class="custom-checkbox mr-4 font-md" translate
+            ><span translate>Paid Class</span>
+            <input type="radio" selected name="type" [(ngModel)]="booking.isFree" [value]="false" />
+            <span class="checkmark"></span>
+          </label>
+          <label class="custom-checkbox font-md"
+            ><span translate>Free Class</span>
+            <input type="radio" name="type" [(ngModel)]="booking.isFree" [value]="true" [disabled]="appliedCoupon" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <!-- <div class="col-md-8 rmt-4">
+        <div class="d-flex justify-content-start align-items-center rd-block">
+          <label class="mb-0 rmb-3 font-weight-bold font-md" translate>Pick Your Subject</label>
+          <div class="col-md-6 rp-0">
+            <select class="custom-select" [(ngModel)]="booking.targetId" (change)="changeSubject()">
+              <option selected value="" translate>Select Subjects</option>
+              <option *ngFor="let subject of tutorSubjects" [value]="subject._id">{{subject.name}}</option>
+            </select>
+          </div>
+          <p class="slot-btn mb-0 d-inline-block rmt-2" *ngIf="!appliedCoupon&&!booking.isFree">
+            {{config?.currencySymbol ? config?.currencySymbol + '' : '$'}}{{price}}/<span translate>Slot</span>
+          </p>
+          <p class="slot-btn mb-0 d-inline-block rmt-2" *ngIf="appliedCoupon&&!booking.isFree">
+            <small class="text-line-through mr-1">
+              {{config?.currencySymbol ? config?.currencySymbol + '' : '$'}}{{price}}</small
+            >
+            {{config?.currencySymbol ? config?.currencySymbol + '' : '$'}}{{salePrice ? salePrice : 0}}/<span translate
+              >Slot</span
+            >
+          </p>
+        </div>
+      </div> -->
+
+      <p class="mt-2" [hidden]="!booking.isFree" style="color: grey">
+        <span translate>The maximum number of free trial classes you can take is</span> {{maxFreeSlotToBook}}
+      </p>
+    </div>
+    <div class="row step-to-booking mb-2">
+      <div class="col-md-4 d-flex align-items-center justify-content-center flex-direction-column">
+        <h5 translate>Step 1</h5>
+        <select class="custom-select" [(ngModel)]="selectedCategoryId" (change)="selectMyCategory()">
+          <option selected value="" translate>Select Category</option>
+          <option *ngFor="let cat of myCategories" [value]="cat._id">{{cat.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-4 d-flex align-items-center justify-content-center flex-direction-column">
+        <h5 translate>Step 2</h5>
+        <select class="custom-select" [(ngModel)]="selectedSubjectId" (change)="selectMySubject()">
+          <option selected value="" translate>Select Subject</option>
+          <option *ngFor="let subject of mySubjects" [value]="subject._id">{{subject.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-4 d-flex align-items-center justify-content-center flex-direction-column">
+        <h5 translate>Step 3</h5>
+        <div class="step-3">
+          <select class="custom-select mr-1" [(ngModel)]="booking.targetId" (change)="changeTopic()">
+            <option selected value="" translate>Select Topic</option>
+            <option *ngFor="let topic of myTopics" [value]="topic._id">{{topic.name}}</option>
+          </select>
+          <span class="slot-btn">
+            <p class="mb-0 d-inline-block" *ngIf="!appliedCoupon&&!booking.isFree">
+              {{ (price + (price * config.applicationFee)) | currency : (config?.currencySymbol ? config?.currencySymbol
+              + ' ' : '$ '): 'symbol' : '1.0'}}/<span translate>Slot</span>
+            </p>
+            <p class="mb-0 d-inline-block" *ngIf="appliedCoupon&&!booking.isFree">
+              <small class="text-line-through mr-1">
+                {{ (price + (price * config.applicationFee)) | currency : (config?.currencySymbol ?
+                config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}</small
+              >
+              {{ (salePrice + (salePrice * config.applicationFee)) | currency : (config?.currencySymbol ?
+              config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}/<span translate>Slot</span>
+            </p>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="container">
+        <div class="card-horizontal">
+          <div class="text-center">
+            <h3 class="font-weight-bold mb-0" translate>Schedule</h3>
+            <!-- <span (click)="bookingPaid()">Book</span> -->
+            <!-- <h5 class="mb-0" translate>June 19, 2020 - June 26, 2020</h5> -->
+            <p class="font-md mb-0 text-secondary" translate>All times listed are in your local timezone</p>
+          </div>
+          <app-tutor-available-time
+            [tutorId]="tutor._id"
+            [isFree]="booking.isFree"
+            (onSelect)="chooseSlot($event)"
+          ></app-tutor-available-time>
+          <button class="btn btn-success btn-pink" type="button" (click)="multiplebookingAppointment()">Multi Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="pb-100">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12 mb-4">
+            <h3 translate>Group Classes</h3>
+            <p *ngIf="webinarOptions.count==0" translate>There is no results</p>
+          </div>
+        </div>
+        <div class="row">
+          <app-card-webinar
+            *ngFor="let webinar of webinarOptions.webinars"
+            [webinar]="webinar"
+            [hidden]="!webinarOptions.webinars.length"
+            class="col-md-4 mb-4"
+          ></app-card-webinar>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12 text-center" *ngIf="webinarOptions.count>1">
+            <ngb-pagination
+              [collectionSize]="webinarOptions.count"
+              [(page)]="webinarOptions.currentPage"
+              [pageSize]="webinarOptions.pageSize"
+              (pageChange)="queryWebinar()"
+              class="card-pagination pagination"
+            >
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="pb-100">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2 class="color-light-black" translate>Book Offline Tutoring</h2>
+        <p class="content-title" translate>
+          <span translate>Search offline tutoring with</span> {{tutor.name}} <span translate>with zip code.</span>
+        </p>
+        <div class="cta-input">
+          <div class="input-group mt-4">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="{{'Enter Zip Code' | translate}}"
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+              [(ngModel)]="zipCode"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text" id="basic-addon2" (click)="fundTransfer()" translate>Search</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

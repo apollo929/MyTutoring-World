@@ -1,0 +1,16 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{tutor.name}},</p>
+<br />
+<p>
+  Congratulations, you have been approved by the admin to rejoin our system, please check your email and accept the invitation to come back by ZoomUs,
+  once you accept, you will be able to log back in and use our features I, of course, your data is still stored.
+</p>
+<br />
+<p>Please contact us by email: <a href="mailto:{{adminEmail}}"></a></p>
+<br />
+<p>
+  --- Sincerely, <br />
+  The {{appConfig.siteName}} Team
+</p>
+
+{% endblock %}

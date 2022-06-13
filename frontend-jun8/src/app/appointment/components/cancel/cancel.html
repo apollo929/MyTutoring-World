@@ -1,0 +1,27 @@
+<div class="bg-heading-pro">
+  <div class="heading-pro head-custom">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 img-tutor">
+          <img [src]="tutor?.avatarUrl" />
+        </div>
+        <div class="col-sm-12 name-tutor">
+          <h3>{{tutor?.name}}</h3>
+        </div>
+        <!-- <div class="col-sm-12 description-tutor">
+          Somethings
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col col-md-12">
+      <div class="alert alert-danger" role="alert" style="margin-top: 1%;">
+        <h4 class="alert-heading" translate>Canceled</h4>
+        <p><span translate>Canceled booking! redirect in</span> <strong>{{second}}s</strong></p>
+      </div>
+    </div>
+  </div>
+</div>

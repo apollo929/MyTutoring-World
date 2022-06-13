@@ -1,0 +1,13 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{tutor.name}}</p>
+<br />
+<p>
+  {{user.name}} has booked your {% if transaction.targetType === 'webinar' && webinar %} {{webinar.name}} group {% endif %} {% if
+  transaction.targetType === 'subject' && topic && appointment %} {{topic.name}} 1 on 1 {% endif %} class.
+</p>
+<br />
+<p>
+  <strong>Transaction code:</strong>: #{{transaction.code}} <br />
+  <strong>Amount</strong>: {{appConfig.currencySymbol}}{{transaction.price}} <br />
+</p>
+{% endblock %}

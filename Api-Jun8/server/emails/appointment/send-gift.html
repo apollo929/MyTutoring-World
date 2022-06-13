@@ -1,0 +1,22 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<p>Hello {{ transaction.emailRecipient }}</p>
+<br />
+<p>{{ user.name }} gifted you a webinar</p>
+
+<p>
+  If you are not registered. Click <a href="{{signupLink}}">signup link</a> to register account with {{appConfig.siteName}} and join this webinar.
+</p>
+<p>We will send information about the course</p>
+<br />
+<p>
+  <strong>Tutor: </strong> {{ tutor.name }} <br />
+  {% if transaction.targetType === 'webinar' && webinar %}
+  <strong>Webinar name: </strong> {{ webinar.name }} <br />
+  {% endif %} {% if transaction.targetType === 'course' && course %}
+  <strong>Course name: </strong> {{ course.name }} <br />
+  {% endif %}
+
+  <strong>Code: </strong> {{transaction.code}} <br />
+  <!-- <strong>Temps: </strong> {{appointment.startTime|date('jS \o\f F H:i')}} - {{appointment.toTime|date('jS \o\f F H:i')}} <br /> -->
+</p>

@@ -1,0 +1,50 @@
+<div class="btn-group mr-3">
+  <div class="btn-group" ngbDropdown #request="ngbDropdown" role="group" aria-label="Button group with nested dropdown">
+    <a class="btn btn-outline-primary" ngbDropdownToggle translate>Request</a>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <a
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}"
+        [routerLink]="['/users/payout/request']"
+        class="dropdown-item"
+        role="button"
+        aria-pressed="true"
+        translate
+        >List request</a
+      >
+      <a
+        [routerLinkActive]="['active']"
+        [routerLink]="['/users/payout/request/create']"
+        class="dropdown-item"
+        role="button"
+        aria-pressed="true"
+        translate
+        >Send request</a
+      >
+    </div>
+  </div>
+  <div class="btn-group" ngbDropdown #account="ngbDropdown" role="group" aria-label="Button group with nested dropdown">
+    <a class="btn btn-outline-primary" ngbDropdownToggle translate>Account</a>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <a
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}"
+        [routerLink]="['/users/payout/account']"
+        class="dropdown-item"
+        role="button"
+        aria-pressed="true"
+        translate
+        >List account</a
+      >
+      <a
+        [routerLinkActive]="['active']"
+        [routerLink]="['/users/payout/account/create']"
+        class="dropdown-item"
+        role="button"
+        aria-pressed="true"
+        translate
+        >Create account</a
+      >
+    </div>
+  </div>
+</div>

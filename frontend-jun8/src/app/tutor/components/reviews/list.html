@@ -1,0 +1,28 @@
+<ul class="list-review list-rating" *ngIf="reviews.length">
+  <li *ngFor="let item of reviews">
+    <div class="media">
+      <div class="media-left">
+        <img class="media-object mr-2" [src]="item?.rater?.avatarUrl" alt="img" />
+      </div>
+      <div class="media-body">
+        <div class="title-comment">
+          {{item?.rater?.name}} <span class="pull-right">{{item?.createdAt |dstFormat | date:'short'}}</span>
+        </div>
+        <star-rating [rate]="item?.rating"></star-rating>
+        <p class="italic">{{item?.comment}}</p>
+      </div>
+    </div>
+  </li>
+</ul>
+<p *ngIf="!reviews.length" translate>There is no reviews.</p>
+<div class="display-inline" [hidden]="total < pageSize">
+  <div class="pull-right">
+    <ngb-pagination
+      [collectionSize]="total"
+      [(page)]="page"
+      [maxSize]="5"
+      [pageSize]="pageSize"
+      (pageChange)="query()"
+    ></ngb-pagination>
+  </div>
+</div>

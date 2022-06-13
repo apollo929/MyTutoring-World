@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <h2 class="modal-title" translate>Section for course</h2>
+
+  <button type="button" (click)="activeModal.dismiss('Cross click')" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form
+    #frm="ngForm"
+    (submit)="submit(frm)"
+    class="add-certification-form input-border ng-untouched ng-pristine ng-invalid"
+  >
+    <div class="row">
+      <div class="col col-md-12">
+        <div class="form-group">
+          <label><span translate="">Title</span><span class="required">*</span></label
+          ><input
+            type="text"
+            name="title"
+            [(ngModel)]="section.title"
+            required=""
+            class="form-control ng-untouched ng-pristine ng-invalid"
+            placeholder="Enter title"
+          /><!---->
+        </div>
+      </div>
+      <div class="col col-md-12">
+        <div class="form-group">
+          <label translate="">Description</label
+          ><textarea
+            name="description"
+            rows="3"
+            [(ngModel)]="section.description"
+            class="form-control ng-untouched ng-pristine ng-valid"
+            placeholder="Enter some text here"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col col-md-6">
+        <div class="form-group">
+          <label translate="">Ordering</label
+          ><input
+            type="number"
+            name="ordering"
+            [(ngModel)]="section.ordering"
+            class="form-control ng-untouched ng-pristine ng-valid"
+            placeholder="Ordering"
+          /><!---->
+        </div>
+      </div>
+      <div class="col-md-12">
+        <button type="submit" translate="" class="btn btn-danger mr-3">Submit</button
+        ><button (click)="activeModal.dismiss('Cross click')" type="button" translate="" class="btn btn-outline-dark">
+          Close
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

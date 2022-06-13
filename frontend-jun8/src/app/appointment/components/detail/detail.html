@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <strong translate>Appointment information</strong>
+      </div>
+      <div class="card-body">
+        <h4><span translate>Tutor name</span>:&nbsp;{{appointment?.tutor?.name}}</h4>
+        <h4 class="card-title m-t-10"><span translate>Subject name</span>:&nbsp; {{appointment?.subject?.name}}</h4>
+        <h4 class="card-title m-t-10">
+          <span translate>Price</span>:&nbsp; {{appointment?.price | currency : (config?.currencySymbol ?
+          config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+        </h4>
+        <h4 class="card-title m-t-10">
+          <span translate>Start time</span>:&nbsp; {{appointment.startTime |dstFormat | date:'short'}}
+        </h4>
+        <h4 class="card-title m-t-10">
+          <span translate>To time</span>:&nbsp; {{appointment.toTime |dstFormat | date:'short'}}
+        </h4>
+        <h4>
+          <span translate>Status</span>: &nbsp;
+          <span class="badge badge-warning" *ngIf="appointment?.status === 'pending'" translate>Pending</span>
+          <span class="badge badge-danger" *ngIf="appointment?.status === 'canceled'" translate>Canceled</span>
+          <span class="badge badge-primary" *ngIf="appointment?.status === 'progressing'" translate>In Progress</span>
+          <span class="badge badge-success" *ngIf="appointment?.status === 'completed'" translate>Completed</span>&nbsp;
+        </h4>
+        <h4>
+          <span translate>Preview</span>: &nbsp;
+          <a [href]="appointment?.recordings?.share_url"></a>
+        </h4>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <strong translate>Review & rating</strong>
+      </div>
+      <div class="card-body">
+        <review-list [options]="options" *ngIf="options.appointmentId"></review-list>
+      </div>
+    </div>
+  </div>
+</div>

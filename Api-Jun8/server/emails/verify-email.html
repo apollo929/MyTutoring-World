@@ -1,0 +1,19 @@
+{% extends 'layouts/default.html' %} {% block content %}
+<p>Hello {{ userName }}</p>
+{% if isSignup %}
+<p>
+  Thank you for signing up. Before you can start using the site, you must first verify your email. <br />
+  Please click <a href="{{ emailVerifyLink }}">here</a> or copy the link below and paste it into your browser.
+
+  <br />
+  {{ emailVerifyLink }}
+</p>
+{% endif %} {% if !isSignup %}
+<p>
+  You have changed your email. You need to verify your new email address to continue using the site. <br />
+  Please click <a href="{{ emailVerifyLink }}">here</a> or copy the link below and paste it into your browser.
+
+  <br />
+  {{ emailVerifyLink }}
+</p>
+{% endif %} {% endblock %}

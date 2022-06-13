@@ -1,0 +1,235 @@
+<div class="modal-header header-modal-signup">
+  <h4 class="modal-title" translate>Signup</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- <form #frm="ngForm" (submit)="submit(frm)">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="{{ 'Enter name' | translate }}"
+            #name="ngModel"
+            name="name"
+            required
+            [(ngModel)]="account.name"
+          />
+          <div *ngIf="name.errors && (name.dirty || name.touched || submitted)">
+            <p [hidden]="!name.errors.required" class="error" translate>Name is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="email@example.com"
+            #email="ngModel"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            name="email"
+            required
+            [(ngModel)]="account.email"
+          />
+          <small class="form-text text-muted" translate
+            ><span translate>We'll never share your email with anyone else</span>.</small
+          >
+          <div *ngIf="email.errors && (email.dirty || email.touched || submitted)">
+            <p [hidden]="!email.errors.required" class="error" translate>Email is required</p>
+            <p [hidden]="!email.errors.pattern" class="error" translate>Email is invalid format</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="{{ 'Password' | translate }}"
+            [minlength]="6"
+            #pw="ngModel"
+            required
+            name="password"
+            [(ngModel)]="account.password"
+          />
+          <div *ngIf="pw.errors && (pw.dirty || pw.touched || submitted)">
+            <p [hidden]="!pw.errors.minlength" class="error" translate>Password must be from 6 characters length</p>
+            <p [hidden]="!pw.errors.required" class="error" translate>Password is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="{{ 'Confirmer Mot de passe' | translate }}"
+            #cf="ngModel"
+            required
+            name="confirm"
+            [(ngModel)]="confirm.pw"
+          />
+          <div *ngIf="cf.errors && (cf.dirty || cf.touched || submitted)">
+            <p [hidden]="!cf.errors.required" class="error" translate>Confirm password is required</p>
+          </div>
+          <div *ngIf="isMath">
+            <p class="error" translate>Confirm password and Password dont match</p>
+          </div>
+        </div>
+        <div class="form-group signup-document" *ngIf="account.type === 'tutor'">
+          <label translate>Upload CV</label>
+          <p class="help help-block">
+            <small translate
+              >Upload pdf file, docx file, rar file, jpg file, jpeg file, png file or zip file for your document</small
+            >
+          </p>
+        </div>
+        <div class="form-group">
+          <strong translate><span translate>I am</span>:</strong><br />
+          <div class="list-radio">
+            <label>
+              <input type="radio" name="type" value="student" [(ngModel)]="account.type" />
+              <span translate>Student</span></label
+            >
+            <label>
+              <input type="radio" name="type" value="parent" [(ngModel)]="account.type" /> <span translate>Parent</span>
+            </label>
+            <label>
+              <input type="radio" name="type" value="tutor" [(ngModel)]="account.type" />
+              <span translate>Tutor</span></label
+            >
+          </div>
+          <div *ngIf="submitted && account.type === ''">
+            <p class="error" translate>Type is required</p>
+          </div>
+        </div>
+        <button class="btn btn-success btn-pink" type="submit" translate>Submit</button>
+      </div>
+    </div>
+  </form> -->
+  <div class="login-form input-border">
+    <!--begin::Form-->
+    <form class="form" #frm="ngForm" (submit)="submit(frm)">
+      <!--begin::Title-->
+      <!-- <div class="pb-4">
+        <h3 class="" translate>Create Account</h3>
+        <p class="text-muted sub-content" translate>
+          <span translate>Already have an Account</span> ?
+          <a [routerLink]="['/auth/login']" class="color-light-red" translate>Sign In</a>
+        </p>
+      </div> -->
+      <div id="cardDivtutor" class="details">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="{{ 'Enter name' | translate }}"
+            #name="ngModel"
+            name="name"
+            required
+            [(ngModel)]="account.name"
+          />
+          <div *ngIf="name.errors && (name.dirty || name.touched || submitted)">
+            <p [hidden]="!name.errors.required" class="error" translate>Name is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="{{ 'Enter your email' | translate }}"
+            #email="ngModel"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            name="email"
+            required
+            [(ngModel)]="account.email"
+          />
+          <small class="form-text text-muted" translate>We'll never share your email with anyone else.</small>
+          <div *ngIf="email.errors && (email.dirty || email.touched || submitted)">
+            <p [hidden]="!email.errors.required" class="error" translate>Email is required</p>
+            <p [hidden]="!email.errors.pattern" class="error" translate>Email is invalid format</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="{{ 'Password' | translate }}"
+            [minlength]="6"
+            #pw="ngModel"
+            required
+            name="password"
+            [(ngModel)]="account.password"
+          />
+          <div *ngIf="pw.errors && (pw.dirty || pw.touched || submitted)">
+            <p [hidden]="!pw.errors.minlength" class="error" translate>Password must be from 6 characters length</p>
+            <p [hidden]="!pw.errors.required" class="error" translate>Password is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="{{ 'Confirm Password' | translate }}"
+            #cf="ngModel"
+            required
+            name="confirm"
+            [(ngModel)]="confirm.pw"
+          />
+          <div *ngIf="cf.errors && (cf.dirty || cf.touched || submitted)">
+            <p [hidden]="!cf.errors.required" class="error" translate>Confirm password is required</p>
+          </div>
+          <div *ngIf="isMath">
+            <p class="error" translate>Confirm password and Password do not match</p>
+          </div>
+        </div>
+        <p class="text-secondary" *ngIf="account.type === 'tutor'" translate>Upload verification document</p>
+        <p *ngIf="idDocumentFile && idDocumentFile.name && account.type === 'tutor'">{{ idDocumentFile.name }}</p>
+        <app-file-upload [options]="idDocumentOptions" *ngIf="account.type === 'tutor'"></app-file-upload>
+        <small *ngIf="account.type === 'tutor'" translate
+          >Upload pdf file, docx file, rar file, jpg file, jpeg file, png file or zip file for your document</small
+        >
+        <p class="text-secondary" *ngIf="account.type === 'tutor'" translate>Upload resume document</p>
+        <p *ngIf="resumeFile && resumeFile.name && account.type === 'tutor'">{{ resumeFile.name }}</p>
+        <app-file-upload [options]="resumeOptions" *ngIf="account.type === 'tutor'"></app-file-upload>
+        <small *ngIf="account.type === 'tutor'" translate>Upload pdf file for your document</small>
+        <p class="text-secondary" *ngIf="account.type === 'tutor'" translate>Upload certification document</p>
+        <p *ngIf="certificationFile && certificationFile.name && account.type === 'tutor'">
+          {{ certificationFile.name }}
+        </p>
+        <app-file-upload [options]="certificationOptions" *ngIf="account.type === 'tutor'"></app-file-upload>
+        <small *ngIf="account.type === 'tutor'" translate>Upload pdf file for your document</small>
+      </div>
+      <div class="mt-3">
+        <h6 translate>I am a :</h6>
+        <label class="custom-radio" translate
+          ><span translate>Student</span>
+          <input type="radio" name="type" value="student" [(ngModel)]="account.type" />
+          <span class="checkmark"></span>
+        </label>
+        <!-- <label class="custom-radio"
+          >Parent
+          <input type="radio" name="type" value="parent" [(ngModel)]="account.type" />
+          <span class="checkmark"></span>
+        </label> -->
+        <label class="custom-radio"
+          ><span translate>Tutor</span>
+          <input type="radio" name="type" value="tutor" [(ngModel)]="account.type" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div *ngIf="submitted && account.type === ''">
+        <p class="error" translate>Type is required</p>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-default mt-5 btn-block" type="submit" translate>Sign Up</button>
+      </div>
+      <!--end::Form group-->
+      <!--begin::Action-->
+      <!--end::Action-->
+    </form>
+    <!--end::Form-->
+  </div>
+</div>
+<!-- <div class="modal-footer">
+  <button type="submit" class="btn btn-outline-dark" (click)="submit()">Submit</button>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Close</button>
+</div> -->

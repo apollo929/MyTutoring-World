@@ -1,0 +1,45 @@
+<div *ngIf="calendarOptions">
+  <div *ngIf="type=='webinar'" class="mt-2 mb-3 webinar-colors">
+    <div class="d-flex">
+      <button type="button" class="btn-color" style="background-color: #e4465a"></button>
+      <span translate>This group class slots</span>
+    </div>
+    <div class="d-flex">
+      <button type="button" class="btn-color" style="background-color: #2596be"></button>
+      <span translate>Other group classes slots</span>
+    </div>
+    <div class="d-flex">
+      <button type="button" class="btn-color" style="background-color: #49be25"></button>
+      <span translate>1 on 1 classes</span>
+    </div>
+    <div class="d-flex">
+      <button type="button" class="btn-color" style="background-color: #ddd"></button>
+      <span translate>Expired/Not available slots</span>
+    </div>
+  </div>
+  <div *ngIf="!type || type=='subject'" class="mt-2 mb-3 webinar-colors">
+    <div class="d-flex">
+      <button type="button" class="btn-color" style="background-color: #e4465a"></button>
+      <span translate *ngIf="isFree">Free slots</span>
+      <span translate *ngIf="!isFree">Paid slots</span>
+    </div>
+    <div class="d-flex">
+      <button type="button" class="btn-color" style="background-color: #2596be"></button>
+      <span translate>Group classes slots</span>
+    </div>
+    <div class="d-flex">
+      <button type="button" class="btn-color" style="background-color: #49be25"></button>
+      <span translate *ngIf="isFree">Paid slots</span>
+      <span translate *ngIf="!isFree">Free slots</span>
+    </div>
+    <div class="d-flex">
+      <button type="button" class="btn-color" style="background-color: #ddd"></button>
+      <span translate>Expired/Not available slots</span>
+    </div>
+  </div>
+  <full-calendar #calendar *ngIf="calendarVisible" [options]="calendarOptions"></full-calendar>
+
+  <p class="text-right mt-2" style="color: grey; font-weight: 700">
+    <i class="fas fa-clock"></i> Times are shown in local time
+  </p>
+</div>

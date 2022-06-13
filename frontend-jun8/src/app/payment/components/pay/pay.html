@@ -1,0 +1,251 @@
+<section class="sm-padding">
+  <div class="container">
+    <div class="card-horizontal max-width-900 mx-auto">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 translate>Make your Payment for the {{targetType}} {{targetName}}, with Tutor {{tutorName}}</h3>
+        </div>
+      </div>
+      <form class="form-stripe" (ngSubmit)="buy()" [formGroup]="stripeTest">
+        <div class="row input-border mt-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="name"
+                placeholder="{{'Enter name' | translate}}"
+                name="cardHolderName"
+              />
+              <div
+                class="gift-courseErrors"
+                *ngIf="stripeTest.controls.name.errors && (stripeTest.controls.name.dirty || stripeTest.controls.name.touched|| submitted)"
+              >
+                <p
+                  [hidden]="!stripeTest.controls.name.errors.required"
+                  class="error"
+                  style="margin-bottom: 0"
+                  translate
+                >
+                  Name is required
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="address_line1"
+                placeholder="{{'Enter address' | translate}}"
+                name="line1"
+              />
+              <div
+                class="gift-courseErrors"
+                *ngIf="stripeTest.controls.address_line1.errors && (stripeTest.controls.address_line1.dirty || stripeTest.controls.address_line1.touched|| submitted)"
+              >
+                <p
+                  [hidden]="!stripeTest.controls.address_line1.errors.required"
+                  class="error"
+                  style="margin-bottom: 0"
+                  translate
+                >
+                  Address is required
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="address_city"
+                placeholder="{{'Enter city' | translate}}"
+                name="city"
+              />
+              <div
+                class="gift-Errors"
+                *ngIf="stripeTest.controls.address_city.errors && (stripeTest.controls.address_city.dirty || stripeTest.controls.address_city.touched || submitted)"
+              >
+                <p
+                  [hidden]="!stripeTest.controls.address_city.errors.required"
+                  class="error"
+                  style="margin-bottom: 0"
+                  translate
+                >
+                  City is required
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="address_state"
+                placeholder="{{'Enter state' | translate}}"
+                name="state"
+              />
+              <div
+                class="gift-courseErrors"
+                *ngIf="stripeTest.controls.address_state.errors && (stripeTest.controls.address_state.dirty || stripeTest.controls.address_state.touched|| submitted)"
+              >
+                <p
+                  [hidden]="!stripeTest.controls.address_state.errors.required"
+                  class="error"
+                  style="margin-bottom: 0"
+                  translate
+                >
+                  State is required
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group hide-clear-all">
+              <!-- <input
+                class="form-control"
+                type="text"
+                formControlName="address_country"
+                placeholder="{{'Enter country' | translate}}"
+                name="country"
+              /> -->
+              <ng-select
+                [items]="countries"
+                appendTo="body"
+                name="country"
+                bindLabel="name"
+                bindValue="code"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                formControlName="address_country"
+                placeholder="{{'Enter country' | translate}}"
+              >
+              </ng-select>
+              <div
+                class="gift-courseErrors"
+                *ngIf="stripeTest.controls.address_country.errors && (stripeTest.controls.address_country.dirty || stripeTest.controls.address_country.touched|| submitted)"
+              >
+                <p
+                  [hidden]="!stripeTest.controls.address_country.errors.required"
+                  class="error"
+                  style="margin-bottom: 0"
+                  translate
+                >
+                  Country is required
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-6">
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="address_zip"
+                placeholder="{{'Enter zip code' | translate}}"
+                name="zip-code"
+              />
+              <div
+                class="gift-courseErrors"
+                *ngIf="stripeTest.controls.address_zip.errors && (stripeTest.controls.address_zip.dirty || stripeTest.controls.address_zip.touched|| submitted)"
+              >
+                <p
+                  [hidden]="!stripeTest.controls.address_zip.errors.required"
+                  class="error"
+                  style="margin-bottom: 0"
+                  translate
+                >
+                  Zip code is required
+                </p>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-md-12" *ngIf="type === 'gift'">
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="{{'Recipient\'s email id' | translate}}"
+                name="email"
+                formControlName="emailRecipient"
+              />
+              <div
+                class="gift-courseErrors"
+                *ngIf="stripeTest.controls.emailRecipient.errors && (stripeTest.controls.emailRecipient.dirty || stripeTest.controls.emailRecipient.touched|| submitted)"
+              >
+                <p
+                  [hidden]="!stripeTest.controls.emailRecipient.errors.required"
+                  class="error"
+                  style="margin-bottom: 0"
+                  translate
+                >
+                  Email is required
+                </p>
+                <p
+                  [hidden]="!stripeTest.controls.emailRecipient.errors.email"
+                  class="error"
+                  style="margin-bottom: 0"
+                  translate
+                >
+                  Email is invalid format
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <ngx-stripe-card
+              class="form-control form-group"
+              [options]="cardOptions"
+              [elementsOptions]="elementsOptions"
+            ></ngx-stripe-card>
+          </div>
+          <!-- <div class="col-md-12">
+            <div class="row mb-3 mt-3 row-cols-1 row-cols-lg-2">
+              <div class="col-8">
+                <img src="assets/images/dummy-card2.png" alt="" class="float-left image-md mr-2" />
+                <h5 class="font-md">1234 1234 1234 1234</h5>
+              </div>
+              <div class="col-4 text-right">
+                <span class="font-weight-bold mr-3 font-md">12/23</span>
+                <span class="font-weight-bold font-md">455</span>
+              </div>
+            </div>
+            <div class="row mb-3 mt-3 row-cols-1 row-cols-lg-2">
+              <div class="col-8">
+                <img src="assets/images/dummy-card3.png" alt="" class="float-left image-md mr-2" />
+                <h5 class="font-md">1234 1234 1234 1234</h5>
+              </div>
+              <div class="col-4 text-right">
+                <span class="font-weight-bold mr-3 font-md">12/23</span>
+                <span class="font-weight-bold font-md">455</span>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-md-12">
+            <div class="form-group">
+              <button
+                class="btn btn-green mr-2 btn-pay-now"
+                [disabled]="loading || (type === 'gift' && stripeTest.get('emailRecipient').value === (currentUser && currentUser.email))"
+              >
+                <span translate>Pay Now</span>
+                <div *ngIf="loading" class="spinner-border text-primary" role="status">
+                  <span class="sr-only" translate><span translate>Loading</span>...</span>
+                </div>
+              </button>
+            </div>
+            <!-- <button class="btn btn-green mr-2 btn-pay-now" type="button" (click)="confirm()" [disabled]="loading">
+              <span translate>Confirm</span>
+              <div *ngIf="loading" class="spinner-border text-primary" role="status">
+                <span class="sr-only" translate><span translate>Loading</span>...</span>
+              </div>
+            </button> -->
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

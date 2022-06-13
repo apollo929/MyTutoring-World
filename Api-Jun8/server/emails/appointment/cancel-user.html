@@ -1,0 +1,20 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<p>Hello {{ user.name }}</p>
+
+<p>Your appointment {{ appointment.code }} has been canceled.</p>
+
+<p>
+  <strong>Tutor: </strong> {{tutor.name}} <br />
+  <strong>Time: </strong> {{startTimeUser}} - {{toTimeUser}}
+  <br />
+  <strong>Canceled by: </strong> {{cancelBy.name}} <br />
+  <strong>Reason: </strong> {{appointment.cancelReason}}
+</p>
+
+{% if !appointment.isFree && refundRequest %}
+<p>
+  The system has created a refund request for you, click this <a href="{{appConfig.userWebUrl}}/users/refund/{{refundRequest._id}}">link</a> to see
+  detail.
+</p>
+{% endif %} {% endblock %}

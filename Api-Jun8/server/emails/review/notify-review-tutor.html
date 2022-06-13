@@ -1,0 +1,12 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{tutor.name}},</p>
+
+<p>Your appointment #{{webinar.name}} has been completed.</p>
+
+<p><strong>Appointment: </strong> #{{webinar.name}}</p>
+<p><strong>Time: </strong> {{slot.startTime|date('jS \o\f F H:i')}} - {{slot.toTime|date('jS \o\f F H:i')}} <br /></p>
+<!-- <p>
+  <a href="{{reviewLink}}">{{reviewLink}}</a>
+</p> -->
+
+{% endblock %}

@@ -1,0 +1,180 @@
+<div class="sm-padding table-default">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="mb-4" translate>Detail Payment</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table id="table_id" class="table table-horizontal tble-responsive">
+          <tbody>
+            <tr>
+              <td translate>Tutor name:</td>
+              <td>
+                <a
+                  class="color-light-red"
+                  [routerLink]="['/tutors', transaction.tutor.username]"
+                  *ngIf="transaction && transaction.tutor"
+                  >{{transaction?.tutor?.name}}</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td><span translate>Type</span>:</td>
+              <td>
+                <span class="label label-light-info" *ngIf="transaction?.type === 'booking'" translate>Booking</span>
+                <span class="label label-light-warning" *ngIf="transaction?.type === 'gift'" translate>Gift</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span translate>Enroll type</span> :</td>
+              <td>
+                <span class="label label-light-info" *ngIf="transaction?.targetType === 'webinar'" translate
+                  >Webinar</span
+                >
+                <span class="label label-light-info" *ngIf="transaction?.targetType === 'subject'" translate
+                  >1 vs 1</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td><span translate>Subjects / Group Class</span>:</td>
+              <td>
+                <span *ngIf="transaction?.tutorSubject?.name">{{transaction?.tutorSubject?.name}} - </span>
+                <a
+                  class="color-light-red"
+                  [routerLink]="['/webinars/detail', transaction.webinar.alias]"
+                  *ngIf="transaction.targetType === 'webinar'"
+                  >{{transaction.webinar && transaction.targetType === 'webinar' ? transaction?.webinar?.name : ''}}</a
+                >
+                <span
+                  >{{transaction.subject && transaction.targetType === 'subject' ? transaction?.subject?.name :
+                  ''}}</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td><span translate>Code</span> :</td>
+              <td>
+                <span>{{transaction?.code}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span translate *ngIf="transaction.couponCode">Original price:</span
+                ><span translate *ngIf="!transaction.couponCode">Price:</span>
+              </td>
+              <td>
+                <span *ngIf="!transaction.usedCoupon">
+                  {{(transaction.price + transaction.applicationFee) | currency : (config?.currencySymbol ?
+                  config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+                </span>
+                <span *ngIf="transaction.usedCoupon">
+                  {{transaction.discountAmount + transaction.discountPrice | currency : (config?.currencySymbol ?
+                  config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="transaction.usedCoupon">
+              <td translate>Discount Price:</td>
+              <td>
+                <span
+                  >{{transaction?.couponInfo?.discountPrice | currency : (config?.currencySymbol ?
+                  config?.currencySymbol + ' ' : '$'): 'symbol' : '1.0'}}</span
+                >
+              </td>
+            </tr>
+            <tr *ngIf="transaction.usedCoupon">
+              <td translate>Discount Amount:</td>
+              <td>
+                <span
+                  >{{transaction?.couponInfo?.discountAmount | currency : (config?.currencySymbol ?
+                  config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}</span
+                >
+              </td>
+            </tr>
+            <tr *ngIf="transaction.usedCoupon">
+              <td translate>Coupon Code:</td>
+              <td><span>{{transaction?.couponInfo?.couponCode}}</span></td>
+            </tr>
+            <tr>
+              <td translate><span>Created At</span>:</td>
+              <td><span>{{transaction?.createdAt |dstFormat | date}}</span></td>
+            </tr>
+            <tr>
+              <td><span translate>Status</span>:</td>
+              <td>
+                <span class="label label-light-warning" *ngIf="transaction?.status === 'pending'" translate
+                  >Pending</span
+                >
+                <span class="label label-light-danger" *ngIf="transaction?.status === 'canceled'" translate
+                  >Canceled</span
+                >
+                <span class="label label-light-primary" *ngIf="transaction?.status === 'progressing'" translate
+                  >In Progress</span
+                >
+                <span class="label label-light-primary" *ngIf="transaction?.status === 'completed'" translate
+                  >Completed</span
+                >
+                <span class="label label-light-warning" *ngIf="transaction?.status === 'pending-refund'" translate
+                  >Pending refund</span
+                >
+                <span class="label label-light-primary" *ngIf="transaction?.status === 'approved-refund'" translate>
+                  Approved refund
+                </span>
+                <span class="label label-light-primary" *ngIf="transaction?.status === 'refunded'" translate
+                  >Refunded</span
+                >&nbsp;
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        class="col-md-12 mt-4"
+        *ngIf="transaction?.price > 0 && (transaction.targetType === 'subject' || transaction.targetType === 'webinar') && transaction.status === 'completed'"
+      >
+        <div class="card-horizontal p-4 text-border">
+          <p class="text-secondary" translate>
+            If the tutor did not join the course or If you cannot join the course, please send us a refund request. We
+            will review and respond to you. You can only send a refund request within 3 days after the class is
+            completed.
+          </p>
+          <form>
+            <div class="form-group">
+              <label translate>Reason</label>
+              <textarea
+                class="form-control"
+                rows="3"
+                placeholder="{{'Enter some text here'| translate}}"
+                [(ngModel)]="reason"
+                name="reason"
+              ></textarea>
+            </div>
+            <!-- <button class="btn btn-default mt-3" (click)="request('before')" translate>Can't join the course</button
+            >&nbsp; -->
+            <button class="btn btn-default mt-3 ml-3" (click)="request('after')" translate>Request for Refund</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-12 mt-4" *ngIf="transaction?.price > 0 && transaction.targetType === 'course'">
+        <div class="card-horizontal p-4 text-border">
+          <form>
+            <div class="form-group">
+              <label translate>Reason</label>
+              <textarea
+                class="form-control"
+                rows="3"
+                placeholder="{{'Enter some text here'| translate}}"
+                [(ngModel)]="reason"
+                name="reason"
+              ></textarea>
+            </div>
+            <button class="btn btn-default mt-3" (click)="request()" translate>Request</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

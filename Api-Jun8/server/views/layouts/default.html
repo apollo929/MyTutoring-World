@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>{{siteName}}</title>
+    <style>
+      .logo {
+        width: 75px;
+      }
+    </style>
+  </head>
+
+  <body>
+    {% include './../includes/header.html' %}
+    <span id="url-login" style="display: none;">{{urlLogin}}</span>
+    <div class="container mt-5 my-5">
+      {% block content %}{% endblock %}
+    </div>
+    {% include './../includes/footer.html' %}
+  </body>
+</html>

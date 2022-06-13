@@ -1,0 +1,14 @@
+<span>
+  <a
+    (click)="sort(sortBy, 'desc')"
+    class="sort sort-desc"
+    [ngClass]="{'active': sortOption.sortType==='desc' && sortOption.sortBy===sortBy}"
+    ><i class="fas fa-long-arrow-alt-down"></i
+  ></a>
+  <a
+    (click)="sort(sortBy, 'asc')"
+    class="sort sort-asc"
+    [ngClass]="{'active': sortOption.sortType==='asc' && sortOption.sortBy===sortBy}"
+    ><i class="fas fa-long-arrow-alt-up"></i
+  ></a>
+</span>

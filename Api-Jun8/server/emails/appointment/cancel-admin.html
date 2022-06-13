@@ -1,0 +1,23 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<p>Hello Admin,</p>
+
+{% if userType === 'tutor' %}
+<p>Tutor <strong>{{tutor.name}}</strong> canceled the appointment with student <strong>{{user.name}}</strong>.</p>
+{% endif %} {% if userType === 'student' %}
+<p>Student <strong>{{user.name}}</strong> canceled the appointment with tutor <strong>{{tutor.name}}</strong>.</p>
+{% endif %}
+
+<p>
+  <strong>Time: </strong> {{appointment.startTime|date('jS \o\f F H:i')}} - {{appointment.toTime|date('jS \o\f F H:i')}}
+  <br />
+  <strong>Canceled by: </strong> {{cancelBy.name}} <br />
+  <strong>Reason: </strong> {{appointment.cancelReason}}
+</p>
+
+{% if !appointment.isFree && refundRequest %}
+<p>
+  The system has created a refund request for you, click this <a href="{{appConfig.adminWebUrl}}/users/refund/{{refundRequest._id}}">link</a> to see
+  detail.
+</p>
+{% endif %} {% endblock %}

@@ -1,0 +1,10 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{user.name}},</p>
+<br />
+<p>Your payment was successful.</p>
+<br />
+<p>
+  <strong>Your transaction code:</strong>: #{{transaction.code}} <br />
+  <strong>Amount</strong>: {{currencySymbol}}{{transaction.price}} <br />
+</p>
+{% endblock %}

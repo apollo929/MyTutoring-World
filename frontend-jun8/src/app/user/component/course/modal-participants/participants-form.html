@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h3 class="modal-title" translate *ngIf="!loading">
+    Number of students who have enrolled for this class: {{participants?.length}}
+  </h3>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <h3 *ngIf="!loading && participants?.length>0" translate>List of students:</h3>
+  <ul class="students-enrolled mt-4" *ngIf="!loading && participants?.length<=11">
+    <li *ngFor="let user of participants">
+      <img src="{{user?.avatarUrl}}" onerror="this.src='/assets/images/no-image.jpg'" alt="" />
+      <p>{{user?.name}}</p>
+    </li>
+  </ul>
+  <div class="row-mt-3" *ngIf="!loading && chunks?.length">
+    <ul *ngFor="let chunkItems of chunks" class="students-enrolled mt-4">
+      <li *ngFor="let user of chunkItems">
+        <img src="{{user?.avatarUrl}}" onerror="this.src='/assets/images/no-image.jpg'" alt="" />
+        <p>{{user?.name}}</p>
+      </li>
+    </ul>
+  </div>
+</div>

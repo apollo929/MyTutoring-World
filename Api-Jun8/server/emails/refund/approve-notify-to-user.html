@@ -1,0 +1,12 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{user.name}},</p>
+<p>Approve #{{refundRequest.code}} of you. Will refund and confirm later.</p>
+
+<p>
+  <strong>Code</strong>: {{refundRequest.code}} <br />
+  <strong>Amount</strong>: {{appConfig.currencySymbol}} {{refundRequest.amount}} <br />
+</p>
+
+<p><strong>Note: </strong> {{refundRequest.note}}</p>
+
+{% endblock %}

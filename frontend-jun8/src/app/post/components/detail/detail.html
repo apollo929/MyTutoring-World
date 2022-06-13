@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row">
+    <div class="col col-md-12">
+      <h1>{{post?.title}}</h1>
+    </div>
+    <div class="col col-md-12">
+      <!-- <p [innerHTML]="post?.content"></p> -->
+      <div class="ql-container ql-core" style="border-width: 0">
+        <div class="ql-editor" [innerHTML]="post?.content"></div>
+      </div>
+    </div>
+  </div>
+</div>

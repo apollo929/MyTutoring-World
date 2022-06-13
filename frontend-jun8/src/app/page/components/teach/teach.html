@@ -1,0 +1,171 @@
+<div class="sm-padding position-relative bg-livelearn">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h2 class="color-white" translate>Make a global impact</h2>
+        <p class="color-white sub-text" translate>
+          Register as a tutor with us and earn money creating online courses, taking live classes, and hosting webinars
+          for learners around the world.
+        </p>
+        <button class="btn btn-green" (click)="becomeInstructor()" translate>Become a Tutor</button>
+      </div>
+      <div class="col-md-6">
+        <img src="assets/images/teach-with-us-banner.png" class="banner-sm-img" alt="Teach With Us Banner Image" />
+      </div>
+    </div>
+  </div>
+</div>
+<section class="sm-padding">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+        <h2 class="color-light-black" translate>Discover Your Potential</h2>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-4">
+        <div class="card-icon text-center">
+          <img src="assets/images/money.svg" alt="" />
+          <h4 translate>Earn Money.</h4>
+          <div class="border-solid"></div>
+          <p class="sub-content" translate>
+            Earn money every time a student purchases your course, live lecture, or a slot in your webinar. Get paid
+            monthly through PayPal or Payoneer, it’s your choice.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-icon text-center">
+          <img src="assets/images/play-button.svg" alt="" />
+          <h4 translate>Inspire Students.</h4>
+          <div class="border-solid"></div>
+          <p class="sub-content" translate>
+            Help learners acquire new skills, advance their careers, explore their hobbies, and assist them in academics
+            by sharing your knowledge.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-icon text-center">
+          <img src="assets/images/thumbs-up.svg" alt="" />
+          <h4 translate>Join Our Community.</h4>
+          <div class="border-solid"></div>
+          <p class="sub-content" translate>
+            Take advantage of our active community of instructors who can help you through course creation processes and
+            your entire journey as a tutor on our platform.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="bg-color-light sm-padding">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12 text-center">
+        <h2 class="color-light-black" translate>Exceptional Opportunities</h2>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col mb-4">
+        <h1 class="counter mb-0" [attr.data-count]="config?.teachwithusStudents? config?.teachwithusStudents: 150">
+          0
+        </h1>
+        <p class="text-secondary mb-0" translate>Students World Wide</p>
+      </div>
+      <div class="col mb-4">
+        <h1 class="counter mb-0" [attr.data-count]="config?.teachwithusLanguages? config?.teachwithusLanguages: 150">
+          0
+        </h1>
+        <p class="text-secondary mb-0" translate>Different Languages</p>
+      </div>
+      <div class="col mb-4">
+        <h1 class="counter mb-0" [attr.data-count]="config?.teachwithusCourses? config?.teachwithusCourses: 150">0</h1>
+        <p class="text-secondary mb-0" translate>Course Enrollments</p>
+      </div>
+      <div class="col mb-4">
+        <h1 class="counter mb-0" [attr.data-count]="config?.teachwithusCountries? config?.teachwithusCountries: 150">
+          0
+        </h1>
+        <p class="text-secondary mb-0" translate>Countries Taught</p>
+      </div>
+      <div class="col mb-4">
+        <h1 class="counter mb-0" [attr.data-count]="config?.teachwithusCustomers? config?.teachwithusCustomers: 150">
+          0
+        </h1>
+        <p class="text-secondary mb-0" translate>Enterprise Customers</p>
+      </div>
+    </div>
+  </div>
+</section> -->
+<section class="md-padding text-center" id="testimonial">
+  <div class="row no-margin outer">
+    <div class="container">
+      <div class="row no-margin">
+        <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+          <h2 class="color-light-black" translate>Expand your reach</h2>
+          <p class="content-title mt-3" translate>
+            We've changed lives by connecting instructors with students around the world.
+          </p>
+        </div>
+        <ngx-slick-carousel
+          class="col-md-12 col-sm-12 col-xs-12 mt-5 testimonial-slide"
+          #slickModal="slick-carousel"
+          [config]="slideConfig"
+        >
+          <div class="testimonial-list position-relative" ngxSlickItem *ngFor="let tutor of tutors">
+            <div class="teachers-img">
+              <img src="{{tutor.avatarUrl}}" />
+            </div>
+            <div class="outer">
+              <div class="inner">
+                <div class="content text-center">
+                  <h5 class="card-title">{{tutor.name}}</h5>
+                  <div class="rating-stars text-center">
+                    <ul id="stars">
+                      <star-rating [rate]="tutor?.ratingAvg"></star-rating>
+                      <span>{{ tutor?.ratingAvg }} ({{ tutor?.totalRating }})</span>
+                    </ul>
+                  </div>
+                  <app-text-ellipsis
+                    [content]="tutor?.bio"
+                    [showChar]="70"
+                    [path]="'/tutors'"
+                    [param]="tutor?.username"
+                  ></app-text-ellipsis>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ngx-slick-carousel>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sm-padding bg-livelearn">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+        <h2 class="color-white" translate>We're here to help</h2>
+        <p class="content-title mt-3 color-white" translate>
+          Our Instructor Support Team is here for you 24/7 to help you through your course creation needs. Use our
+          Teaching Center, a resource center to help you through the process. Join Studio U and get peer-to-peer support
+          from our engaged instructor community. This community group is always on, always there, and always helpful.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sm-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2 class="color-light-black" translate>Become an instructor today</h2>
+        <p class="content-title" translate>Join the world's largest online learning marketplace.</p>
+        <a class="btn btn-default mt-3" [routerLink]="['/auth/sign-up']" translate>Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>

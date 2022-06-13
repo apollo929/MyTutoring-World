@@ -1,0 +1,273 @@
+<div class="pt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h3 class="text-center" translate>Payout & Earnings Status</h3>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mt-5 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <div class="card-horizontal p-4" *ngIf="!loadingBalance && balance?.total!==0">
+          <ngx-charts-pie-chart
+            [view]="[]"
+            [scheme]="colorScheme"
+            [results]="single"
+            [gradient]="gradient"
+            [legend]="showLegend"
+            [legendPosition]="legendPosition"
+            [labels]="showLabels"
+            [doughnut]="isDoughnut"
+            [legendTitle]="''"
+            [trimLabels]="false"
+            [tooltipText]="formatTooltipText"
+          >
+          </ngx-charts-pie-chart>
+        </div>
+        <div *ngIf="!loadingBalance && balance?.total===0" class="text-center mt-5 mb-5">
+          <h6 translate>Value is empty/null to generate the piechart</h6>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card-horizontal">
+          <table class="table tble-responsive borderless">
+            <tbody>
+              <tr>
+                <td>
+                  <h6><span translate>Total Earnings</span> :</h6>
+                </td>
+                <td class="text-right">
+                  <h6>
+                    {{balance?.total |currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '):
+                    'symbol' : '1.0'}}
+                  </h6>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h6><span translate>Commission to the site</span> :</h6>
+                </td>
+                <td class="text-right">
+                  <h6>
+                    {{balance?.commission|currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '):
+                    'symbol' : '1.0'}}
+                  </h6>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h6><span translate>Tutor Earnings</span> :</h6>
+                </td>
+                <td class="text-right">
+                  <h6>
+                    {{balance?.balance|currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '):
+                    'symbol' : '1.0'}}
+                  </h6>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <small translate
+                    >Earnings will be accumulated after 3 days of the class completion to avoid refunds from students
+                    after the class is completed.
+                  </small>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="card-horizontal mt-5">
+      <div class="row">
+        <div class="col-md-7 input-border">
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-5 rmb-4">
+                <date-range (dateChange)="dateChangeEvent($event)"></date-range>
+              </div>
+            </div>
+            <div class="col">
+              <button class="btn btn-default" (click)="queryStats()" translate>Stats By Date Range</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 rmb-3">
+          <a class="btn btn-green mr-3 scrollTo" id="btn-send-request" translate>Send Request</a>
+          <a class="btn btn-light" [routerLink]="['/users/payout/account']" translate>Add a Bank Account</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h5 translate>Pending</h5>
+          <h5 class="text-secondary font-weight-light">
+            <span translate>Commission:</span> {{stats?.pending?.commission | currency : (config?.currencySymbol ?
+            config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+          </h5>
+          <h5 class="text-secondary font-weight-light">
+            <span translate>Tutor Balance:</span> {{stats?.pending?.balance | currency : (config?.currencySymbol ?
+            config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+          </h5>
+        </div>
+        <div class="col-md-6">
+          <h5 translate>Approved</h5>
+          <h5 class="text-secondary font-weight-light">
+            <span translate>Commission:</span> {{stats?.approved?.commission | currency : (config?.currencySymbol ?
+            config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+          </h5>
+          <h5 class="text-secondary font-weight-light">
+            <span translate>Tutor Balance:</span> {{stats?.approved?.balance | currency : (config?.currencySymbol ?
+            config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+          </h5>
+        </div>
+        <div id="date_range_picker" class="date_range_picker">
+          <div class="values">
+            <div class="value date_at">
+              <span class="date_at"></span>
+              <input id="date_at" class="date_at" type="hidden" />
+            </div>
+            <div class="to"></div>
+            <div class="value date_to">
+              <span class="date_to"></span>
+              <input id="date_to" class="date_to" type="hidden" />
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="calendar">
+            <div class="button button-prev"></div>
+            <div class="button button-next"></div>
+            <div class="container"></div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>
+<!-- <div class="mt-5" id="send-request">
+  <div class="container">
+    <div class="card-horizontal mt-3">
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="text-secondary font-weight-bold">
+            <span translate>Total</span>: {{balance?.total | currency: (config?.currencySymbol ? config?.currencySymbol
+            + ' ' : '$ '): 'symbol' : '1.0'}}
+          </h5>
+          <h5 class="text-secondary font-weight-bold">
+            <span translate>Commission:</span> {{balance?.commission | currency : (config?.currencySymbol ?
+            config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+          </h5>
+          <h5 class="text-secondary font-weight-bold">
+            <span translate>Balance:</span> {{balance?.balance | currency : (config?.currencySymbol ?
+            config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+          </h5>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="form-group input-border">
+            <label><span translate>Please select pay out account</span> (*)</label>
+            <select class="form-control" [(ngModel)]="payoutAccountId" required name="payout-account">
+              <option *ngFor="let item of accounts" value="{{item?._id}}">
+                <span *ngIf="item.type === 'bank-account'"
+                  ><span translate>Bank</span> - {{item?.bankName}} - {{item?.accountNumber}}</span
+                >
+                <span *ngIf="item.type === 'paypal'"><span translate>Paypal</span> - {{item?.paypalAccount}}</span>
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col col-12">
+          <button class="btn btn-default mt-4" (click)="submitRequest()" translate>Submit</button>
+          <small class="form-text text-muted font-sm mt-3" translate>Read the FAQ for payout related questions</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sm-padding data-table">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="mb-5 rtxt-center" translate>Requests Manager Account</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table
+          id="table_id"
+          class="table table-horizontal tble-responsive dataTable no-footer"
+          role="grid"
+          aria-describedby="table_id_info"
+        >
+          <thead>
+            <tr>
+              <th>
+                <span (click)="sortBy('createdAt', 'desc')" translate>Date</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'createdAt'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('total', 'desc')" translate>Amount</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'total'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('commission', 'desc')" translate>Commission</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'commission'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('balance', 'desc')" translate>Tutor Balance</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'balance'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('status', 'desc')" translate>Status</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'status'" (onSort)="onSort($event)"></app-sort>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td translate colspan="9" *ngIf="!items?.length && !loading" translate>There is no payment requests.</td>
+            </tr>
+            <tr *ngIf="loading">
+              <td translate colspan="9"><span translate>Loading</span>...</td>
+            </tr>
+            <tr *ngFor="let item of items, let i = index">
+              <td>{{item?.requestToTime |dstFormat | date}}</td>
+              <td>
+                {{item?.total | currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '): 'symbol' :
+                '1.0'}}
+              </td>
+              <td>
+                {{item?.commission | currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '): 'symbol'
+                : '1.0'}}
+              </td>
+              <td>
+                {{item?.balance | currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '): 'symbol' :
+                '1.0'}}
+              </td>
+              <td><app-status [status]="item.status"></app-status></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-12">
+      <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+        <ngb-pagination
+          [collectionSize]="total"
+          [(page)]="page"
+          [pageSize]="take"
+          [maxSize]="5"
+          (pageChange)="pageChange()"
+          class="float-right"
+        >
+          <ng-template ngbPaginationPrevious translate>Previous</ng-template>
+          <ng-template ngbPaginationNext translate>Next</ng-template>
+          <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div> -->

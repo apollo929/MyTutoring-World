@@ -1,0 +1,121 @@
+<!-- Footer content starts -->
+
+<section class="sm-padding bg-color-light-black">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <p class="footer-content color-white" translate>
+          Livelearn - practise makes progress. Find top rated instructors guide you in every step of your journey. Try a
+          free lesson today. Tutors are waiting for you.
+        </p>
+        <a class="btn btn-default" (click)="register()" translate>Register</a>
+        <!-- <button-signup-component [text]="textButton"></button-signup-component> -->
+      </div>
+      <div class="col-md-3 rmt-4">
+        <h4 class="color-white"><span translate>About Company</span></h4>
+        <ul class="p-0 list-unstyled">
+          <li class="footer-item">
+            <a
+              class="footer-link color-white"
+              [routerLink]="'/pages/how-does-it-work'"
+              routerLinkActive="router-link-active"
+              translate
+              >How it works</a
+            >
+          </li>
+          <li class="footer-item">
+            <a
+              class="footer-link color-white"
+              [routerLink]="['/pages/teach-with-us']"
+              routerLinkActive="router-link-active"
+              translate
+              >Teach with us</a
+            >
+          </li>
+          <li class="footer-item" *ngFor="let item of posts">
+            <a
+              class="footer-link color-white"
+              *ngIf="item.type != 'post'"
+              [routerLink]="['/posts/detail', item.alias]"
+              routerLinkActive="router-link-active"
+              translate
+              >{{item.title}}</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-3 rmt-4">
+        <h4 class="color-white" translate>Resources</h4>
+        <ul class="p-0 list-unstyled">
+          <li class="footer-item">
+            <a class="footer-link color-white" [routerLink]="['/webinars/list']" translate>Webinars</a>
+          </li>
+          <li class="footer-item">
+            <a class="footer-link color-white" [routerLink]="['/categories']" translate>Categories</a>
+          </li>
+          <li class="footer-item">
+            <a class="footer-link color-white" [routerLink]="['/tutors/subject']" translate>Subjects</a>
+          </li>
+          <li class="footer-item">
+            <a class="footer-link color-white" [routerLink]="['/tutors']" translate>Find tutors</a>
+          </li>
+          <div *ngIf="!isLoggedin">
+            <li class="footer-item">
+              <a class="footer-link color-white" [routerLink]="['/auth/login']" translate>Login</a>
+            </li>
+            <li class="footer-item">
+              <a class="footer-link color-white" [routerLink]="['/auth/sign-up']" translate>Sign up</a>
+            </li>
+          </div>
+        </ul>
+      </div>
+      <div class="col-md-3 rmt-4">
+        <h4 class="color-white" translate>Contact Us</h4>
+        <ul class="p-0 list-unstyled">
+          <li class="footer-item">
+            <span translate class="color-white">Email:</span>&nbsp;
+            <a class="footer-link color-white" href="mailto:{{config?.contactEmail || 'contact@pinlearn.com'}}">
+              {{config?.contactEmail || 'contact@pinlearn.com'}}</a
+            >
+          </li>
+          <li class="footer-item" *ngIf="config?.contactPhone">
+            <span translate class="color-white">Phone:</span>&nbsp;
+            <a class="footer-link color-white" href="tel:{{config?.contactPhone || '+1-408-909-5136'}}">
+              {{config?.contactPhone || '+1-408-909-5136'}}</a
+            >
+          </li>
+          <ul class="p-0 list-unstyled social-media-links mt-3">
+            <li class="facebook" *ngIf="config?.facebookLink">
+              <a class="footer-social" [href]="'https://'+config?.facebookLink"><i class="fab fa-facebook-f"></i></a>
+            </li>
+            <li class="twitter" *ngIf="config?.twitterLink">
+              <a class="footer-social" [href]="'https://'+config?.twitterLink"><i class="fab fa-twitter"></i></a>
+            </li>
+            <li class="instagram" *ngIf="config?.instagramLink">
+              <a class="footer-social" [href]="'https://'+config?.instagramLink"><i class="fab fa-instagram"></i></a>
+            </li>
+          </ul>
+          <li class="footer-item">
+            <a class="footer-link color-white" [routerLink]="['/posts/detail', 'terms']" translate
+              >Terms of service - privacy policy</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="footer-bottom bg-color-black">
+  <p class="color-white text-center footer-bottom-content">
+    &copy;
+    <script>
+      document.write(new Date().getFullYear());
+    </script>
+    <span translate>Copyright. All rights reserved </span>
+    <!-- {{appConfig?.version}}
+    <span translate>build</span>
+    {{appConfig?.build}} -->
+  </p>
+</section>
+
+<!-- Footer content ends -->

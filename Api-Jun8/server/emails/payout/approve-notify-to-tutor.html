@@ -1,0 +1,14 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{tutor.name}},</p>
+<p>Your payout request #{{payoutRequest.code}} has been approved.</p>
+
+<p>
+  <strong>Code</strong>: {{payoutRequest.code}} <br />
+  <strong>Total</strong>: {{appConfig.currencySymbol}} {{payoutRequest.total}} <br />
+  <strong>Commission</strong>: {{payoutRequest.commission}} <br />
+  <strong>Balance</strong>: {{payoutRequest.balance}} <br />
+</p>
+
+<p><strong>Note: </strong> {{payoutRequest.note}}</p>
+
+{% endblock %}

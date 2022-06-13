@@ -1,0 +1,16 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{rateTo.name}},</p>
+<br />
+<p><strong>{{rateBy.name}}</strong> has reviewed the course.</p>
+<br />
+<p><strong>Course: </strong> {{course.name}}</p>
+<p>
+  <strong>Rate:</strong> {{review.rating}} <br />
+  <strong>Comment:</strong> {{review.comment}}
+</p>
+<br />
+<br />
+<p>--- Sincerely,</p>
+<p>The {{appName}} Team</p>
+
+{% endblock %}

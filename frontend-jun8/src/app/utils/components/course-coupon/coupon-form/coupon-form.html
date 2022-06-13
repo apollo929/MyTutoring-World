@@ -1,0 +1,156 @@
+<div class="card-horizontal input-border">
+  <form (submit)="submit(frm)" #frm="ngForm" class="coupon-form">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label translate>Name</label>
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="{{'Enter name' | translate}}"
+            [(ngModel)]="coupon.name"
+            required
+            #name="ngModel"
+          />
+          <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+            <p [hidden]="!name.errors.required" style="color: red">Please enter coupon name!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label translate>Code</label>
+          <input
+            class="form-control"
+            name="code"
+            placeholder="{{'Enter code' | translate}}"
+            [(ngModel)]="coupon.code"
+            required
+            #codeCoupon="ngModel"
+            pattern="[a-zA-Z0-9-_%]*"
+          />
+          <div *ngIf="codeCoupon.errors && (codeCoupon.dirty || codeCoupon.touched || isSubmitted)">
+            <p [hidden]="!codeCoupon.errors.required" style="color: red">Please enter coupon code!</p>
+            <p [hidden]="!codeCoupon.errors.pattern" class="error" style="color: red">Code is invalid format</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label translate>Discount type</label>
+          <select [(ngModel)]="coupon.type" name="type" class="form-control" required #type="ngModel">
+            <option value="percent" selected translate>Percent (%)</option>
+            <option value="money" translate>Money</option>
+          </select>
+          <div *ngIf="type.errors && (type.dirty || type.touched || isSubmitted)">
+            <p [hidden]="!type.errors.required" style="color: red" translate>Please choose type!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label translate>Discount value</label>
+          <input
+            class="form-control"
+            name="value"
+            placeholder="{{'Enter discount value' | translate}}"
+            [(ngModel)]="coupon.value"
+            required
+            #value="ngModel"
+            pattern="[.0-9]{0,8}"
+          />
+          <div *ngIf="value.errors && (value.dirty || value.touched || isSubmitted)">
+            <p [hidden]="!value.errors.required" style="color: red">Please enter discount value!</p>
+            <p [hidden]="!value.errors.pattern" class="error" style="color: red">Value is invalid format</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label translate>Limit number of use</label>
+          <input
+            type="text"
+            class="form-control"
+            name="limit"
+            placeholder="{{'Enter limit number of use' | translate}}"
+            [(ngModel)]="coupon.limitNumberOfUse"
+            required
+            #limit="ngModel"
+            pattern="[0-9]*"
+          />
+          <div *ngIf="limit.errors && (limit.dirty || limit.touched || isSubmitted)">
+            <p [hidden]="!limit.errors.required" style="color: red" translate>Please enter value!</p>
+            <p [hidden]="!limit.errors.pattern" class="error" style="color: red" translate>Value is invalid format</p>
+          </div>
+          <div *ngIf="limit.value <= 0 && (limit.dirty || limit.touched || isSubmitted)">
+            <p style="color: red" translate>Value must be greater than 0!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label translate>Start date</label>
+              <div class="input-group-append">
+                <input
+                  class="form-control"
+                  placeholder="dd-mm-yyyy"
+                  name="startTime"
+                  [(ngModel)]="time.startTime"
+                  ngbDatepicker
+                  #b="ngbDatepicker"
+                  (dateSelect)="selectDate($event, 'startTime')"
+                  #start="ngModel"
+                  required
+                />
+                <button class="btn btn-outline-secondary calendar" (click)="b.toggle()" type="button">
+                  <i class="fa fa-calendar"></i>
+                </button>
+              </div>
+              <div *ngIf="!coupon.startTime && (start.dirty || start.touched || isSubmitted)">
+                <p style="color: red" translate>Please enter start date!</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label translate>Expired date</label>
+              <div class="input-group-append">
+                <input
+                  class="form-control"
+                  placeholder="dd-mm-yyyy"
+                  name="expiredDate"
+                  [(ngModel)]="time.expiredDate"
+                  ngbDatepicker
+                  #a="ngbDatepicker"
+                  (dateSelect)="selectDate($event, 'expiredDate')"
+                  #expire="ngModel"
+                  required
+                />
+                <button class="btn btn-outline-secondary calendar" (click)="a.toggle()" type="button">
+                  <i class="fa fa-calendar"></i>
+                </button>
+              </div>
+              <div *ngIf="!coupon.expiredDate && (expire.dirty || expire.touched || isSubmitted)">
+                <p style="color: red" translate>Please enter expired date!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <span translate>Active</span> <input type="checkbox" name="isActive" [(ngModel)]="coupon.active" />
+        </div>
+      </div>
+      <div class="col col-md-12">
+        <div class="form-group">
+          <button type="submit" class="btn btn-default mt-4" translate>Save</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

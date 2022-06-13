@@ -1,0 +1,10 @@
+export * from './profile/profile.component';
+export * from './list/list.component';
+export * from './tutor-card/tutor-card.component';
+export * from './grades/grade.component';
+export * from './pipe/ellipsis.pipe';
+export * from './reviews/list.component';
+export * from './certificate/certificate.component';
+// export * from './tutor-card/tutor-card.component';
+export * from './subject/subject.component';
+export * from './add-certification/add-certification.component';

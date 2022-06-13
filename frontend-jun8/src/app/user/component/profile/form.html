@@ -1,0 +1,739 @@
+<section
+  class="xs-padding bg-dashboard"
+  style="background-image: url(../../assets/images/dashboard/bg-profile.svg)"
+  *ngIf="info"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="dashboard-profile">
+          <div style="position: relative" class="box-image">
+            <!-- <img src="{{info.avatarUrl|defaultImage}}" alt="" />  -->
+            <img [src]="info.avatarUrl" onerror="this.src='/assets/images/no-image.jpg'" alt="" />
+            <a (click)="open()" class="btn-upload-avatar"><i class="far fa-edit"></i></a>
+            <a (click)="deleteAvatar()" class="btn-delete-avatar"><i class="fa fa-trash"></i></a>
+          </div>
+          <div class="dashboard-profile-content pt-1">
+            <h4 class="color-white">{{info.name}}</h4>
+            <p class="color-white font-weight-bold">{{info.type}}</p>
+            <a class="btn btn-outline border-radius-md font-weight-bold" (click)="isEditProfile=!isEditProfile"
+              ><i class="fas fa-cog mr-2"></i>
+              <span translate *ngIf="isEditProfile">Cancel</span>
+              <span translate *ngIf="!isEditProfile">Edit Profile</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sm-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <form
+          #frm="ngForm"
+          (submit)="submit(frm)"
+          class="card-horizontal edit-profile-form"
+          ngNativeValidate
+          [disabled]="uploading"
+          *ngIf="!loading"
+        >
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+          >
+            <h6><span translate>Profile name</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile">{{info.name}}</p>
+            <input
+              [hidden]="!isEditProfile"
+              type="text"
+              class="form-control"
+              [(ngModel)]="info.name"
+              name="name"
+              #name="ngModel"
+              required
+            />
+            <div *ngIf="name.errors && (name?.dirty || name?.touched|| isSubmitted)">
+              <p *ngIf="name?.errors.required" class="error" translate>Profile name is required.</p>
+            </div>
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+          >
+            <h6>
+              <span><span translate>Gender</span>:</span>
+            </h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile">
+              <span translate *ngIf="info.gender === 'male'">Male</span>
+              <span translate *ngIf="info.gender === 'female'">Female</span>
+            </p>
+            <select class="form-control" [hidden]="!isEditProfile" [(ngModel)]="info.gender" name="gender">
+              <option value="male" translate>Male</option>
+              <option value="female" translate>Female</option>
+            </select>
+          </div>
+          <div
+            *ngIf="info?.type==='tutor'"
+            class="d-flex justify-content-between align-items-center mb-3 form-group border-bottom"
+          >
+            <h6><span translate>Email</span>:</h6>
+            <p class="text-secondary2">{{info.email}}</p>
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+          >
+            <h6><span translate>Phone Number</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile">{{info.phoneNumber}}</p>
+            <input
+              [hidden]="!isEditProfile"
+              type="text"
+              class="form-control"
+              [(ngModel)]="info.phoneNumber"
+              name="phone-number"
+              #phone="ngModel"
+              pattern="[0-9\+]{9,15}$"
+              minlength="9"
+              maxlength="15"
+              required
+            />
+            <div *ngIf="phone.errors && (phone?.dirty || phone?.touched|| isSubmitted)">
+              <p *ngIf="phone?.errors.minlength || phone?.errors.maxlength" class="error" translate>
+                Phone numbers must be between 9 to 15 digits
+              </p>
+              <p [hidden]="!phone?.errors.pattern" class="error" translate>Phone number is invalid format</p>
+            </div>
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+            *ngIf="info && info.type === 'tutor'"
+          >
+            <h6><span translate>Country</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile">{{info.country?.name}}</p>
+            <ng-select
+              [hidden]="!isEditProfile"
+              [items]="countries"
+              appendTo="body"
+              name="country"
+              bindLabel="name"
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [(ngModel)]="info.country"
+              required
+              #country="ngModel"
+            >
+            </ng-select>
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+            *ngIf="info && info.type === 'tutor'"
+          >
+            <h6><span translate>State</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile" translate>
+              {{(info?.state || 'Waiting for update') | ellipsis: 20}}
+            </p>
+            <input
+              *ngIf="isEditProfile"
+              type="text"
+              class="form-control mar-bot-15"
+              [(ngModel)]="info.state"
+              name="stste"
+            />
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+            *ngIf="info && info.type === 'tutor'"
+          >
+            <h6><span translate>City</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile" translate>
+              {{(info?.city || 'Waiting for update') | ellipsis: 20}}
+            </p>
+            <input
+              *ngIf="isEditProfile"
+              type="text"
+              class="form-control mar-bot-15"
+              [(ngModel)]="info.city"
+              name="city"
+            />
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+          >
+            <h6><span translate>Address</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile" translate>
+              {{(info?.address || 'Waiting for update') | ellipsis: 20}}
+            </p>
+            <input
+              *ngIf="isEditProfile"
+              type="text"
+              class="form-control mar-bot-15"
+              [(ngModel)]="info.address"
+              name="address"
+            />
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+            *ngIf="info && info.type === 'tutor'"
+          >
+            <h6><span translate>Language</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile">{{languageNames.join(', ') | ellipsis: 20 }}</p>
+            <ng-select
+              [hidden]="!isEditProfile"
+              [items]="languages"
+              appendTo="body"
+              name="languages"
+              bindLabel="name"
+              [multiple]="true"
+              [closeOnSelect]="true"
+              [(ngModel)]="info.languages"
+              bindValue="id"
+              (change)="onChangeLanguage($event)"
+            >
+            </ng-select>
+          </div>
+
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            *ngIf="info && info.type === 'tutor'"
+          >
+            <div [ngClass]="{'d-flex justify-content-between':!isEditProfile}">
+              <h6><span translate>Intro video</span><strong translate> (youtube ID)</strong>:</h6>
+              <p class="text-secondary2" *ngIf="!isEditProfile">{{info.idYoutube}}</p>
+            </div>
+            <small translate>This video will be displayed on your tutor profile page</small>
+
+            <input
+              [hidden]="!isEditProfile"
+              type="text"
+              class="form-control"
+              placeholder="{{'Enter id youtube from url'| translate}}"
+              [(ngModel)]="info.idYoutube"
+              name="id-youtube"
+            />
+            <small [hidden]="!isEditProfile">Please enter only <strong>ID</strong></small>
+            <br />
+            <small [hidden]="!isEditProfile"
+              >EG: https://www.youtube.com/watch?v=<strong>xRjlRfpsHGw</strong>
+              <br />
+              ID = <strong>xRjlRfpsHGw</strong></small
+            >
+          </div>
+
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+            *ngIf="info && info.type === 'tutor'"
+          >
+            <h6><span translate>Zip code</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile">{{info.zipCode}}</p>
+            <input
+              [hidden]="!isEditProfile"
+              type="text"
+              class="form-control"
+              placeholder="{{'Enter zip code' | translate }}"
+              [(ngModel)]="info.zipCode"
+              name="zip code"
+            />
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+          >
+            <h6><span translate>Paypal Email ID</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile">{{info.paypalEmailId}}</p>
+            <input
+              [hidden]="!isEditProfile"
+              type="email"
+              class="form-control"
+              placeholder="{{'user@example.com' | translate}}"
+              [(ngModel)]="info.paypalEmailId"
+              name="email-paypal"
+              #paypalEmailId="ngModel"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            />
+            <div *ngIf="paypalEmailId.errors && (paypalEmailId.dirty || paypalEmailId.touched|| isSubmitted)">
+              <p [hidden]="!paypalEmailId?.errors.pattern" class="error" translate>Email is invalid format</p>
+            </div>
+          </div>
+          <div
+            class="justify-content-between align-items-center mb-3 form-group border-bottom"
+            [ngClass]="{'d-flex':!isEditProfile}"
+          >
+            <h6><span translate>Timezone</span>:</h6>
+            <p class="text-secondary2" *ngIf="!isEditProfile">{{info.timezone}}</p>
+            <app-timezone
+              [hidden]="!isEditProfile"
+              [userTz]="info.timezone"
+              (onChange)="changeTimezone($event)"
+            ></app-timezone>
+            <div *ngIf="!info.timezone && isSubmitted">
+              <p class="error" translate>Please select your timezone</p>
+            </div>
+          </div>
+
+          <div
+            class="mt-3"
+            *ngIf="info.type === 'tutor'"
+            class="justify-content-between align-items-center mb-3 form-group"
+          >
+            <div class="border-bottom">
+              <div [ngClass]="{'d-flex justify-content-between':!isEditProfile}">
+                <h6><span translate>Introduction video</span>:</h6>
+                <p class="text-secondary2" *ngIf="!isEditProfile && introVideoType=='youtube' && info.introYoutubeId ">
+                  {{info.introYoutubeId}}
+                </p>
+                <p class="text-secondary2" *ngIf="!isEditProfile && introVideoType=='upload' && introVideoName ">
+                  {{introVideoName}}
+                </p>
+              </div>
+              <small translate>This video will be displayed on admin page</small>
+              <div *ngIf="isEditProfile">
+                <label class="custom-radio"
+                  ><span translate>Upload</span>
+                  <input
+                    type="radio"
+                    name="videotype"
+                    value="upload"
+                    [disabled]="!isEditProfile"
+                    [(ngModel)]="introVideoType"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="custom-radio" translate
+                  ><span translate>From youtube</span>
+                  <input
+                    type="radio"
+                    name="videotype"
+                    value="youtube"
+                    [disabled]="!isEditProfile"
+                    [(ngModel)]="introVideoType"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="isEditProfile" class="border-bottom mb-3">
+            <div class="form-group" *ngIf="info.type === 'tutor' && introVideoType === 'youtube'">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="{{ 'Youtube Id' | translate }}"
+                #video="ngModel"
+                required
+                name="video"
+                [(ngModel)]="info.introYoutubeId"
+              />
+              <div *ngIf="video.errors && (video.dirty || video.touched || submitted)">
+                <p [hidden]="!video.errors.required" class="error" translate>Youtube video Id is required</p>
+              </div>
+              <small translate>Please enter only ID</small>
+              <br />
+              <small
+                >EG: https://www.youtube.com/watch?v=<strong>xRjlRfpsHGw</strong>
+                <br />
+                ID = <strong>xRjlRfpsHGw</strong></small
+              >
+              >
+            </div>
+            <div *ngIf="info.type === 'tutor' && introVideoType === 'upload'">
+              <p *ngIf="introVideo && introVideo.name">{{ introVideo.name }}</p>
+              <app-file-upload [options]="introVideoOptions"></app-file-upload>
+              <small translate
+                >Upload mp4 file, webm file, 3gp file, ogg file, wmv file or webm file for your video</small
+              >
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6><span translate>Notification</span>:</h6>
+            <label class="switch">
+              <input type="checkbox" [checked]="info.notificationSettings" (change)="changeNotification()" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="text-right rmt-4 rtxt-left" *ngIf="isEditProfile">
+            <button class="btn btn-default" type="submit" translate>Submit</button>
+          </div>
+        </form>
+        <div *ngIf="info" class="card-horizontal mt-4 p-4">
+          <h5 class="" translate>Update password</h5>
+          <form class="row" #frmPass="ngForm" (submit)="submit(frmPass)" ngNativeValidate>
+            <div class="col-md-8">
+              <div class="form-group input-border mb-0">
+                <input
+                  type="password"
+                  class="form-control"
+                  [(ngModel)]="info.password"
+                  name="password"
+                  #password="ngModel"
+                  minlength="6"
+                  placeholder="{{'Enter password' | translate}}"
+                />
+                <div *ngIf="password.errors && (password.dirty || password.touched || isSubmitted)">
+                  <p [hidden]="!password.errors.minlength" style="color: red">
+                    Password must be at least 6 characters!
+                  </p>
+                </div>
+                <p class="help help-block">
+                  <small>Blank to keep current password</small>
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4 text-right rmt-4 rtxt-left">
+              <button class="btn btn-default" type="submit" translate>Update</button>
+            </div>
+          </form>
+        </div>
+        <div *ngIf="info && info.type==='student'" class="card-horizontal mt-4 p-4">
+          <h5 class="" translate>Update email</h5>
+          <form class="row" #frmEmail="ngForm" (submit)="submitChangeEmail()" ngNativeValidate>
+            <div class="col-md-8">
+              <div class="form-group input-border mb-0">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="{{ 'Enter your email' | translate }}"
+                  #email="ngModel"
+                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                  name="email"
+                  required
+                  [(ngModel)]="info.email"
+                />
+                <small class="form-text text-muted" translate>After changing your email, you need to verify it.</small>
+                <div *ngIf="email.errors && (email.dirty || email.touched || submitted)">
+                  <p [hidden]="!email.errors.required" class="error" translate>Email is required</p>
+                  <p [hidden]="!email.errors.pattern" class="error" translate>Email is invalid format</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 text-right rmt-4 rtxt-left">
+              <button class="btn btn-default" type="submit" translate>Update</button>
+            </div>
+          </form>
+        </div>
+        <div class="card-horizontal mt-4 p-4" *ngIf="info && info.type === 'tutor'">
+          <h5 class="" translate>Invite Friend</h5>
+          <form class="row" #frmInvite="ngForm" (submit)="inviteFriend()" ngNativeValidate>
+            <div class="col-md-8">
+              <div class="form-group input-border mb-0">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="{{'user@example.com' | translate}}"
+                  [(ngModel)]="emailInvite"
+                  name="email-invite"
+                  #emailInViteFriend="ngModel"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  required
+                />
+                <div *ngIf="emailInViteFriend.errors && (emailInViteFriend.dirty || emailInViteFriend.touched)">
+                  <p [hidden]="!emailInViteFriend.errors.required" class="error" translate>Email is required</p>
+                  <p [hidden]="!emailInViteFriend.errors.pattern" class="error" translate>Email is invalid format</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 text-right rmt-4 rtxt-left">
+              <button class="btn btn-default" type="submit" translate>Invite</button>
+            </div>
+          </form>
+          <div class="mt-3 share-me" *ngIf="info.type==='tutor' && info.username">
+            <h5 translate class="mr-3">Share my profile</h5>
+            <share-button
+              button="facebook"
+              theme="circles-light"
+              [icon]="['fab', 'facebook-f']"
+              [url]="webUrl + '/tutors/' + info.username"
+              [image]="info.avatarUrl"
+              [title]="info.name"
+              [description]="info?.bio"
+            ></share-button>
+            <share-button
+              button="twitter"
+              theme="circles-light"
+              [icon]="['fab', 'twitter']"
+              [url]="webUrl + '/tutors/' + info.username"
+              [image]="info.avatarUrl"
+              [title]="info.name"
+            ></share-button>
+            <!-- <share-button
+                button="instagram"
+                theme="circles-light"
+                [icon]="['fab', 'instagram']"
+              ></share-button> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-7">
+        <div class="card-horizontal">
+          <h4 class="">
+            <span translate>Description</span>
+            <a class="btn btn-transparent" (click)="isEditDescription=!isEditDescription"
+              ><i class="far fa-edit text-secondary"></i
+            ></a>
+          </h4>
+          <app-card-text
+            *ngIf="!isEditDescription && !loading"
+            [content]="info?.bio"
+            [showChar]="showChar"
+          ></app-card-text>
+          <!-- <div class="ql-container ql-core" style="border-width: 0; height: auto" *ngIf="!isEditDescription">
+            <div
+              class="ql-editor"
+              [innerHTML]="(info && info.bio || 'Waiting for update') | ellipsis: showChar"
+              [hidden]="!showChar"
+            ></div>
+            <div class="ql-editor" [innerHTML]="(info && info.bio || 'Waiting for update')" [hidden]="showChar"></div>
+            <a
+              href="javascript:void(0)"
+              class="read-more-btn"
+              *ngIf="showMore && showChar > 0 && !isEditDescription"
+              (click)="show(0)"
+              ><span translate>Read more</span></a
+            >
+            <a
+              href="javascript:void(0)"
+              class="read-more-btn"
+              *ngIf="showMore && !showChar && !isEditDescription"
+              (click)="show(oldShowChar)"
+              >...<span translate>Read less</span></a
+            >
+          </div> -->
+          <form class="form-group" #frm5="ngForm" (submit)="submit(frm5)" *ngIf="isEditDescription" ngNativeValidate>
+            <div *ngIf="isEditDescription">
+              <quill-editor [(ngModel)]="info.bio" placeholder="Enter Text" [modules]="quillConfig" name="bio">
+              </quill-editor>
+              <div class="text-right rmt-4 rtxt-left mt-2">
+                <!-- <button class="btn btn-default" (click)="submit(frm, 5)" translate>Submit</button> -->
+                <button class="btn btn-default" type="submit" translate>Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-horizontal mt-4 input-border" *ngIf="info && info.type==='tutor'">
+          <h4 class="">
+            <span translate>Choose Grades</span>
+            <a class="btn btn-transparent" (click)="isEditGrade=!isEditGrade"
+              ><i class="far fa-edit text-secondary"></i
+            ></a>
+          </h4>
+          <form class="form-group" #frm1="ngForm" (submit)="submit(frm1)" *ngIf="isEditGrade" ngNativeValidate>
+            <ng-select
+              [items]="grades"
+              [hideSelected]="true"
+              appendTo="body"
+              multiple="true"
+              bindLabel="name"
+              [closeOnSelect]="false"
+              name="grade"
+              placeholder="{{'Choose grades' |  translate}}"
+              [(ngModel)]="info.grades"
+              bindValue="_id"
+              #tutorGrades="ngModel"
+              (change)="onChangeGrade($event)"
+            >
+            </ng-select>
+          </form>
+          <div *ngIf="totalUserGrades >4">
+            <div class="d-flex justify-content-between mt-4 rd-block" *ngFor="let items of gradeNames">
+              <a class="badge badge-white box-shadow-xs" *ngFor="let grade of items">{{grade}}</a>
+            </div>
+          </div>
+          <div *ngIf="totalUserGrades <=4">
+            <div class="d-flex justify-content-between mt-4 rd-block">
+              <a class="badge badge-white box-shadow-xs" *ngFor="let grade of gradeNames">{{grade}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-horizontal mt-4" *ngIf=" info &&info.type==='tutor'">
+          <h4 translate>Resume</h4>
+          <ngb-tabset>
+            <ngb-tab title="Education">
+              <ng-template ngbTabContent>
+                <div class="row mt-3">
+                  <div class="col-md-12 mb-4">
+                    <button type="button" class="btn btn-md btn-danger" (click)="openCertification('education')">
+                      <i class="fa fa-plus font-sm"></i>
+                    </button>
+                  </div>
+                  <div
+                    class="col-md-12 mb-4"
+                    *ngIf="!info.education || (info.education && info.education.length === 0)"
+                  >
+                    <p translate>There is no education</p>
+                  </div>
+                  <div class="col-sm-6 mb-3" *ngFor="let cer of info.education, let i = index">
+                    <div class="card" style="border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem">
+                      <div class="card-body">
+                        <div class="col-md-12 mb-4">
+                          <p class="card-text font-md">{{cer.fromYear}} - {{cer.toYear}}</p>
+                        </div>
+                        <div class="col-md-12 mb-4 mt-1">
+                          <h5>{{cer.title | ellipsis: 18}}</h5>
+                          <h5 *ngIf="cer.verified">
+                            <img src="../assets/images/tutor/verified.svg" class="mr-2" /><span translate
+                              >Verified</span
+                            >
+                          </h5>
+                          <p class="card-text">{{cer.description | ellipsis: 20}}</p>
+                        </div>
+                        <a
+                          href="javascript:void(0)"
+                          (click)="openCertification('education',i, cer)"
+                          class="btn btn-danger"
+                          ><i class="fa fa-edit font-sm"></i></a
+                        >&nbsp;
+                        <a
+                          href="javascript:void(0)"
+                          (click)="deleteCer('education',i, cer)"
+                          class="btn btn-outline-dark"
+                          ><i class="fa fa-trash font-sm"></i></a
+                        >&nbsp;
+                        <a [href]="cer.document?.fileUrl" download class="btn btn-danger"
+                          ><i class="fa fa-download font-sm"></i
+                        ></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Experience">
+              <ng-template ngbTabContent>
+                <div class="row mt-3">
+                  <div class="col-md-12 mb-4">
+                    <button type="button" class="btn btn-md btn-danger" (click)="openCertification('experience')">
+                      <i class="fa fa-plus font-sm"></i>
+                    </button>
+                  </div>
+                  <div
+                    class="col-md-12 mb-4"
+                    *ngIf="!info.experience || (info.experience && info.experience.length === 0)"
+                  >
+                    <p translate>There is no experience</p>
+                  </div>
+                  <div class="col-sm-6 mb-3" *ngFor="let cer of info.experience, let i = index">
+                    <div class="card" style="border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem">
+                      <div class="card-body">
+                        <div class="col-md-12 mb-4">
+                          <p class="card-text font-md">{{cer.fromYear}} - {{cer.toYear}}</p>
+                        </div>
+                        <div class="col-md-12 mb-4 mt-1">
+                          <h5>{{cer.title | ellipsis: 18}}</h5>
+                          <h5 *ngIf="cer.verified">
+                            <img src="../assets/images/tutor/verified.svg" class="mr-2" /><span translate
+                              >Verified</span
+                            >
+                          </h5>
+                          <p class="card-text">{{cer.description | ellipsis: 20}}</p>
+                        </div>
+                        <a
+                          href="javascript:void(0)"
+                          (click)="openCertification('experience',i, cer)"
+                          class="btn btn-danger"
+                          ><i class="fa fa-edit font-sm"></i></a
+                        >&nbsp;
+                        <a
+                          href="javascript:void(0)"
+                          (click)="deleteCer('experience',i, cer)"
+                          class="btn btn-outline-dark"
+                          ><i class="fa fa-trash font-sm"></i></a
+                        >&nbsp;
+                        <a [href]="cer.document?.fileUrl" download class="btn btn-danger"
+                          ><i class="fa fa-download font-sm"></i
+                        ></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Certification">
+              <ng-template ngbTabContent>
+                <div class="row mt-3">
+                  <div class="col-md-12 mb-4">
+                    <button type="button" class="btn btn-md btn-danger" (click)="openCertification('certification')">
+                      <i class="fa fa-plus font-sm"></i>
+                    </button>
+                  </div>
+                  <div
+                    class="col-md-12 mb-4"
+                    *ngIf="!info.certification || (info.certification && info.certification.length === 0)"
+                  >
+                    <p translate>There is no certification</p>
+                  </div>
+                  <div class="col-sm-6 mb-3" *ngFor="let cer of info.certification, let i = index">
+                    <div class="card" style="border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem">
+                      <div class="card-body">
+                        <div class="col-md-12 mb-4">
+                          <p class="card-text font-md">{{cer.fromYear}} - {{cer.toYear}}</p>
+                        </div>
+                        <div class="col-md-12 mb-4 mt-1">
+                          <h5>{{cer.title | ellipsis: 18}}</h5>
+                          <h5 *ngIf="cer.verified">
+                            <img src="../assets/images/tutor/verified.svg" class="mr-2" translate /><span translate
+                              >Verified</span
+                            >
+                          </h5>
+                          <p class="card-text">{{cer.description | ellipsis: 20}}</p>
+                        </div>
+                        <a
+                          href="javascript:void(0)"
+                          (click)="openCertification('certification',i, cer)"
+                          class="btn btn-danger"
+                          ><i class="fa fa-edit font-sm"></i></a
+                        >&nbsp;
+                        <a
+                          href="javascript:void(0)"
+                          (click)="deleteCer('certification',i, cer)"
+                          class="btn btn-outline-dark"
+                          ><i class="fa fa-trash font-sm"></i></a
+                        >&nbsp;
+                        <a [href]="cer.document?.fileUrl" download class="btn btn-danger"
+                          ><i class="fa fa-download font-sm"></i
+                        ></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </div>
+        <div *ngIf="info && info.type !=='tutor'" class="card-horizontal mt-4">
+          <h5 class="" translate>Invite Friend</h5>
+          <form class="row" #frmInvite="ngForm" (submit)="inviteFriend()" ngNativeValidate>
+            <div class="col-md-8">
+              <div class="form-group input-border mb-0">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder=""
+                  [(ngModel)]="emailInvite"
+                  name="email-invite"
+                  #emailInViteFriend="ngModel"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  required
+                />
+                <div *ngIf="emailInViteFriend.errors && (emailInViteFriend.dirty || emailInViteFriend.touched)">
+                  <p [hidden]="!emailInViteFriend.errors.required" class="error" translate>Email is required</p>
+                  <p [hidden]="!emailInViteFriend.errors.pattern" class="error" translate>Email is invalid format</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 text-right rmt-4 rtxt-left">
+              <button class="btn btn-default" type="submit" translate>Invite</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

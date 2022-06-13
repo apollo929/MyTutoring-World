@@ -1,0 +1,56 @@
+<div class="form-review pt-3">
+  <div class="col-md-12" [hidden]="!checkReview" translate>
+    <p>You have already reviewed. Can not review anymore!</p>
+  </div>
+  <form (submit)="submit(frm)" #frm="ngForm" [hidden]="checkReview">
+    <div class="form-group">
+      <textarea
+        class="form-control"
+        [(ngModel)]="review.comment"
+        name="comment"
+        rows="3"
+        placeholder="{{'Your message' | translate}}"
+        [disabled]="!isLoggedin || checkReview"
+        required
+        #text="ngModel"
+        style="border:solid 1px grey;"
+      ></textarea>
+      <div *ngIf="text.errors && submitted">
+        <p [hidden]="!text.errors.required" class="error" translate>Please enter comment</p>
+      </div>
+      <p class="help help-block text-center" *ngIf="!isLoggedin">
+        <span translate>Please</span>&nbsp;<a [routerLink]="['/auth/login']" class="alert-link" translate>login</a
+        >&nbsp;<span><span translate>to review</span>..</span>
+      </p>
+    </div>
+    <div class="row" style="line-height: 50px">
+      <div class="col-md-12">
+        <div class="float-left card-text" translate>Your rating</div>
+        <div class="float-right">
+          <!-- <ngb-rating [(rate)]="review.rating" (hover)="hovered=$event" max="5" class="no-outline">
+            <ng-template let-fill="fill" let-index="index">
+              <span class="star font-22" [class.filled]="fill === 100" [class.bad]="index < 2">&#9733;</span>
+            </ng-template>
+          </ngb-rating> -->
+          <ng-template #t let-fill="fill">
+            <span class="star" [class.full]="fill === 100">
+              <span class="half" [style.width.%]="fill">
+                <i style="font-size: 1em" class="fa fa-star"></i>
+              </span>
+              <i style="font-size: 1em" class="fa fa-star"></i>
+            </span>
+          </ng-template>
+          <span class="pos-line-star">
+            <ngb-rating [(rate)]="review.rating" (hover)="hovered=$event" [starTemplate]="t" max="5" class="no-outline">
+            </ngb-rating>
+          </span>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <button class="btn btn-success btn-pink float-left" type="submit" [hidden]="!isLoggedin" translate>
+          Leave a review
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

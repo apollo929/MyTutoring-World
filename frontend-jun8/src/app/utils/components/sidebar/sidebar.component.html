@@ -1,0 +1,18 @@
+<div class="show-products">
+  <h3 class="title-show-products">Danh mục sản phẩm <a href="#"></a></h3>
+  <ul class="menu-right">
+    <li *ngFor="let item of tree">
+      <a [routerLink]="['/products/categories', item.alias]">{{item.name}}</a>
+      <ul>
+        <h3>
+          <a [routerLink]="['/products/categories', item.alias]">{{item.name}}</a>
+        </h3>
+        <ul *ngIf="item.children && item.children.length">
+          <li *ngFor="let child of item.children">
+            <a [routerLink]="['/products/categories', child.alias]">{{child.name}}</a>
+          </li>
+        </ul>
+      </ul>
+    </li>
+  </ul>
+</div>

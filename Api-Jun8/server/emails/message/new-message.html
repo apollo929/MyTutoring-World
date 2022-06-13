@@ -1,0 +1,5 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{user.name}}.</p>
+<p>You have an unread message from {{sender.name}}. Please login to see the message</p>
+<p>Content: {{message.text}}</p>
+{% endblock %}

@@ -1,0 +1,42 @@
+<payout-menu></payout-menu>
+<div class="card">
+  <div class="card-header">
+    <h3 translate>Send request</h3>
+  </div>
+  <div class="card-body">
+    <div style="background: beige; padding: 10px; margin-bottom: 20px">
+      <h4><span translate>Total</span>: {{balance?.total | currency:config?.currencySymbol || '$'}}</h4>
+      <h4><span translate>Commission</span>: {{balance?.commission | currency:config?.currencySymbol || '$'}}</h4>
+      <h4><span translate>Balance</span>: {{balance?.balance | currency:config?.currencySymbol || '$'}}</h4>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label><span translate>Please select pay out account</span> (*)</label>
+          <select
+            [(ngModel)]="payoutAccountId"
+            class="form-control"
+            required
+            name="payout-account"
+            placeholder="Choose an account"
+          >
+            <option *ngFor="let item of accounts" value="{{item?._id}}">
+              <span *ngIf="item.type === 'bank-account'"
+                ><span translate>Bank</span> - {{item?.bankName}} - {{item?.accountNumber}}</span
+              >
+              <span *ngIf="item.type === 'paypal'"><span translate>Paypal</span> - {{item?.paypalAccount}}</span>
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col col-md-12">
+        <div class="form-group">
+          <button (click)="submit()" class="btn btn-primary btn-pink" translate>Submit</button>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <p translate>Read the FAQ for payout related questions</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<p>Hello {{ user.name }}</p>
+
+<p>Your friend has not yet registered to receive course information from webinar {{ webinar.name }}. Please remind your friend.</p>
+
+<p>
+  <strong>Tutor: </strong> {{tutor.name}} <br />
+  <strong>Webinar name: </strong> {{webinar.name}} <br />
+  <strong>Code: </strong> {{transaction.code}} <br />
+</p>
+
+{% endblock %}

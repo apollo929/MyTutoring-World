@@ -1,0 +1,227 @@
+<section class="pt-5 pb-5">
+  <div class="container" *ngIf="webinar">
+    <div class="row">
+      <div class="col-md-12 col-12 col-lg-12">
+        <div class="card-horizontal">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="img-square-wrapper mt-2">
+                <img
+                  src="{{webinar?.mainImage?.fileUrl}}"
+                  alt=""
+                  class="border-radius-default object-fit-cover h-350"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 rmt-3">
+              <h4 class="font-weight-bold">{{webinar.name}}</h4>
+              <div class="mb-3">
+                <a
+                  *ngFor="let cat of webinar.categories; let i = index"
+                  [routerLink]="['/categories']"
+                  [queryParams]="{ categoryIds: cat._id }"
+                  ><span class="badge badge-default mr-2">{{ cat.name }}</span></a
+                >
+              </div>
+              <div class="row row-cols-md-1 row-cols-lg-2">
+                <div class="col-md-6">
+                  <div class="profile">
+                    <a [routerLink]="['/tutors', webinar?.tutor?.username]">
+                      <img
+                        src="{{webinar?.tutor?.avatarUrl | defaultImage}}"
+                        class="float-left cate-profile-sm box-shadow-lg mr-2"
+                        alt=""
+                      />
+                      <h5 class="pt-3 font-sm">{{webinar?.tutor?.name}}</h5>
+                    </a>
+                  </div>
+                  <div class="rating-stars pt-4">
+                    <star-rating [rate]="webinar?.tutor?.ratingAvg"></star-rating> {{webinar?.tutor?.ratingAvg}}
+                    ({{webinar?.tutor?.totalRating}})
+                  </div>
+                  <h4 class="color-light-red mt-3" *ngIf="!appliedCoupon">
+                    <strong
+                      >{{ (webinar.price + (webinar.price * config.applicationFee)) | currency : (config?.currencySymbol
+                      ? config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}</strong
+                    >
+                  </h4>
+                  <h4 class="color-light-red mt-3" *ngIf="appliedCoupon">
+                    <small class="text-line-through mr-1"
+                      >{{ (webinar?.price + (webinar?.price * config.applicationFee)) | currency :
+                      (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0' }}</small
+                    >
+                    <strong
+                      >{{(salePrice + (salePrice * config.applicationFee)) | currency : (config?.currencySymbol ?
+                      config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}</strong
+                    >
+                  </h4>
+                </div>
+                <div class="col-md-6 mt-2">
+                  <p class="card-text text-right rtxt-left">
+                    <img src="assets/images/webinar/participants.svg" alt="" class="mr-2 image-sm" /><span translate
+                      >Participants:</span
+                    >
+                    {{ webinar?.numberParticipants }}
+                  </p>
+                  <p class="card-text mt-4 text-right rtxt-left">
+                    <img src="assets/images/webinar/certified-img.svg" alt="" class="mr-2 image-sm" translate /><span
+                      translate
+                      >Completed by</span
+                    ><span> {{webinar?.tutor?.completedByLearner}} </span>
+                    <span translate>Learners</span>
+                  </p>
+                  <p class="card-text mt-4 text-right rtxt-left">
+                    <img src="assets/images/webinar/clock.png" alt="" class="mr-2 image-sm" /><span translate
+                      >{{slotLeft}} </span
+                    ><span translate *ngIf="1<slotLeft"> Slots left </span>
+                    <span translate *ngIf="1>=slotLeft"> Slot left </span>
+                  </p>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-12">
+                  <app-apply-coupon
+                    *ngIf="webinar && webinar.coupon && webinar.coupon._id"
+                    [options]="optionsCoupon"
+                    (onApply)="applyCoupon($event)"
+                    (isUsed)="checkUsedCoupon($event)"
+                  ></app-apply-coupon>
+                </div>
+                <div class="col-md-12" *ngIf="salePrice<=0">
+                  <input
+                    style="border: 1.2px solid grey; margin-bottom: 0.5em; height: 3em"
+                    type="email"
+                    class="form-control"
+                    placeholder="{{'Recipient\'s email id' | translate}}"
+                    name="email"
+                    [(ngModel)]="emailRecipient"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                    #emailId="ngModel"
+                  />
+                  <div *ngIf="emailId.errors && (emailId.dirty || emailId.touched)">
+                    <p [hidden]="!emailId?.errors.pattern" class="error" translate>Email is invalid format</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <button
+                    [disabled]="webinar.numberParticipants >= webinar.maximumStrength || !canBooking || (currentUser && currentUser._id === webinar.tutorId) || booked"
+                    class="btn btn-green mr-2"
+                    (click)="enrollWebinar(webinar, 'booking')"
+                  >
+                    <i class="far fa-paper-plane color-white mr-2"></i>
+                    <span *ngIf="!booked" translate>Book Now</span>
+                    <span *ngIf="booked" translate>Purchased</span>
+                  </button>
+                  <button
+                    [disabled]="webinar.numberParticipants >= webinar.maximumStrength || !canBooking || (currentUser && currentUser._id === webinar.tutorId) || emailRecipient === (currentUser && currentUser.email)"
+                    class="btn btn-blue mr-2"
+                    (click)="enrollWebinar(webinar, 'gift')"
+                  >
+                    <i class="fas fa-gift color-white mr-2"></i>
+                    <span translate>Gift Course</span>
+                  </button>
+                  <a class="btn btn-white rmt-3" *ngIf="!webinar?.isFavorite" (click)="favorite()">
+                    <i class="far fa-heart color-light-red"></i>
+                  </a>
+                  <a class="btn btn-white rmt-3" *ngIf="webinar?.isFavorite" (click)="unFavorite()">
+                    <i class="fas fa-heart color-light-red"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12 col-12 col-lg-12">
+        <div class="card-horizontal">
+          <div class="row" *ngIf="isShowSlot && slotChunks.length <= 2">
+            <div class="col-md-6 col-item-chunk" *ngFor="let slotChunk of slotChunks">
+              <div class="rmb-3 mb-5" *ngFor="let item of slotChunk">
+                <span class="sub-text mr-2"
+                  >{{item.startTime |dstFormat | date: 'dd/MM/yyyy'}}, {{item.startTime |dstFormat | date: 'h:mma'}} - {{item.toTime |dstFormat | date:
+                  'h:mma'}}</span
+                ><span class="badge badge-primary" *ngIf="!item.disable" translate>Upcoming Slots</span>
+                <span class="badge badge-secondary" *ngIf="item.disable" translate>Expired Slots</span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row position-relative"
+            [ngClass]="{'hidden-150': isShowSlot && isHidden}"
+            *ngIf="isShowSlot && slotChunks.length > 2"
+          >
+            <div class="col-md-6 col-item-chunk" *ngFor="let slotChunk of slotChunks">
+              <div class="rmb-3 mb-5" *ngFor="let item of slotChunk">
+                <span class="sub-text mr-2"
+                  >{{item.startTime |dstFormat | date: 'dd/MM/yyyy'}}, {{item.startTime |dstFormat | date: 'h:mma'}} - {{item.toTime |dstFormat | date:
+                  'h:mma'}}</span
+                ><span class="badge badge-primary" *ngIf="!item.disable" translate>Upcoming Slots</span>
+                <span class="badge badge-secondary" *ngIf="item.disable" translate>Expired Slots</span>
+              </div>
+            </div>
+            <div class="col-md-12 position-absolute bottom-0">
+              <a href="javascript:void(0)" class="morelink" (click)="isHidden = false" *ngIf="isHidden"
+                ><span translate>Read More</span>...</a
+              >
+              <a href="javascript:void(0)" class="morelink" (click)="isHidden = true" *ngIf="!isHidden"
+                >...<span translate>Read Less</span></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5" *ngIf="webinar.description">
+      <div class="col-md-12 col-12 col-lg-12">
+        <div class="card-horizontal">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="card-title" translate>Description</h4>
+              <app-card-text [content]="webinar.description" [showChar]="500"></app-card-text>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12 col-12 col-lg-12">
+        <div class="card-horizontal">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="profile">
+                <a [routerLink]="['/tutors', webinar?.tutor?.username]">
+                  <img
+                    src="{{webinar?.tutor?.avatarUrl | defaultImage}}"
+                    class="float-left profile-md box-shadow-lg"
+                    alt=""
+                  />
+                  <div class="profile-content-sm pt-4">
+                    <h5 class="profile-name">
+                      {{webinar?.tutor?.name}}<i class="fas fa-check-circle color-blue ml-2"></i>
+                    </h5>
+                  </div>
+                </a>
+
+                <div>
+                  <div class="img-flag-tutor">
+                    <img src="{{webinar?.tutor?.country?.flag}}" alt="" class="mr-2 image-sm" />
+                  </div>
+                  <h5 style="margin-left: 5px; display: inline-block">{{webinar?.tutor?.country?.name}}</h5>
+                </div>
+              </div>
+              <div class="pt-70">
+                <h4 class="card-title" translate>About Me</h4>
+                <app-card-text [content]="webinar?.tutor?.bio" [showChar]="500"></app-card-text>
+              </div>
+            </div>
+            <div class="col-md-6 rmt-4">
+              <review-list [options]="optionsReview" [stats]="statsReview" [canWriteReview]="false"></review-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

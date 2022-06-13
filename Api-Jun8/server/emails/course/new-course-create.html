@@ -1,0 +1,13 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello,</p>
+<br />
+<p>New course <strong>{{course.name}}</strong> was just created in your system. Please go to admin panel and verify.</p>
+<br />
+<p>
+  <strong>Course:</strong> {{course.name}} <br />
+  <strong>Tutor:</strong> {{tutor.name}} <br />
+  <strong>Email:</strong> {{tutor.email}} <br />
+  <strong>Phone number:</strong> {{tutor.phoneNumber}} <br />
+</p>
+
+{% endblock %}

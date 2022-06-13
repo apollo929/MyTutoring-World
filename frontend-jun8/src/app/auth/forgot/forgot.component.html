@@ -1,0 +1,88 @@
+<div class="d-flex flex-column flex-root">
+  <!--begin::Login-->
+  <div class="login d-flex flex-column flex-lg-row flex-column-fluid">
+    <!--begin::Aside-->
+    <div class="login-aside d-flex flex-column flex-row-auto">
+      <!--begin::Aside Top-->
+      <div class="d-flex flex-column-auto flex-column pt-100">
+        <!--begin::Aside header-->
+        <a [routerLink]="['/home']" class="login-logo text-center pt-lg-25 pb-10">
+          <img src="{{ appConfig?.siteLogo || '../assets/images/logo/livelearn-header-logo.png' }}" class="" alt="" />
+        </a>
+        <!--end::Aside header-->
+        <!--begin::Aside Title-->
+        <p class="mt-4 text-center sub-content" translate>
+          <span translate>Join Pinlearn For Free</span> <br />
+          <span translate>Explore a huge range of subjects.</span>
+        </p>
+        <!--end::Aside Title-->
+      </div>
+      <!--end::Aside Top-->
+      <!--begin::Aside Bottom-->
+      <div
+        class="aside-img"
+        [style]="
+          appConfig && appConfig.signupImage
+            ? { 'background-image': 'url(' + appConfig.signupImage + ')' }
+            : { 'background-image': 'url(' + 'assets/images/login/signup-bg.svg' + ')' }
+        "
+      ></div>
+      <!--end::Aside Bottom-->
+    </div>
+    <!--begin::Aside-->
+    <!--begin::Content-->
+    <div class="login-content d-flex justify-content-center align-items-center w-100">
+      <!--begin::Wrapper-->
+      <div class="d-flex justify-content-center w-100 p-5">
+        <!--begin::Signin-->
+        <div class="login-form">
+          <!--begin::Form-->
+          <form class="form" (submit)="login(frm)" #frm="ngForm">
+            <!--begin::Title-->
+            <div class="pb-4">
+              <h3 class=""><span translate>Forgotten Password</span> ?</h3>
+              <p class="text-muted sub-content" translate>Enter your email to reset your password</p>
+            </div>
+            <!--begin::Title-->
+            <!--begin::Form group-->
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="{{ 'Email' | translate }}"
+                required
+                type="text"
+                autocomplete="off"
+                name="email"
+                #email="ngModel"
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                [(ngModel)]="credentials.email"
+              />
+
+              <div *ngIf="email.errors && (email.dirty || email.touched || submitted)">
+                <p [hidden]="!email.errors.required" class="error" translate>Email is required</p>
+                <p [hidden]="!email.errors.pattern" class="error" translate>Email is invalid format</p>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <a [routerLink]="['/auth/sign-up']" class="color-light-red font-sm" translate>Register</a>
+              <a [routerLink]="['/auth/login']" class="color-light-red font-sm" translate>Login</a>
+            </div>
+            <!--end::Form group-->
+            <div class="text-center">
+              <button class="btn btn-default btn-block mt-4 mr-2" translate>Submit</button>
+            </div>
+            <!--end::Form group-->
+            <!--begin::Action-->
+            <!--end::Action-->
+          </form>
+          <!--end::Form-->
+        </div>
+        <!--end::Signin-->
+      </div>
+      <!--end::Wrapper-->
+    </div>
+    <!--end::Content-->
+  </div>
+  <!--end::Login-->
+</div>
+<!--end::Main-->

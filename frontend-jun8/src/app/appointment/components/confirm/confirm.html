@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h3 *ngIf="price!=0" class="modal-title" id="modal-basic-title" translate>Confirm to redirect to payment page</h3>
+  <h3 *ngIf="price===0" class="modal-title" id="modal-basic-title" translate>Booking confirmation</h3>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.close({confirmed: false})">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <h5 *ngIf="price!=0 || (price === 0 && appliedCoupon)">
+        <span translate>Make your payment for the subject</span> {{subject.name}} with tutor {{tutor?.name}}
+      </h5>
+      <h5 *ngIf="price===0 && !appliedCoupon">
+        <span translate>Confirm to book a free slot with</span> {{subject.name}}
+      </h5>
+      <p *ngFor="let time of timeSelList" >
+        <strong><span translate>Time</span>:</strong> {{time.startTime |dstFormat | date: 'dd/MM/yyyy HH:mma'}} -
+        {{time.toTime|dstFormat | date:'dd/MM/yyyy HH:mma'}}
+      </p>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-success btn-pink" type="button" (click)="confirm()">
+    <div *ngIf="price!=0">
+      <span translate>PAY</span> {{ (price + (price * config.applicationFee)) | currency : (config?.currencySymbol ?
+      config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+    </div>
+    <span *ngIf="price===0" translate>CONFIRM</span>
+  </button>
+</div>

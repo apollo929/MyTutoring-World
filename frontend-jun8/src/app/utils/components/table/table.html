@@ -1,0 +1,30 @@
+<table
+  id="table_id"
+  id="table_id"
+  class="table table-horizontal tble-responsive table-user dataTable no-footer"
+  role="grid"
+  aria-describedby="table_id_info"
+>
+  <thead>
+    <tr role="row">
+      <th *ngFor="let col of columns">
+        <span translate>{{col.title}}</span>
+        <app-sort
+          *ngIf="col.sorter"
+          [sortOption]="sortOption"
+          [sortBy]="col.sortBy ? col.sortBy : col.dataIndex"
+          (onSort)="onSortTable($event)"
+        ></app-sort>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngIf="(!dataSource || (dataSource && dataSource.length === 0)) && !loading">
+      <td colspan="10" translate>There are no results</td>
+    </tr>
+    <tr *ngIf="loading">
+      <td colspan="10" translate><span translate>Loading</span>...</td>
+    </tr>
+  </tbody>
+</table>

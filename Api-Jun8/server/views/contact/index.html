@@ -1,0 +1,21 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<div class="container">
+  <p>
+    Thank you for contacting us. We have received your information and will contact you as soon as possible! Will
+    redirect in <span id="second">5s</span>
+  </p>
+  <script>
+    var second = 5;
+    setInterval(function () {
+      if (second > 0) {
+        second = second - 1;
+        return (document.getElementById('second').innerHTML = '' + second + 's');
+      } else {
+        window.location.href = document.getElementById('url-login').textContent;
+        clearInterval();
+      }
+    }, 1000);
+  </script>
+</div>
+{% endblock %}

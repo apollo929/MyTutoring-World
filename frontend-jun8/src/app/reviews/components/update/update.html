@@ -1,0 +1,19 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" translate>Update your review</h4>
+  </div>
+  <div class="modal-body">
+    <div class="pull-left" *ngIf="review && review.rating">
+      <ngb-rating [(rate)]="review.rating" (hover)="hovered=$event" max="5" class="no-outline">
+        <ng-template let-fill="fill" let-index="index">
+          <span class="star font-22" [class.filled]="fill === 100" [class.bad]="index < 2">&#9733;</span>
+        </ng-template>
+      </ngb-rating>
+    </div>
+    <textarea rows="3" cols="55" [(ngModel)]="review.comment" placeholder="{{'Leave some text here'| translate}}"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success btn-pink" (click)="submit()" translate>Update</button>
+    <button type="button" class="btn btn-danger" (click)="activeModal.close('Close click')" translate>Close</button>
+  </div>
+</div>

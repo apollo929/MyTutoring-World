@@ -1,0 +1,199 @@
+<div class="sm-padding data-table">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div id="table_id_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <form class="form-inline">
+                <div class="dataTables_length" id="table_id_length">
+                  <label>
+                    <span translate>Show</span>
+                    <select
+                      name="table_id_length"
+                      aria-controls="table_id"
+                      class="custom-select custom-select-sm form-control form-control-sm"
+                      [(ngModel)]="take"
+                      (change)="query()"
+                    >
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                    <span translate>entries</span>
+                  </label>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <form id="table_id_filter" class="dataTables_filter form-inline float-right">
+                <label
+                  ><span translate>Search:</span>
+                  <input
+                    type="search"
+                    (keyup)="doSearch($event)"
+                    class="form-control form-control-sm"
+                    placeholder=""
+                    aria-controls="table_id"
+                  />
+                </label>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-sm-12">
+            <table
+              id="table_id"
+              class="table table-horizontal tble-responsive dataTable no-footer"
+              role="grid"
+              aria-describedby="table_id_info"
+            >
+              <thead>
+                <tr>
+                  <th
+                    tabindex="0"
+                    aria-controls="table_id"
+                    rowspan="1"
+                    colspan="1"
+                    aria-sort="ascending"
+                    aria-label="Tutor Name: activate to sort column descending"
+                  >
+                    <span (click)="sortBy('tutorId', 'desc')" translate>Tutor name</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'tutorId'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+
+                  <th
+                    tabindex="0"
+                    aria-controls="table_id"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Subject: activate to sort column ascending"
+                  >
+                    <span (click)="sortBy('subjectId', 'desc')" translate>Subject</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'subjectId'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th
+                    tabindex="0"
+                    aria-controls="table_id"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Group Class: activate to sort column ascending"
+                  >
+                    <span (click)="sortBy('webinarId', 'desc')" translate>Group Class</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'webinarId'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+
+                  <th
+                    tabindex="0"
+                    aria-controls="table_id"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Amount: activate to sort column ascending"
+                  >
+                    <span (click)="sortBy('amount', 'desc')" translate>Amount</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'amount'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th
+                    tabindex="0"
+                    aria-controls="table_id"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Reason: activate to sort column ascending"
+                  >
+                    <span (click)="sortBy('reason', 'desc')" translate>Reason</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'reason'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th
+                    tabindex="0"
+                    aria-controls="table_id"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Created At: Activate to sort column ascending"
+                  >
+                    <span (click)="sortBy('createdAt', 'desc')" translate>Created At</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'createdAt'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th
+                    tabindex="0"
+                    aria-controls="table_id"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending"
+                  >
+                    <span (click)="sortBy('status', 'desc')" translate>Status</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'status'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th
+                    tabindex="0"
+                    aria-controls="table_id"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Action: activate to sort column ascending"
+                  >
+                    <a translate>Action</a>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="!items.length && !loading">
+                  <td translate colspan="9" translate>There are no refund request</td>
+                </tr>
+                <tr *ngIf="loading">
+                  <td colspan="9"><span translate>Loading</span>...</td>
+                </tr>
+                <tr *ngFor="let item of items, let i = index">
+                  <td>{{item?.tutor?.name}}</td>
+                  <td>{{item.subject ? item.subject?.name :'-'}}</td>
+                  <td>{{item.webinar ? item?.webinar?.name :'-'}}</td>
+                  <td>
+                    {{item?.amount| currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '): 'symbol'
+                    : '1.0'}}
+                  </td>
+                  <td>{{item?.reason }}</td>
+                  <td>
+                    <span>{{item?.createdAt |dstFormat | date}}</span>
+                  </td>
+                  <td>
+                    <app-status [status]="item?.status"></app-status>
+                  </td>
+                  <td>
+                    <a
+                      [routerLink]="['/users/refund', item._id ]"
+                      class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding"
+                    >
+                      <i class="fa fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <!-- <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="table_id_info" role="status" aria-live="polite">Showing 1
+                            to 10 of 12 entries</div>
+                    </div> -->
+          <div class="col-sm-12 col-md-12">
+            <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+              <ngb-pagination
+                [collectionSize]="total"
+                [(page)]="page"
+                [pageSize]="take"
+                [maxSize]="5"
+                (pageChange)="pageChange()"
+                class="float-right"
+              >
+                <ng-template ngbPaginationPrevious translate>Previous</ng-template>
+                <ng-template ngbPaginationNext translate>Next</ng-template>
+                <!-- <ng-template ngbPaginationNumber let-page>{{ currentPage }}</ng-template> -->
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

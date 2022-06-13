@@ -1,0 +1,90 @@
+<div class="card h-100 box-shadow-md border-none">
+  <div class="badge-tag" style="font-size: 0.8em" *ngIf="tutor.featured">
+    <span translate>Featured</span>
+  </div>
+  <a [routerLink]="['/tutors', tutor.username]">
+    <img [src]="tutor.avatarUrl" class="card-img-top card-img-top-tutor" alt="" />
+  </a>
+
+  <div class="card-body" id="tutor-card">
+    <div class="row" style="padding-left: 15px">
+      <h5>
+        <a class="hyperlink" [routerLink]="['/tutors', tutor.username]">{{tutor.name}}</a
+        ><i class="fas fa-check-circle color-blue ml-1 font-sm"></i>
+      </h5>
+    </div>
+    <div class="row rating-stars text-right sm-stars" style="padding-left: 15px">
+      <ul id="stars">
+        <star-rating [rate]="tutor.ratingAvg"></star-rating>
+        <span>{{tutor?.ratingAvg}} ({{tutor?.totalRating}})</span>
+      </ul>
+    </div>
+
+    <div class="row justify-content-between" style="padding-inline: 15px">
+      <div class="col-md-7 pl-0 pr-0">
+        <h5 class="text-line-break mb-0" *ngIf="tutor.languages && tutor.languages.length">
+          <span *ngFor="let lang of tutor.languages, let i  = index"
+            >{{languageService.returnNameLanguage(lang)}} <span *ngIf="i < tutor.languages.length - 1">, </span></span
+          >
+        </h5>
+        <h5 class="text-line-break mb-0" *ngIf="tutor.languages && !tutor.languages.length">Updating</h5>
+      </div>
+
+      <div class="text-right">
+        <div class="img-flag-tutor">
+          <img src="{{tutor?.country?.flag | defaultImage}}" alt="" class="image-sm" />
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="row row-cols-2">
+      <div class="col-md-7 pr-0">
+        <h5>
+          <a class="hyperlink" [routerLink]="['/tutors', tutor.username]">{{tutor.name}}</a
+          ><i class="fas fa-check-circle color-blue ml-1 font-sm"></i>
+        </h5>
+        <h5 class="text-line-break mb-0" *ngIf="tutor.languages && tutor.languages.length">
+          <span *ngFor="let lang of tutor.languages, let i  = index"
+            >{{languageService.returnNameLanguage(lang)}} <span *ngIf="i < tutor.languages.length - 1">, </span></span
+          >
+        </h5>
+        <h5 class="text-line-break mb-0" *ngIf="tutor.languages && !tutor.languages.length">Updating</h5>
+      </div>
+      <div class="col-md-5 pl-0">
+        <div class="rating-stars text-right" style="font-size: 0.7em; margin-top: 0.4rem">
+          <ul id="stars">
+            <star-rating [rate]="tutor.ratingAvg"></star-rating>
+            <span>{{tutor?.ratingAvg}} ({{tutor?.totalRating}})</span>
+          </ul>
+        </div>
+        <div class="text-right">
+          <div class="img-flag-tutor">
+            <img src="{{tutor?.country?.flag | defaultImage}}" alt="" class="image-sm" />
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="card-content mt-2" style="font-size: 0.8em">
+      <app-text-ellipsis
+        [content]="tutor?.bio"
+        [showChar]="50"
+        [path]="'/tutors'"
+        [param]="tutor?.username"
+      ></app-text-ellipsis>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-12 d-flex justify-content-between">
+        <a class="btn btn-green-sm" (click)="bookFree()">
+          <!-- <i class="far fa-paper-plane color-white mr-2"></i> -->
+          <span translate>Book Free Trial</span>
+        </a>
+        <a class="btn btn-white" *ngIf="!tutor.isFavorite" (click)="favorite()">
+          <i class="far fa-heart color-light-red"></i>
+        </a>
+        <a class="btn btn-white" *ngIf="tutor.isFavorite" (click)="unFavorite()">
+          <i class="fas fa-heart color-light-red"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

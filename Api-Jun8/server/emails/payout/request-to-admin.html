@@ -1,0 +1,34 @@
+{% extends '../layouts/default.html' %}
+
+{% block content %}
+<p>Hello,</p>
+<p>You have a new payout request from {{tutor.name}}.</p>
+
+<p>
+  <strong>Code</strong>: {{payoutRequest.code}} <br />
+  <strong>Total</strong>: {{appConfig.currencySymbol}} {{payoutRequest.total}} <br />
+  <strong>Commission</strong>: {{payoutRequest.commission}} <br />
+  <strong>Balance</strong>: {{payoutRequest.balance}} <br />
+</p>
+
+<p>
+  <h3>Payout account information</h3>
+  {% if payoutRequest.payoutAccount.type === 'paypal' %}
+  <strong>Type</strong>: Paypal <br />
+  <strong>Paypal account</strong>: {{payoutRequest.payoutAccount.paypalAccount}}
+  {% endif %}
+  {% if payoutRequest.payoutAccount.type === 'bank-account' %}
+  <strong>Account holder name</strong>: {{payoutRequest.payoutAccount.accountHolderName}} <br />
+  <strong>Account number</strong>: {{payoutRequest.payoutAccount.accountNumber}} <br />
+  <strong>IBAN</strong>: {{payoutRequest.payoutAccount.iban}} <br />
+  <strong>Bank name</strong>: {{payoutRequest.payoutAccount.bankName}} <br />
+  <strong>Bank address</strong>: {{payoutRequest.payoutAccount.bankAddress}} <br />
+  <strong>Sort code</strong>: {{payoutRequest.payoutAccount.sortCode}} <br />
+  <strong>Routing number</strong>: {{payoutRequest.payoutAccount.routingNumber}} <br />
+  <strong>SWIFT code</strong>: {{payoutRequest.payoutAccount.swiftCode}} <br />
+  <strong>IFSC code</strong>: {{payoutRequest.payoutAccount.ifscCode}} <br />
+  <strong>code d'acheminement</strong>: {{payoutRequest.payoutAccount.routingCode}}
+  {% endif %}
+</p>
+
+{% endblock %}

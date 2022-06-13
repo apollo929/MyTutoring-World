@@ -1,0 +1,56 @@
+<div>
+  <button (click)="addLectureSection()" class="btn btn-green mt-2">Add Section</button>
+
+  <div id="accordion" class="row mb-3 myaccordion">
+    <div class="card col-md-12" *ngFor="let item of sections">
+      <div class="card-header" id="619b86b275628035b06542f4">
+        <div class="row">
+          <div class="col-md-11">
+            <h3 class="mb-0">
+              <button
+                data-toggle="collapse"
+                class="d-flex align-items-center justify-content-between btn btn-link btn-collapse"
+                [attr.data-target]="'#collapse' + item._id"
+                [attr.aria-controls]="'#collapse' + item._id"
+              >
+                {{item.title}}
+                <p class="mb-0 font-xs font-weight-500">
+                  <span>{{getTotalLectures(item._id)}} lectures•</span
+                  ><span class="fa-stack fa-2x"><i class="fas fa-stack-1x fa-minus"></i></span>
+                </p>
+              </button>
+            </h3>
+          </div>
+          <div class="col-md-1">
+            <a (click)="editLectureSection(item)"><i class="fa fa-edit text-success font-sm"></i></a
+            ><a (click)="delete(item._id)"><i class="fa fa-trash text-danger font-sm"></i></a>
+          </div>
+        </div>
+      </div>
+      <div
+        data-parent="#accordion"
+        class="collapse"
+        [id]="'collapse' + item._id"
+        aria-labelledby="619b86b275628035b06542f4"
+        style=""
+      >
+        <div class="row mb-3">
+          <div class="col-md-3"><button (click)="addLecture(item)" class="btn btn-green">Add Lecture</button></div>
+        </div>
+        <div class="card-body">
+          <ng-container *ngFor="let l of lectures">
+            <div class="d-flex justify-content-between" *ngIf="l.sectionId == item._id">
+              <a class="font-sm js-video-button"><i class="far fa-file mr-2 font-sm"></i>{{l.title}}</a>
+              <div class="mr-3">
+                <a (click)="editLecture(item, l)"><i class="fa fa-edit text-success font-sm"></i></a
+                ><a><i (click)="deleteLecture(l._id)" class="fa fa-trash text-danger font-sm"></i></a>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!---->
+  </div>
+</div>

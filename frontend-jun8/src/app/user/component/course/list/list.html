@@ -1,0 +1,221 @@
+<div class="sm-padding data-table">
+  <div class="container">
+    <div class="row data-user">
+      <div class="col-md-12">
+        <div id="table_id_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <!-- <form class="dataTables_length form-inline" id="table_id_length">
+                
+              </form> -->
+              <div class="dataTables_length" id="table_id_length">
+                <label
+                  ><span translate>Show</span>
+                  <select
+                    name="table_id_length"
+                    aria-controls="table_id"
+                    class="custom-select custom-select-sm form-control form-control-sm"
+                    (change)="showChange($event)"
+                  >
+                    <option value="{{10}}">10</option>
+                    <option value="{{25}}">25</option>
+                    <option value="{{50}}">50</option>
+                    <option value="{{100}}">100</option>
+                  </select>
+                  <span translate>entries</span></label
+                >
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <!-- <form id="table_id_filter" class="dataTables_filter form-inline float-right">
+                
+              </form> -->
+              <div id="table_id_filter" class="dataTables_filter">
+                <label
+                  ><span translate>Search:</span>
+                  <input
+                    (keyup)="doSearch($event)"
+                    type="search"
+                    class="form-control form-control-sm"
+                    placeholder=""
+                    aria-controls="table_id" /></label
+                ><a class="btn btn-default ml-3 mt-n1" [routerLink]="['/users/courses/create']"
+                  ><i class="fa fa-plus mr-2 font-sm"></i> <span translate>Add</span></a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <table
+                id="table_id"
+                class="table table-horizontal tble-responsive table-user dataTable no-footer"
+                role="grid"
+                aria-describedby="table_id_info"
+              >
+                <thead>
+                  <tr role="row">
+                    <th
+                      tabindex="0"
+                      aria-controls="table_id"
+                      rowspan="1"
+                      colspan="1"
+                      aria-sort="ascending"
+                      aria-label="Main Image: activate to sort column descending"
+                      translate
+                    >
+                      Main Image
+                    </th>
+                    <th
+                      tabindex="0"
+                      aria-controls="table_id"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Name: activate to sort column ascending"
+                    >
+                      <span (click)="sortBy('name', 'asc')" translate>Title</span>
+                      <app-sort [sortOption]="sortOption" [sortBy]="'name'" (onSort)="onSort($event)"></app-sort>
+                    </th>
+
+                    <th
+                      tabindex="0"
+                      aria-controls="table_id"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Category: activate to sort column ascending"
+                      translate
+                    >
+                      Category
+                    </th>
+                    <th
+                      tabindex="0"
+                      aria-controls="table_id"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Last Time: activate to sort column ascending"
+                      style="width: 61px"
+                    >
+                      <span (click)="sortBy('price', 'asc')" translate>Price</span>
+                      <app-sort [sortOption]="sortOption" [sortBy]="'price'" (onSort)="onSort($event)"></app-sort>
+                    </th>
+
+                    <th
+                      tabindex="0"
+                      aria-controls="table_id"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Created At: activate to sort column ascending"
+                    >
+                      <span (click)="sortBy('createdAt', 'asc')" translate>Created At</span>
+                      <app-sort [sortOption]="sortOption" [sortBy]="'createdAt'" (onSort)="onSort($event)"></app-sort>
+                    </th>
+                    <th
+                      tabindex="0"
+                      aria-controls="table_id"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label=""
+                      style="width: 61px"
+                      class="text-center"
+                    >
+                      <span (click)="sortBy('disabled', 'asc')" translate>Status</span>
+                      <app-sort [sortOption]="sortOption" [sortBy]="'disabled'" (onSort)="onSort($event)"></app-sort>
+                    </th>
+                    <th
+                      tabindex="0"
+                      aria-controls="table_id"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Action: activate to sort column ascending"
+                      translate
+                    >
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr role="row" class="odd" *ngFor="let item of items, let i = index">
+                    <td class="sorting_1">
+                      <img
+                        src="{{item?.mainImage.thumbUrl}}"
+                        alt=""
+                        class="table-img"
+                        onerror="this.src='/assets/images/no-image.jpg'"
+                      />
+                    </td>
+                    <td>
+                      <a (click)="showParticipants(item)">{{item?.name}}</a>
+                    </td>
+
+                    <td>
+                      <span *ngFor="let cat of item.categories; let i = index"
+                        >{{ cat.name }}<span *ngIf="i < item.categories.length - 1">, </span></span
+                      >
+                    </td>
+                    <td>${{item?.price}}</td>
+                    <td>{{item.createdAt |dstFormat | date}}</td>
+
+                    <td class="text-center">
+                      <a
+                        class="btn btn-hvr-primary btn-sm btn-icon-padding"
+                        href="javascript:void(0)"
+                        [ngClass]="{'btn-light-danger': item.disabled, 'btn-light-primary btn-hvr-primary': !item.disabled }"
+                      >
+                        <!-- <i class="fas fa-check-circle" *ngIf="!item.disabled"></i> -->
+                        <span *ngIf="!item.disabled">Approved</span>
+                        <!-- <i class="fas fa-times-circle" *ngIf="item.disabled"></i> -->
+                        <span *ngIf="item.disabled">Not Approved</span>
+                      </a>
+                    </td>
+                    <td>
+                      <a
+                        [routerLink]="['/courses/detail', item.alias]"
+                        class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding"
+                        href="/courses/detail/fitness"
+                        ><i class="fa fa-eye"></i
+                      ></a>
+
+                      <a
+                        class="btn btn-light-default btn-sm btn-icon-padding"
+                        [routerLink]="['/users/courses', item._id]"
+                      >
+                        <i class="fa fa-edit"></i>
+                      </a>
+                      <a (click)="remove(item, i)" class="btn btn-light-danger btn-hvr-primary btn-sm btn-icon-padding"
+                        ><i class="fa fa-trash"></i
+                      ></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info" id="table_id_info" role="status" aria-live="polite" translate>
+                <span translate>Showing</span>&nbsp;<span>{{ fromItem }}</span>&nbsp;<span translate>to</span>
+                <span>{{ toItem }}</span>&nbsp;<span translate>of</span>&nbsp;<span>{{ total }}</span>&nbsp;
+                <span translate>entries</span>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+                <ngb-pagination
+                  [collectionSize]="total"
+                  [(page)]="currentPage"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  (pageChange)="pageChange()"
+                  class="float-right"
+                >
+                  <ng-template ngbPaginationPrevious translate>Previous</ng-template>
+                  <ng-template ngbPaginationNext translate>Next</ng-template>
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

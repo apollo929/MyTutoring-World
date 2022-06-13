@@ -1,0 +1,11 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Dear Admin,</p>
+<br />
+<p>A new tutor has registered {{tutor.name}} on your system</p>
+<p>Name: {{tutor.name}}</p>
+<p>Email: {{tutor.email}}</p>
+<br />
+<p>Please go to the admin panel</p>
+<p><a href="{{adminUrl}}">{{adminUrl}}</a></p>
+<p>and verify.</p>
+{% endblock %}

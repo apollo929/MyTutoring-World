@@ -1,0 +1,30 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{user.name}}.</p>
+<br />
+<p>Your tutor {{tutor.name}} has uploaded new material for your session {{appointment.code}} {{startTime}} - {{toTime}}</p>
+<p>Please sign in to your student dashboard to view the new materials</p>
+<p>
+  <br />
+  <br />
+  <a
+    target="_blank"
+    style="
+      display: inline-block;
+      color: #ffffff;
+      background-color: #38cbec;
+      border: solid 1px #3498db;
+      border-radius: 30px;
+      box-sizing: border-box;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 25px;
+      margin: 0;
+      padding: 12px 25px;
+      text-transform: capitalize;
+      border-color: #3498db;
+    "
+    href="{{appConfig.userWebUrl}}/auth/login"
+    >SIGN IN</a
+  >
+</p>
+{% endblock %}

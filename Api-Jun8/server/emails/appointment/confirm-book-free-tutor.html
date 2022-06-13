@@ -1,0 +1,16 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<p>Hi {{ tutor.name }}</p>
+<br />
+<p>Please find details of your free trial booking:</p>
+<br />
+<p>Student name: {{user.name}}</p>
+<p>Date and time: {{startTimeTutor}} - {{toTimeTutor}}</p>
+<p>Duration: {{duration}}</p>
+<p>Session code: {{appointment.code}}</p>
+<p>Amount: Free</p>
+<br />
+<p>Please wait for the appointment announcement.</p>
+<p>You can also find the above details on your Tutor’s dashboard</p>
+
+{% endblock %}

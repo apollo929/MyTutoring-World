@@ -1,0 +1,27 @@
+{
+  "uuid": "2o4b709zS5e9bgBRZ58OYg==",
+  "id": 528799827,
+  "host_id": "Awve0oSmRpyh3MfNx_uP4A",
+  "webinar": "Zoom Meeting",
+  "type": 1,
+  "timezone": "Asia/Saigon",
+  "created_at": "2018-10-17T04:40:29Z",
+  "start_url": "https://ceerno.zoom.us/s/528799827?zak=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjbGllbnQiLCJ1aWQiOiJBd3ZlMG9TbVJweWgzTWZOeF91UDRBIiwiaXNzIjoid2ViIiwic3R5IjoxMDAsIndjZCI6ImF3MSIsImNsdCI6MCwic3RrIjoiZTV4emNxSEJheVFPaVZ3NlRCaDk5ZllDN25DaW5sSzVnQ2llT2Etb0hiVS5CZ1VnTnpkQk5rcEplRVJEWldsc1JYY3pNSHBvUVRkcFVqaDZjRTF4ZUhKTFNrRkFOV0UxWWprNU1HTXhPVE15TjJJeFlqUTNPR1l4WVdZek9ESTJaV1E0WVRnNE1HRXlZV0pqT0dJME9USTJPVFJsWVRnM09HVTRNV1JtWldOa01qRmpaUUFnYVc1S1pVeEhNQzlNZWpWSk1WUXlNblZ3ZEVoUWFEWmFabnB5V1VSV2NsWUFBMkYzTVEiLCJleHAiOjE1Mzk3NTg0MjksImlhdCI6MTUzOTc1MTIyOSwiYWlkIjoiNnBlUmVpUzZSRGVaZ1A4ZnhtdE5wZyIsImNpZCI6IiJ9.OzN4Sj8lAhDou5Weq8P4itZaklrHYk7aD5PmbkFVyVs",
+  "join_url": "https://ceerno.zoom.us/j/528799827",
+  "settings": {
+    "host_video": false,
+    "participant_video": false,
+    "cn_meeting": false,
+    "in_meeting": false,
+    "join_before_host": false,
+    "mute_upon_entry": false,
+    "watermark": false,
+    "use_pmi": false,
+    "approval_type": 2,
+    "audio": "both",
+    "auto_recording": "none",
+    "enforce_login": false,
+    "enforce_login_domains": "",
+    "alternative_hosts": ""
+  }
+}

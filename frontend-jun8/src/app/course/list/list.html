@@ -1,0 +1,201 @@
+<section class="sm-padding">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+        <h2 class="color-light-black">
+          <span translate>Learn on your schedule</span>...<br />
+          <span translate>Anytime. Anywhere.</span>
+        </h2>
+        <p class="content-title mt-3" translate>
+          <span translate>Study any webinar, anytime. Explore thousands of courses.</span>
+          <br />
+          <span translate>Transform your life through education.</span>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <!-- <div class="col-md-4">
+        <div class="input-group shadow-sm input-shadow br-3" style="margin-top: 1.82em">
+          <div class="input-group-prepend border-none">
+            <span class="input-group-text">
+              <i class="fas fa-search color-light-red"></i>
+            </span>
+          </div>
+          <input
+            type="text"
+            class="form-control border-none"
+            placeholder="{{'Search here..'| translate}}"
+            (keyup)="doSearch($event)"
+          />
+        </div>
+      </div> -->
+      <div class="col-md-12 d-flex justify-content-between mt-n2 rmt-4 rd-block">
+        <div class="form-group mr-3 rmr-0">
+          <label class="font-weight-bold font-sm" translate>Filter By Grades</label>
+          <select class="custom-select" [(ngModel)]="searchFields.gradeIds" (change)="gradeChange($event)">
+            <option class="subject" selected value="" translate>None</option>
+            <option class="subject" *ngFor="let item of grades" ngValue="{{ item._id }}">{{ item.name }}</option>
+          </select>
+        </div>
+        <div class="form-group mr-3 rmr-0">
+          <label class="font-weight-bold font-sm" translate>Filter By Categories</label>
+          <select class="custom-select" [(ngModel)]="searchFields.categoryIds" (change)="selectCategory()">
+            <option selected translate value="">None</option>
+            <option *ngFor="let cate of categories" value="{{cate._id}}">{{cate.name}}</option>
+          </select>
+        </div>
+        <div class="form-group mr-3 rmr-0">
+          <label class="font-weight-bold font-sm" translate>Filter By Subjects</label>
+          <select class="custom-select" [(ngModel)]="searchFields.subjectIds" (change)="selectSubject()">
+            <option selected translate value="">None</option>
+            <option *ngFor="let sub of subjects" value="{{sub._id}}">{{sub.name}}</option>
+          </select>
+        </div>
+        <div class="form-group mr-3 rmr-0">
+          <label class="font-weight-bold font-sm" translate>Filter By Topics</label>
+          <select class="custom-select" [(ngModel)]="searchFields.topicIds" (change)="query()">
+            <option selected translate value="">None</option>
+            <option *ngFor="let topic of topics" value="{{topic._id}}">{{topic.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="font-weight-bold font-sm" translate>Filter By Price</label>
+          <select class="custom-select" [(ngModel)]="sortOption.sortType" (change)="sortPrice($event)">
+            <option selected translate value="">None</option>
+            <option value="asc" translate>Low to High</option>
+            <option value="desc" translate>High to Low</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4 mb-3">
+      <div class="col-md-12">
+        <div class="input-group shadow-sm input-shadow br-3" style="margin-top: 1.82em">
+          <div class="input-group-prepend border-none">
+            <span class="input-group-text">
+              <i class="fas fa-search color-light-red"></i>
+            </span>
+          </div>
+          <input
+            type="text"
+            class="form-control border-none"
+            placeholder="{{'Search here..'| translate}}"
+            (keyup)="doSearch($event)"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12" *ngIf="!itemChunks.length && !loading">
+        <p>No results</p>
+      </div>
+      <div class="col-md-12" *ngIf="loading">
+        <p><span translate>Loading</span>...</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="itemChunks.length && itemChunks[0].length && !loading">
+      <app-card-course class="col-md-4 mb-4" *ngFor="let item of itemChunks[0]" [course]="item"></app-card-course>
+    </div>
+  </div>
+</section>
+<section class="sm-padding bg-color-light">
+  <div class="container" *ngIf="item1">
+    <div class="row">
+      <div class="col-md-12 col-12 col-lg-12">
+        <div class="card-horizontal">
+          <div class="row">
+            <div class="col-md-6">
+              <h5 class="card-title">{{item1.name}}</h5>
+              <div class="card-text" *ngIf="item1.description">
+                <p class="more1" [innerHTML]="item1?.description"></p>
+                <a [routerLink]="['/courses/detail',item1.alias]" class="morelink"
+                  ><span translate>Read more</span>...</a
+                >
+              </div>
+              <div class="row row-cols-2">
+                <div class="col-md-6">
+                  <div class="profile">
+                    <a [routerLink]="['/tutors', item1?.tutor?.username]" class="hyperlink">
+                      <img
+                        [src]="item1?.tutor?.avatarUrl"
+                        class="float-left cate-profile box-shadow-lg"
+                        alt=""
+                        onerror="this.src='/assets/images/no-image.jpg'"
+                      />
+                      <h5 class="cate-profile-name pt-4">{{item1?.tutor?.name}}</h5>
+                    </a>
+                  </div>
+                  <div class="rating-stars rating-pt-md">
+                    <ul id="stars">
+                      <star-rating [rate]="item1?.tutor?.ratingAvg"></star-rating>
+                      <span>{{item1?.tutor?.ratingAvg}} ({{item1?.tutor?.totalRating}})</span>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 text-right mt-4" *ngIf="item1.latestSlot">
+                  <span class="mr-2 text-secondary"
+                    ><i class="far fa-calendar mr-2"></i>{{item1?.latestSlot?.startTime |dstFormat | date}}</span
+                  >
+                  <span class="text-secondary"
+                    ><i class="far fa-clock mr-2"></i>{{item1?.latestSlot?.startTime |dstFormat | date: 'HH:mm'}}</span
+                  >
+                </div>
+              </div>
+              <div class="row mt-4 row-cols-2 rmb-4">
+                <div class="col-md-6">
+                  <a
+                    *ngIf="!item1.booked"
+                    class="btn btn-green"
+                    [routerLink]="['/courses/detail',item1.alias]"
+                    translate
+                    >Book Now</a
+                  >
+                  <a
+                    *ngIf="item1.booked"
+                    class="btn btn-purchased"
+                    [routerLink]="['/courses/detail',item1.alias]"
+                    translate
+                    >Purchased</a
+                  >
+                </div>
+                <div class="col-md-6 text-right">
+                  <h4 class="color-light-red mt-2">
+                    <strong
+                      >{{item1.price | currency : (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '):
+                      'symbol' : '1.0'}}</strong
+                    >
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="img-square-wrapper">
+                <img src="{{item1?.mainImage?.fileUrl}}" alt="" class="border-radius-default object-fit-cover h-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sm-padding">
+  <div class="container">
+    <div class="row" *ngIf="itemChunks.length >= 2">
+      <app-card-course class="col-md-4 mb-4" *ngFor="let item of itemChunks[1]" [course]="item"></app-card-course>
+    </div>
+    <div class="row mt-5" *ngIf="totalCourses>pageSize">
+      <div class="col-md-12 text-center">
+        <ngb-pagination
+          [collectionSize]="totalCourses"
+          [(page)]="currentPage"
+          [pageSize]="pageSize"
+          (pageChange)="pageChange()"
+          class="card-pagination pagination"
+        ></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</section>

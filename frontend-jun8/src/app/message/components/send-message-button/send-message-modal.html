@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h4 class="modal-title" translate>Send message</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #frm="ngForm" (submit)="submit(frm)">
+    <div class="form-group">
+      <textarea
+        rows="3"
+        class="form-control"
+        name="content"
+        placeholder="{{'Leave your message' | translate}}"
+        [(ngModel)]="message.text"
+        #text="ngModel"
+      ></textarea>
+      <div *ngIf="text.errors && (text.dirty || text.touched || submitted)">
+        <p [hidden]="!text.errors.required" class="error" translate>Message is required</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-blue" type="submit" translate>Send</button>&nbsp;
+      <button class="btn btn-default" (click)="activeModal.close('Cancel')" translate type="button">Cancel</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,14 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{tutor.name}},</p>
+<br />
+<p>Approve #{{refundRequest.code}} from {{user.name}}. We will process the refund for user and confirm later.</p>
+<br />
+<p>Transaction code: {{transaction.code}}</p>
+<p>
+  <strong>Code</strong>: {{refundRequest.code}} <br />
+  <strong>Amount</strong>: {{appConfig.currencySymbol}}{{refundRequest.amount}} <br />
+</p>
+<br />
+<p><strong>Note</strong>: {{refundRequest.note}}</p>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h2 class="modal-title" translate>My subject</h2>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #frm="ngForm" (submit)="submit(frm)">
+    <div class="form-group">
+      <label translate>Select Subject</label>
+      <ng-select
+        [items]="subjects"
+        bindLabel="name"
+        name="subject"
+        placeholder="{{'Choose subject' | translate}}"
+        [(ngModel)]="mySubject.originalSubjectId"
+        bindValue="_id"
+        #subjectId="ngModel"
+        required
+        [disabled]="mySubject._id"
+      >
+      </ng-select>
+      <div *ngIf="subjectId.errors && (subjectId.dirty || subjectId.touched || submitted)">
+        <p [hidden]="!subjectId.errors.required" class="error" translate>Subject is required</p>
+      </div>
+    </div>
+    <div class="form-group">Active <input type="checkbox" name="isActive" [(ngModel)]="mySubject.isActive" /></div>
+    <div class="col-md-12 mt-3">
+      <button type="submit" class="btn btn-danger mr-3" translate>Submit</button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')" translate>
+        Close
+      </button>
+    </div>
+  </form>
+</div>

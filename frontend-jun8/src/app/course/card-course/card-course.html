@@ -1,0 +1,79 @@
+<!-- <div class="col-md-4 mb-4"> -->
+<div class="card h-100 box-shadow-md border-none">
+  <div class="badge-tag" *ngIf="course?.featured">
+    <span translate>Featured</span>
+  </div>
+  <a [routerLink]="['/courses/detail',course.alias]" class="hyperlink">
+    <img
+      src="{{course?.mainImage?.fileUrl}}"
+      class="card-img-top"
+      alt=""
+      onerror="this.src='/assets/images/no-image.jpg'"
+  /></a>
+  <div class="card-body">
+    <div class="row row-cols-2 mt-n5">
+      <div class="col-md-7 pr-0">
+        <div class="profile-card">
+          <div class="profile">
+            <a [routerLink]="['/tutors', course?.tutor?.username]" class="hyperlink">
+              <img
+                src="{{course?.tutor?.avatarUrl}}"
+                class="float-left cate-profile box-shadow-lg"
+                alt=""
+                onerror="this.src='/assets/images/no-image.jpg'"
+              />
+              <h5 class="cate-profile-name pt-sm">{{course?.tutor?.name}}</h5>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 pl-0">
+        <div class="rating-stars text-right rating-pt font-xs">
+          <ul id="stars">
+            <star-rating [rate]="course?.tutor?.ratingAvg"></star-rating>
+            <span>{{course?.tutor?.ratingAvg}} ({{course?.tutor?.totalRating}})</span>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-12 mt-2" *ngIf="latestSlot">
+        <span class="mr-2 text-secondary"
+          ><i class="far fa-calendar mr-2"></i>{{ latestSlot?.startTime|dstFormat | date:'MMM dd,yyyy'}}</span
+        >
+        <span class="text-secondary"
+          ><i class="far fa-clock mr-2"></i>{{latestSlot?.startTime|dstFormat | date:'HH:mm'}}</span
+        >
+      </div>
+    </div>
+    <div class="card-content mt-3">
+      <h5 class="card-title">{{course.name| ellipsis:60}}</h5>
+      <app-text-ellipsis
+        [content]="course?.description"
+        [showChar]="50"
+        [path]="'/courses/detail'"
+        [param]="course?.alias"
+      ></app-text-ellipsis>
+    </div>
+  </div>
+  <div class="card-footer bg-transparent border-text-mute p-3">
+    <div class="row row-cols-2">
+      <div class="col-md-8">
+        <a *ngIf="!course.booked" class="btn btn-green" [routerLink]="['/courses/detail',course.alias]" translate
+          >Purchase</a
+        >
+        <a *ngIf="course.booked" class="btn btn-purchased" [routerLink]="['/courses/detail',course.alias]" translate
+          >Purchased</a
+        >
+      </div>
+      <div class="col-md-4 text-right">
+        <h4 class="color-light-red mt-2">
+          <strong *ngIf="!course.price || course.isFree" translate>Free</strong>
+          <strong *ngIf="course.price && course.price > 0"
+            >{{ (course.price + (course.price * config.applicationFee)) | currency : (config?.currencySymbol ?
+            config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}</strong
+          >
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </div> -->

@@ -1,0 +1,44 @@
+<div class="text-center upload-zone">
+  <div
+    ng2FileDrop
+    [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }"
+    (fileOver)="fileOverBase($event)"
+    [uploader]="uploader"
+    class="well my-drop-zone mt-1"
+    (onFileDrop)="fileDrop($event)"
+  >
+    <label for="{{options.id || 'file-upload'}}" class="custom-file-upload">
+      <i class="fas fa-cloud-upload-alt color-gray-light mr-2"></i>
+      <span translate>{{ options.hintText || 'Drop or select file to here' }}</span>
+    </label>
+    <input
+      id="{{options.id || 'file-upload'}}"
+      type="file"
+      ng2FileSelect
+      [uploader]="uploader"
+      name="mediaPath"
+      [multiple]="multiple"
+      (onFileSelected)="fileSelect($event)"
+      class="custom-file-input"
+      style="display: none"
+      accept="{{options.accept || ''}}"
+    />
+  </div>
+  <div class="progress" [hidden]="!progress">
+    <div class="progress-bar" [ngStyle]="{ width: progress + '%' }" [ngClass]="{ 'bg-success': progress == 100 }">
+      <span *ngIf="progress === 100" translate>File was uploaded</span>
+    </div>
+  </div>
+  <p *ngIf="uploader.queue.length && !autoUpload">
+    <button
+      [disabled]="disable"
+      type="button"
+      class="btn btn-primary btn-pink"
+      *ngIf="!uploadOnSelect"
+      (click)="upload()"
+      translate
+    >
+      {{ options.uploadText || 'Upload' }}
+    </button>
+  </p>
+</div>

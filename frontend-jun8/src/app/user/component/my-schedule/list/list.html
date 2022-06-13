@@ -1,0 +1,303 @@
+<div class="sm-padding data-table">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mt-3">
+        <div class="wizard">
+          <div class="wizard-inner">
+            <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
+              <li role="presentation" [ngClass]="{'active': tab === 'subject'}">
+                <a href="javascript:void(0)" (click)="onTabSelect('subject')" translate>One on One Classes</a>
+              </li>
+              <li role="presentation" [ngClass]="{'active': tab === 'webinar'}">
+                <a href="javascript:void(0)" (click)="onTabSelect('webinar')" translate>Group Classes</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="tab === 'subject'">
+        <div id="table_id_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <form class="form-inline">
+                <div class="dataTables_length" id="table_id_length">
+                  <label>
+                    <span translate>Show</span>
+                    <select
+                      name="table_id_length"
+                      aria-controls="table_id"
+                      class="custom-select custom-select-sm form-control form-control-sm"
+                      [(ngModel)]="pageSize"
+                      (change)="query()"
+                    >
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                    <span translate>entries</span>
+                  </label>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <form id="table_id_filter" class="dataTables_filter form-inline float-right">
+                <label
+                  ><span translate>Search:</span>
+                  <input
+                    type="search"
+                    class="form-control form-control-sm"
+                    aria-controls="table_id"
+                    placeholder="{{'Search tutor, user, subject, group class'|translate}}"
+                    (keyup)="doSearch($event)"
+                  />
+                </label>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-sm-12">
+            <table
+              id="table_id"
+              class="table table-horizontal tble-responsive dataTable no-footer"
+              role="grid"
+              aria-describedby="table_id_info"
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <span (click)="sortBy('userId', 'desc')" translate>User name</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'userId'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('webinarId', 'desc')" translate>Subjects / Group Class</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'webinarId'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('type', 'desc')" translate>Enroll type</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'type'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('paid', 'desc')" translate>Paid</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'paid'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('isFree', 'desc')" translate>Lesson Type</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'isFree'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('startTime', 'desc')" translate>Start Time</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'startTime'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('toTime', 'desc')" translate>To Time</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'toTime'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('createdAt', 'desc')" translate>Created At</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'createdAt'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('status', 'desc')" translate>Status</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'status'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th translate>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="!appointments.length && !loading">
+                  <td translate colspan="9">There is no appointments</td>
+                </tr>
+                <tr *ngIf="loading">
+                  <td colspan="9"><span translate>Loading</span>...</td>
+                </tr>
+                <tr *ngFor="let item of appointments, let i = index">
+                  <td>{{item?.user?.name}}</td>
+                  <td style="width: 20%">{{(item?.webinar?.name || item?.subject?.name) | ellipsis:50}}</td>
+                  <td>{{item?.targetType}}</td>
+                  <td>
+                    <span class="label label-light-primary" *ngIf="item?.paid" translate>Yes</span>
+                    <span class="label label-light-danger" *ngIf="!item?.paid" translate>No</span>
+                  </td>
+                  <td>
+                    <span class="label label-light-primary" *ngIf="item?.isFree" translate>Free Trial</span>
+                    <span class="label label-light-warning" *ngIf="!item.isFree" translate>Paid Lesson</span>
+                  </td>
+                  <td>
+                    {{(item?.displayStartTime? item?.displayStartTime : item?.startTime )|dstFormat | date:'dd/MM/yyyy,
+                    HH:mma'}}
+                  </td>
+                  <td>
+                    {{(item?.displayToTime? item?.displayToTime: item?.toTime) |dstFormat | date:'dd/MM/yyyy, HH:mma'}}
+                  </td>
+                  <td>
+                    <span>{{item?.createdAt |dstFormat | date}}</span>
+                  </td>
+                  <td><app-appointment-status [status]="item?.status"></app-appointment-status>&nbsp;</td>
+                  <td style="width: 11%">
+                    <button
+                      [routerLink]="['/users/appointments', item._id ]"
+                      class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding mr-2"
+                    >
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <a
+                      *ngIf="item?.status==='pending' || item?.status === 'progressing'"
+                      href="javascript:void(0)"
+                      class="img-zoom"
+                      (click)="startMeeting(item?._id)"
+                    >
+                      <img src="{{'assets/images/zoom.png'}}" alt="" />
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+              <ngb-pagination
+                [collectionSize]="count"
+                [(page)]="currentPage"
+                [pageSize]="pageSize"
+                [maxSize]="5"
+                (pageChange)="pageChange()"
+                class="float-right"
+              >
+                <ng-template ngbPaginationPrevious translate>Previous</ng-template>
+                <ng-template ngbPaginationNext translate>Next</ng-template>
+                <!-- <ng-template ngbPaginationNumber let-page>{{ currentPage }}</ng-template> -->
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="tab === 'webinar'">
+        <div class="row align-items-center">
+          <div class="col-sm-12 col-md-6">
+            <form class="form-inline">
+              <div class="dataTables_length" id="table_id_length">
+                <label>
+                  <span translate>Show</span>
+                  <select
+                    name="table_id_length"
+                    aria-controls="table_id"
+                    class="custom-select custom-select-sm form-control form-control-sm"
+                    [(ngModel)]="filterTransactionOptions.pageSize"
+                    (change)="queryTransactionWebinar()"
+                  >
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  <span translate>entries</span>
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <form id="table_id_filter" class="dataTables_filter form-inline float-right">
+              <label translate
+                ><span translate>Search:</span>
+                <input
+                  type="search"
+                  class="form-control form-control-sm"
+                  aria-controls="table_id"
+                  placeholder="{{'Search tutor, user, webinar'|translate}}"
+                  (keyup)="doSearch($event)"
+                />
+              </label>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <table
+              id="table_id"
+              id="table_id"
+              class="table table-horizontal tble-responsive table-user dataTable no-footer"
+              role="grid"
+              aria-describedby="table_id_info"
+            >
+              <thead>
+                <tr role="row">
+                  <th>
+                    <span (click)="sortBy('userId', 'asc')" translate>User name</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'userId'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+
+                  <th>
+                    <span (click)="sortBy('webinar', 'asc')" translate>Group Class</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'webinar'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+
+                  <th>
+                    <span (click)="sortBy('createdAt', 'asc')" translate>Created At</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'createdAt'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <a translate>Action</a>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngIf="(!transactions || (transactions && transactions.length === 0)) && !loading">
+                  <td colspan="10" translate>There are no webinar booking</td>
+                </tr>
+                <tr *ngIf="loading">
+                  <td colspan="10" translate><span translate>Loading</span>...</td>
+                </tr>
+                <tr *ngFor="let item of transactions, let i = index">
+                  <td>{{item?.user?.name}}</td>
+                  <td>{{item.webinar && item.targetType === 'webinar' ? item?.webinar?.name :'-'}}</td>
+                  <td>
+                    <span *ngIf="item?.transaction">{{item?.transaction?.createdAt |dstFormat | date}}</span>
+                    <span *ngIf="!item.transaction">{{item?.createdAt |dstFormat | date}}</span>
+                  </td>
+
+                  <td>
+                    <a
+                      href="javascript:void(0)"
+                      class="btn btn-light-primary btn-hvr-primary btn-sm btn-icon-padding"
+                      (click)="openModalAppointment(item.webinar)"
+                    >
+                      View list appointments
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <!-- <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info" id="table_id_info" role="status" aria-live="polite">
+              Showing 1 to 6 of 6 entries
+            </div>
+          </div> -->
+          <div class="col-sm-12 col-md-12">
+            <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+              <ngb-pagination
+                [collectionSize]="filterTransactionOptions.total"
+                [(page)]="filterTransactionOptions.currentPage"
+                [pageSize]="filterTransactionOptions.pageSize"
+                [maxSize]="5"
+                (pageChange)="pageChange()"
+                class="float-right"
+              >
+                <ng-template ngbPaginationPrevious translate>Previous</ng-template>
+                <ng-template ngbPaginationNext translate>Next</ng-template>
+                <!-- <ng-template ngbPaginationNumber let-page>{{ filterTransactionOptions.currentPage }}</ng-template> -->
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

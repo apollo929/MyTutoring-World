@@ -1,0 +1,82 @@
+<div class="">
+  <p>All the end of my course, students will be able to</p>
+  <ul style="list-style: none">
+    <ng-container *ngFor="let goal of goals">
+      <li *ngIf="goal.type == 'able_to'">
+        <i (click)="delete(goal._id)" class="fa fa-trash text-danger font-sm cursor-pointer"></i>&nbsp;&nbsp;
+        {{goal.name}}
+      </li>
+    </ng-container>
+  </ul>
+
+  <div class="row">
+    <div class="col-md-10">
+      <div class="form-group">
+        <input
+          type="text"
+          [(ngModel)]="able_to"
+          name="able_to"
+          placeholder="All the end of my course, students will be able to"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <div class="col-md-2 d-flex text-right align-items-center justify-content-center">
+      <button (click)="add('able_to')" class="btn btn-green mt-n3" [disabled]="able_to == ''">Add</button>
+    </div>
+  </div>
+
+  <p>Who should take this course? Who should not?</p>
+  <ul style="list-style: none">
+    <ng-container *ngFor="let goal of goals">
+      <li *ngIf="goal.type == 'age'">
+        <i (click)="delete(goal._id)" class="fa fa-trash text-danger font-sm cursor-pointer"></i>&nbsp;&nbsp;
+        {{goal.name}}
+      </li>
+    </ng-container>
+  </ul>
+
+  <div class="row">
+    <div class="col-md-10">
+      <div class="form-group">
+        <input
+          type="text"
+          [(ngModel)]="age"
+          name="age"
+          placeholder="Who should take this course? Who should not?"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <div class="col-md-2 d-flex text-right align-items-center justify-content-center">
+      <button (click)="add('age')" class="btn btn-green mt-n3" [disabled]="age == ''">Add</button>
+    </div>
+  </div>
+
+  <p>What will students need to know or do before starting this course?</p>
+  <ul style="list-style: none">
+    <ng-container *ngFor="let goal of goals">
+      <li *ngIf="goal.type == 'pre'">
+        <i (click)="delete(goal._id)" class="fa fa-trash text-danger font-sm cursor-pointer"></i>&nbsp;&nbsp;
+        {{goal.name}}
+      </li>
+    </ng-container>
+  </ul>
+
+  <div class="row">
+    <div class="col-md-10">
+      <div class="form-group">
+        <input
+          type="text"
+          [(ngModel)]="pre"
+          name="pre"
+          placeholder="What will students need to know or do before starting this course?"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <div class="col-md-2 d-flex text-right align-items-center justify-content-center">
+      <button (click)="add('pre')" class="btn btn-green mt-n3" [disabled]="pre == ''">Add</button>
+    </div>
+  </div>
+</div>

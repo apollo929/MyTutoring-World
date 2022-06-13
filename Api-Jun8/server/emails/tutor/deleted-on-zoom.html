@@ -1,0 +1,16 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{tutor.name}},</p>
+<br />
+<p>
+  Your zoom account has been removed or inactivated on our system, all your features will be disabled and you will not be able to log in until admin
+  invites you back.
+</p>
+<br />
+<p>Please contact us by email: <a href="mailto:{{adminEmail}}"></a></p>
+<br />
+<p>
+  --- Sincerely, <br />
+  The {{appConfig.siteName}} Team
+</p>
+
+{% endblock %}

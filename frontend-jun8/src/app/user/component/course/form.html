@@ -1,0 +1,352 @@
+<section class="sm-padding">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-md-12 col-lg-12 col-sm-12">
+        <h4 class="color-light-black mb-3" *ngIf="course._id"><span translate>Update course</span> {{course?.name}}</h4>
+        <div class="col-md-12" *ngIf="course._id">
+          <div class="wizard">
+            <div class="wizard-inner">
+              <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
+                <li role="presentation" [ngClass]="{'active': tab === 'basicInfo'}">
+                  <a
+                    #basicInfo_a
+                    href="#step1"
+                    data-toggle="tab"
+                    aria-controls="step1"
+                    role="tab"
+                    aria-expanded="true"
+                    (click)="onTabSelect('basicInfo')"
+                    translate
+                    >Basic Infomation</a
+                  >
+                </li>
+                <li role="presentation" [ngClass]="{'active': tab === 'c_goals'}">
+                  <a
+                    #c_goals_a
+                    href="#c_goals"
+                    data-toggle="tab"
+                    aria-controls="c_goals"
+                    role="tab"
+                    aria-expanded="true"
+                    (click)="onTabSelect('c_goals')"
+                    translate
+                    >Course Goals</a
+                  >
+                </li>
+                <li role="presentation" [ngClass]="{'active': tab === 'c_details'}">
+                  <a
+                    #c_details_a
+                    href="#c_details"
+                    data-toggle="tab"
+                    aria-controls="c_details"
+                    role="tab"
+                    aria-expanded="true"
+                    (click)="onTabSelect('c_details')"
+                    translate
+                    >Lecture Details</a
+                  >
+                </li>
+                <li role="presentation" [ngClass]="{'active': tab === 'coupon'}">
+                  <a
+                    #c_coupon_a
+                    href="#coupon"
+                    data-toggle="tab"
+                    aria-controls="coupon"
+                    role="tab"
+                    (click)="onTabSelect('coupon')"
+                    translate
+                    >Coupon</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" id="main_form">
+      <div class="tab-pane active" role="tabpanel" id="step1">
+        <div class="card-horizontal input-border">
+          <form (submit)="submit(frm)" #frm="ngForm" class="course-form">
+            <div class="mb-3">
+              <label class="custom-radio" translate
+                >FREE
+                <input type="radio" name="payment" [value]="true" [(ngModel)]="course.isFree" />
+                <span class="checkmark"></span>
+              </label>
+              <label class="custom-radio" translate
+                >PAID
+                <input type="radio" name="payment" [value]="false" [(ngModel)]="course.isFree" />
+                <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label translate>Course Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id=""
+                    placeholder="{{'Enter title' | translate}}"
+                    [(ngModel)]="course.name"
+                    name="title"
+                    required
+                    #name="ngModel"
+                  />
+                </div>
+                <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+                  <p [hidden]="!name.errors.required" style="color: red" translate>Please enter group class name!</p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label translate>Price ( {{config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '}})</label>
+                  <input
+                    name="price"
+                    class="form-control"
+                    id=""
+                    placeholder="{{'Enter price' |translate}}"
+                    [(ngModel)]="course.price"
+                    [value]="course.isFree ? 0 : course.price"
+                    [disabled]="course.isFree"
+                    required
+                    type="number"
+                    #price="ngModel"
+                    pattern="[.0-9]{0,8}"
+                  />
+                </div>
+                <div *ngIf="price.errors && (price.dirty || price.touched || isSubmitted)">
+                  <p [hidden]="!price.errors.required" class="error" translate>Please enter price!</p>
+                  <p [hidden]="!price.errors.pattern" class="error" translate>Cannot exceed 8 characters</p>
+                </div>
+                <div *ngIf="price.value <= 0 && (price.dirty || price.touched || isSubmitted) && !course.isFree">
+                  <p style="color: red" translate>Price must be greater than 0!</p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label translate>Course Categories (*)</label>
+                  <ng-select
+                    [items]="myCategories"
+                    multiple="true"
+                    [hideSelected]="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="category"
+                    placeholder="{{'Choose category' | translate}}"
+                    [(ngModel)]="course.categoryIds"
+                    bindValue="originalCategoryId"
+                    #categoryId="ngModel"
+                    required
+                    (change)="onSelectMyCategories($event)"
+                  >
+                  </ng-select>
+                  <div *ngIf="categoryId.errors && (categoryId.dirty || categoryId.touched || isSubmitted)">
+                    <p [hidden]="!categoryId.errors.required" style="color: red" translate>Please choose category!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Subjects (*)</label>
+                  <ng-select
+                    [items]="mySubjects"
+                    multiple="true"
+                    [hideSelected]="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="subject"
+                    placeholder="Choose subjects"
+                    [(ngModel)]="course.subjectIds"
+                    bindValue="originalSubjectId"
+                    #subjectId="ngModel"
+                    required
+                    (change)="onSelectMySubjects($event)"
+                  >
+                  </ng-select>
+                  <div *ngIf="subjectId.errors && (subjectId.dirty || subjectId.touched || isSubmitted)">
+                    <p [hidden]="!subjectId.errors.required" style="color: red" translate>Please choose subject!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Topics (*)</label>
+                  <ng-select
+                    [items]="myTopics"
+                    multiple="true"
+                    [hideSelected]="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="topic"
+                    placeholder="Choose topic"
+                    [(ngModel)]="course.topicIds"
+                    bindValue="originalTopicId"
+                    #topicId="ngModel"
+                    required
+                  >
+                  </ng-select>
+                  <div *ngIf="topicId.errors && (topicId.dirty || topicId.touched || isSubmitted)">
+                    <p [hidden]="!topicId.errors.required" style="color: red" translate>Please choose topic!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label><span translate>Course Grades</span> </label>
+                  <ng-select
+                    [items]="grades"
+                    multiple="true"
+                    [hideSelected]="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="grade"
+                    placeholder="{{'Choose grade' | translate}}"
+                    [(ngModel)]="course.gradeIds"
+                    bindValue="_id"
+                    #gradeIds="ngModel"
+                    required
+                  >
+                  </ng-select>
+                  <div *ngIf="gradeIds.errors && (gradeIds.dirty || gradeIds.touched || isSubmitted)">
+                    <p [hidden]="!gradeIds.errors.required" style="color: red" translate>Please choose grade!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <label translate style="width: 100%"
+                  >Course Introduction Video<small class="ml-1" translate>
+                    (Maximum size: {{maxFileSize}} mb)</small
+                  ></label
+                >
+                <!-- <ul *ngIf="medias.length" class="list-media-course">
+                  <li *ngFor="let item of medias, let i = index">
+                    <i class="fa fa-file" aria-hidden="true"></i>
+                    <span> {{item?.name}}</span>
+                    <i class="fa fa-times-circle-o" aria-hidden="true" (click)="removeMedia(i)"></i>
+                  </li>
+                </ul> -->
+                <div *ngIf="medias.length" class="mt-3">
+                  <div class="d-flex justify-content-between" *ngFor="let item of medias, let i = index">
+                    <div>
+                      <i class="fa fa-file" aria-hidden="true"></i>
+                      <span> {{item?.name}}</span>
+
+                      <div>
+                        <video class="img-fluid" [src]="item?.fileUrl" controls></video>
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <a target="_blank" [href]="item.fileUrl" download
+                        ><i class="fa fa-download text-success font-sm"></i
+                      ></a>
+                      <a (click)="removeMedia(i)"><i class="fa fa-trash text-danger font-sm"></i></a>
+                    </div>
+                  </div>
+                </div>
+                <small *ngIf="filesSelected.length">{{filesSelected[0].file.name}} is selected</small>
+                <app-file-upload [options]="mediaOptions"></app-file-upload>
+              </div>
+
+              <div class="col-md-6">
+                <label translate style="width: 100%"
+                  >Course Image
+                  <small class="ml-1" translate>
+                    (Expected size: 320 x 285 pixels, Maximum size: {{maxFileSize}} mb)</small
+                  ></label
+                >
+                <img *ngIf="mainImageUrl" width="300px" style="margin-bottom: 10px" src="{{mainImageUrl}}" alt="" />
+                <small *ngIf="imageSelected.length">{{imageSelected[0].file.name}} is selected</small>
+                <app-file-upload [options]="mainImageOptions"></app-file-upload>
+              </div>
+            </div>
+
+            <div class="row mt-5 mb-5">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <quill-editor
+                    [(ngModel)]="course.description"
+                    placeholder="Enter Text"
+                    [modules]="quillConfig"
+                    name="bio"
+                  >
+                  </quill-editor>
+                </div>
+              </div>
+
+              <div class="col col-md-12">
+                <small translate>
+                  "Your course will not be approved without any lecture content. Please update it now."
+                </small>
+
+                <div class="form-group pull-right">
+                  <button type="submit" class="btn btn-default mt-4" translate>Continue >></button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="tab-pane" role="tabpanel" id="coupon">
+        <app-course-coupon
+          [tutor]="course.tutor"
+          *ngIf="course._id && !loading"
+          [course]="course"
+          [targetType]="'course'"
+        ></app-course-coupon>
+        <div class="text-right">
+          <button (click)="changeTab('c_details_a')" type="button" class="btn btn-light prev-step mr-2">
+            <i class="fas fa-angle-double-left mr-1 wizard-arrow"></i>Previous
+          </button>
+          <a
+            [routerLink]="['/users/courses']"
+            routerLinkActive="router-link-active"
+            type="button "
+            class="btn btn-default next-step"
+          >
+            Finish<i class="fas fa-angle-double-right ml-1 wizard-arrow"></i>
+          </a>
+        </div>
+      </div>
+      <div class="tab-pane" role="tabpanel" id="c_goals">
+        <div class="card-horizontal input-border">
+          <app-course-goal [tutor]="course.tutor" *ngIf="course._id && !loading" [course]="course"></app-course-goal>
+        </div>
+        <div class="text-right">
+          <button (click)="changeTab('basicInfo_a')" type="button" class="btn btn-light prev-step mr-2">
+            <i class="fas fa-angle-double-left mr-1 wizard-arrow"></i>Previous
+          </button>
+          <button (click)="changeTab('c_details_a')" type="button " class="btn btn-default next-step">
+            Continue<i class="fas fa-angle-double-right ml-1 wizard-arrow"></i>
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane" role="tabpanel" id="c_details">
+        <div class="card-horizontal input-border">
+          <app-lecture-details
+            [tutor]="course.tutor"
+            *ngIf="course._id && !loading"
+            [course]="course"
+          ></app-lecture-details>
+        </div>
+        <div class="text-right">
+          <button (click)="changeTab('c_goals_a')" type="button" class="btn btn-light prev-step mr-2">
+            <i class="fas fa-angle-double-left mr-1 wizard-arrow"></i>Previous
+          </button>
+          <button (click)="changeTab('c_coupon_a')" type="button " class="btn btn-default next-step">
+            Continue<i class="fas fa-angle-double-right ml-1 wizard-arrow"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,389 @@
+<div *ngIf="type === 'tutor'" class="sm-padding data-table">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-green">
+              <img src="../../assets/images/tutor/profile.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Profile settings</h3>
+            <p class="card-text" translate>The profile settings of the tutor can be edited and updated here.</p>
+            <a class="color-light-red" [routerLink]="['/users/profile']" translate
+              ><span translate>Know More</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-orange">
+              <img src="../../assets/images/tutor/friend.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Invite a Friend</h3>
+            <p class="card-text" translate>The tutors can invite their friends to the platform.</p>
+            <a class="color-light-red" [routerLink]="['/users/profile']" translate
+              ><span translate>Know More</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-dark-green">
+              <img src="../../assets/images/tutor/webinar-topic.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Group Class</h3>
+            <p class="card-text" translate>
+              The webinars of the group classes posted by the tutor will be displayed here.
+            </p>
+            <a class="color-light-red" [routerLink]="['/users/webinars']" translate
+              ><span translate>Know More</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-blue">
+              <img src="../../assets/images/tutor/add-new-webinar.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Create a group class</h3>
+            <p class="card-text" translate>The tutor can create a new group class from here.</p>
+            <a class="color-light-red" [routerLink]="['/users/webinars/create']" translate
+              ><span translate>Know More</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-green">
+              <img src="../../assets/images/tutor/calendar.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Courses List</h3>
+            <p class="card-text" translate>The courses created by the tutor will be listed here.</p>
+            <a class="color-light-red" [routerLink]="['/users/courses']" translate
+              ><span translate>Know More</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-blue">
+              <img src="../../assets/images/tutor/1-on-1-appointment.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Create a course</h3>
+            <p class="card-text" translate>The tutor can create a new course.</p>
+            <a class="color-light-red" [routerLink]="['/users/courses/create']" translate
+              ><span translate>Know More</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-red">
+              <img src="../../assets/images/tutor/webinar-appointment.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Group class bookings</h3>
+            <p class="card-text" translate>The appointments made by this tutor for the group classes.</p>
+            <a class="color-light-red" [routerLink]="['/users/appointments']" translate
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-purple">
+              <img src="../../assets/images/tutor/payouts.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Payout request</h3>
+            <p class="card-text" translate>Shows the earning and payout status of the tutor.</p>
+            <a class="color-light-red" [routerLink]="['/users/payout/request']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-dark-green">
+              <img src="../../assets/images/tutor/calendar.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Set your calendar</h3>
+            <p class="card-text" translate>Allows the tutor to book appointments for his one-one class.</p>
+            <a class="color-light-red" [routerLink]="['/users/schedule']" translate
+              ><span translate>Know More</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-blue">
+              <img src="../../assets/images/tutor/1-on-1-appointment.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>1-1 class bookings</h3>
+            <p class="card-text" translate>The appointments made by this tutor for the one -one class.</p>
+            <a class="color-light-red" [routerLink]="['/users/appointments']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-orange">
+              <img src="../../assets/images/tutor/my-earnings.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Earnings dashboard</h3>
+            <p class="card-text" translate>The earnings made by this tutor.</p>
+            <a class="color-light-red" [routerLink]="['/users/payout/request']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-dark-green">
+              <img src="../../assets/images/tutor/transactions.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Transactions</h3>
+            <p class="card-text" translate>The transactions made by this tutor with other users.</p>
+            <a class="color-light-red" [routerLink]="['/users/transaction/list']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-green">
+              <img src="../../assets/images/tutor/bank-info.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Add a bank info</h3>
+            <p class="card-text" translate>The tutor add a PayPal and Bank account for payouts.</p>
+            <a class="color-light-red" [routerLink]="['/users/payout/account/create']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-blue">
+              <img src="../../assets/images/tutor/1-on-1-classes.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Messages</h3>
+            <p class="card-text" translate>The conversations of this tutor with other tutors or students.</p>
+            <a class="color-light-red" [routerLink]="['/users/messages/conversations']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- user's dashboard -->
+<div *ngIf="type === 'student' || type === 'parent'" class="sm-padding data-table">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-green">
+              <img src="../../assets/images/dashboard/webinar-classes.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>My webinar appointments</h3>
+            <p class="card-text" translate>The appointments made by the students for the group classes.</p>
+
+            <a class="color-light-red" [routerLink]="['/users/appointments']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-orange">
+              <img src="../../assets/images/dashboard/webinar-categories.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Browse Group class categories </h3>
+            <p class="card-text" translate>The students can filter by categories and browse the group classes.</p>
+            <a class="color-light-red" [routerLink]="['/categories']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-red">
+              <img src="../../assets/images/dashboard/webinar-categories.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Browse Course categories  </h3>
+            <p class="card-text" translate>The students can filter by categories and browse the courses.</p>
+            <a class="color-light-red" [routerLink]="['/categories']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-dark-green">
+              <img src="../../assets/images/dashboard/subjects.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Browse Subjects</h3>
+            <p class="card-text" translate>The students can filter by subjects and browse.</p>
+
+            <a class="color-light-red" [routerLink]="['/tutors/subject']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-blue">
+              <img src="../../assets/images/dashboard/teacher.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Find a Teacher</h3>
+            <p class="card-text" translate>
+              The students can find tutors with name, subjects, categories and availability.
+            </p>
+            <a class="color-light-red" [routerLink]="['/tutors']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-dark-green">
+              <img src="../../assets/images/dashboard/1-on-1-classes.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>My 1-on-1 appointments</h3>
+            <p class="card-text" translate>The appointments made by the students for the 1-1 classes.</p>
+            <a class="color-light-red" [routerLink]="['/users/appointments']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-blue">
+              <img src="../../assets/images/dashboard/transactions.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>My Transactions</h3>
+            <p class="card-text" translate>Students sees all his purchases /transactions for 1-1 and webinar here.</p>
+            <a class="color-light-red" [routerLink]="['/users/transaction/list']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-red">
+              <img src="../../assets/images/dashboard/refund-request.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Refund Request</h3>
+            <p class="card-text" translate>The refund request for the student will be displayed.</p>
+            <a class="color-light-red" [routerLink]="['/users/refund/request']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-purple">
+              <img src="../../assets/images/dashboard/messages.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>My Messages</h3>
+            <p class="card-text" translate>The conversations of the student with other users.</p>
+            <a class="color-light-red" [routerLink]="['/users/messages/conversations']"
+              ><span translate><span translate>Know More</span></span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

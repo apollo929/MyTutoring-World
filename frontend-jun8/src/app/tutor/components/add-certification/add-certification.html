@@ -1,0 +1,116 @@
+<div class="modal-header">
+  <h2 class="modal-title" translate>Certificate</h2>
+
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #frm="ngForm" (submit)="submit(frm)" class="add-certification-form">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label><span translate>Title</span><span class="required">*</span></label>
+          <input
+            type="text"
+            name="title"
+            class="form-control"
+            placeholder="{{'Enter title'|translate}}"
+            [(ngModel)]="certificate.title"
+            required
+            #title="ngModel"
+          />
+          <div *ngIf="title.errors && (title.dirty || title.touched || submitted)">
+            <p [hidden]="!title.errors.required" style="color: red" translate>Title is required!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label translate>Description</label>
+          <textarea
+            name="description"
+            rows="3"
+            class="form-control"
+            placeholder="{{'Enter some text here'|translate}}"
+            [(ngModel)]="certificate.description"
+            #description="ngModel"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label><span translate>From year</span> <span class="required">*</span></label>
+          <input
+            type="number"
+            name="from-year"
+            class="form-control"
+            placeholder="{{'From year'|translate}}"
+            [(ngModel)]="certificate.fromYear"
+            required
+            #fromYear="ngModel"
+            min="1900"
+          />
+          <div *ngIf="fromYear.errors && (fromYear.dirty || fromYear.touched || submitted)">
+            <p [hidden]="!fromYear.errors.required" style="color: red" translate>From year is required!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label><span translate>To year</span> <span class="required">*</span></label>
+          <input
+            type="number"
+            name="to-year"
+            class="form-control"
+            placeholder="{{'To year'|translate}}"
+            [(ngModel)]="certificate.toYear"
+            required
+            #toYear="ngModel"
+            min="1900"
+          />
+          <div *ngIf="toYear.errors && (toYear.dirty || toYear.touched || submitted)">
+            <p [hidden]="!toYear.errors.required" style="color: red" translate>To year is required!</p>
+          </div>
+          <div *ngIf="certificate.toYear < certificate.fromYear && submitted">
+            <p style="color: red" translate>To year must be greater than from year</p>
+          </div>
+        </div>
+      </div>
+      <div class="col col-md-6">
+        <div class="form-group">
+          <label translate>Ordering</label>
+          <input
+            type="number"
+            name="ordering"
+            class="form-control"
+            placeholder="{{'Ordering'|translate}}"
+            [(ngModel)]="certificate.ordering"
+            #ordering="ngModel"
+            [pattern]="'^[0-9][0-9]*$'"
+          />
+          <div *ngIf="ordering.errors && (ordering.dirty || ordering.touched || submitted)">
+            <p [hidden]="!ordering.errors.pattern" style="color: red">This minimum ordering is <b>0</b>!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label
+            ><span translate>Document</span> <span class="required">*</span>
+            <small class="ml-1" translate> (Maximum size: {{maxFileSize}} mb)</small>
+          </label>
+          <br />
+          <span> {{certificate?.document?.name}}</span>
+          <app-file-upload [options]="mediaOptions"></app-file-upload>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-danger mr-3" translate>Submit</button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')" translate>
+          Close
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

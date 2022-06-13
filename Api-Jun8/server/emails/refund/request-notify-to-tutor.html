@@ -1,0 +1,18 @@
+{% extends '../layouts/default.html' %}
+
+{% block content %}
+<p>Hello {{tutor.name}},</p>
+<br />
+<p>You have a new refund request from {{user.name}}.</p>
+<br />
+<p>
+  <strong>Code</strong>: {{refundRequest.code}} <br />
+  <strong>Total</strong>: {{appConfig.currencySymbol}}{{refundRequest.amount}} <br />
+  <strong>Transaction code</strong>: {{transaction.code}} <br />
+</p>
+<br />
+<p>
+  <h3>Paypal Email ID: {{user.paypalEmailId || 'User has not provided paypal email ID yet'}}</h3>
+</p>
+
+{% endblock %}

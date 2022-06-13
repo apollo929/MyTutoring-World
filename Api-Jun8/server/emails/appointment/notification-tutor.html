@@ -1,0 +1,14 @@
+{% extends '../layouts/default.html' %} {% block content %}
+
+<p>Hello {{ tutor.name }}</p>
+<br />
+<p>
+  Your appointment {{webinar.name}} will start at {{startTime}}. At that time you can click
+  <a href="{{appConfig.userWebUrl}}/users/appointments/{{appointment._id}}">this link</a> to start. <br />
+  Or copy this link and open in your browser <br />
+  {{appConfig.userWebUrl}}/users/appointments/{{appointment._id}}.
+</p>
+<br />
+<p><strong>Time: </strong> {{startTime}} - {{toTime}} <br /></p>
+
+{% endblock %}

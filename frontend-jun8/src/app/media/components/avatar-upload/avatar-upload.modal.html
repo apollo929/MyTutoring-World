@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h4 class="modal-title" translate>
+    Upload avatar
+    <small class="ml-1" translate> (Expected size: 350 x 421 pixels, Maximum size: {{maxFileSize}} mb)</small>
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body row justify-content-center">
+  <div class="col-md-12 text-center">
+    <!-- <img src="../../assets/images/tutor/tutors-profile.png" alt="" /> -->
+    <img src="{{info.avatarUrl}}" alt="" />
+  </div>
+  <div class="col-md-12">
+    <small *ngIf="imageSelected.length">{{imageSelected[0].file.name}} is selected</small>
+    <app-file-upload [options]="avatarOptions"></app-file-upload>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')" translate>
+    Close
+  </button>
+</div>

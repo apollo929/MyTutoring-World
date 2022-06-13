@@ -1,0 +1,6 @@
+<div *ngIf="calendarOptions">
+  <full-calendar #calendar *ngIf="calendarVisible" [options]="calendarOptions"></full-calendar>
+  <p class="text-right mt-2" style="color: grey; font-weight: 700">
+    <i class="fas fa-clock"></i> Times are shown in local time
+  </p>
+</div>

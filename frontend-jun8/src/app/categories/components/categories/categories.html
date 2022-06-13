@@ -1,0 +1,357 @@
+<section class="sm-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="category-list">
+          <div id="accordion">
+            <div class="card border-none">
+              <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                  <button
+                    class="btn btn-link"
+                    data-toggle="collapse"
+                    data-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    <span translate>Category</span> <i class="fa fa-chevron-down float-right font-sm"></i>
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body card-category-list">
+                  <form class="mb-3">
+                    <div class="form-group">
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="{{'Search by Category' | translate}}"
+                          aria-label="Recipient's username"
+                          aria-describedby="basic-addon2"
+                          [(ngModel)]="categoryInput"
+                          [ngModelOptions]="{standalone: true}"
+                        />
+                        <div class="input-group-append">
+                          <span class="input-group-text" (click)="search($event)"><i class="fa fa-search"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="all"
+                      (change)="categoryChange('',true)"
+                      [(ngModel)]="isAllCheck"
+                      [checked]="isAllCheck"
+                      [disabled]="!categoryIds.length"
+                    />
+                    <label class="custom-control-label" for="all" translate>All</label>
+                  </div>
+                  <div class="custom-control custom-checkbox" *ngFor="let item of categoriesDisplay; let i=index">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="{{item._id}}"
+                      (change)="categoryChange(item._id)"
+                      [checked]="categoryIds.includes(item._id) && !isAllCheck"
+                    />
+                    <label class="custom-control-label" for="{{item._id}}">{{item.name}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-2">
+          <app-card-webinar class="col mb-4" *ngFor="let item of webinars" [webinar]="item"></app-card-webinar>
+        </div>
+        <div class="row mt-5">
+          <div class="col-md-12 text-center">
+            <ngb-pagination
+              [collectionSize]="total"
+              [(page)]="page"
+              [pageSize]="pageSize"
+              (pageChange)="pageChange()"
+              class="card-pagination pagination"
+              *ngIf="total > pageSize"
+            ></ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sm-padding bg-color-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+        <h2 class="" translate>See how you can improve your grades</h2>
+        <p class="content-title mt-3" translate>Learn difficult concepts in an intuitive and fun digital classroom.</p>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-3">
+        <div class="card-icon text-center">
+          <img src="assets/images/webinar/best-tutor.svg" alt="" />
+          <h4 translate>The Best Tutors.</h4>
+          <div class="border-solid"></div>
+          <p class="sub-content" translate>
+            We work with many of the bests in their subjects. All our tutors are highly experienced in their fields and
+            have proven skills and certifications in online teaching.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-icon text-center">
+          <img src="assets/images/webinar/personalized.svg" alt="" />
+          <h4 translate>Personalized.</h4>
+          <div class="border-solid"></div>
+          <p class="sub-content" translate>
+            A custom learning experience for everyone prepared by skilled tutors strictly according to the assessments,
+            strengths, and aptitude of individual learners.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-icon text-center">
+          <img src="assets/images/webinar/variety-of-subject.svg" alt="" />
+          <h4 translate>Variety of Subjects.</h4>
+          <div class="border-solid"></div>
+          <p class="sub-content" translate>
+            Learning for all levels, grades, and subjects with 1000+ skilled tutors for a variety of subjects and
+            skills. Every tutor on our platform is well-trained in eLearning skills.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-icon text-center">
+          <img src="assets/images/webinar/live-learn-cloud.svg" alt="" />
+          <h4 translate>Livelearn cloud.</h4>
+          <div class="border-solid"></div>
+          <p class="sub-content" translate>
+            All your learning resources, courses, recorded sessions, progress history, etc. is saved safely on our cloud
+            to offer you instant access irrespective of the platform or device you use.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sm-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+        <h2 class="" translate>A personalized solution to match your needs</h2>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-green">
+              <img src="assets/images/webinar/categories/parents.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Parents</h3>
+            <p class="card-text mb-0" translate>Choose a safe and secure tutoring option</p>
+            <p class="card-text" translate>
+              Reduce stress from homework while staying involved in your child's learning
+            </p>
+            <a class="color-light-red" [routerLink]="['/auth/sign-up']"
+              ><span translate>Register Now</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-orange">
+              <img src="assets/images/webinar/categories/personalized.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Personalized</h3>
+            <p class="card-text mb-0" translate>Sign up for free Learn with professional tutors</p>
+            <p class="card-text" translate>Study at your own pace with advanced digital technology</p>
+            <a class="color-light-red" [routerLink]="['/auth/sign-up']" translate
+              ><span translate>Register Now</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 rmt-4">
+        <div class="card h-100 box-shadow-xs border-none">
+          <div class="d-flex justify-content-center align-items-center pt-3">
+            <div class="img-card bg-color-dark-green">
+              <img src="assets/images/webinar/categories/tutor.svg" />
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <h3 class="card-title" translate>Tutor</h3>
+            <p class="card-text mb-0" translate>Customize a tutoring program for your school</p>
+            <p class="card-text" translate>Provide academic support beyond the classroom</p>
+            <a class="color-light-red" [routerLink]="['/auth/sign-up']"
+              ><span translate>Apply to be a livelearn tutor</span> <i class="fa fa-chevron-right font-sm ml-1"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sm-padding bg-color-light">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+        <h2 class="" translate>Get started quickly and easily</h2>
+      </div>
+    </div>
+    <div class="row text-center step-user row-cols-1 row-cols-md-3">
+      <div class="col-md-4">
+        <div class="number-step bg-color-green">1</div>
+        <h4 class="mt-2" translate>Search for subject</h4>
+      </div>
+      <div class="col-md-4">
+        <div class="number-step bg-color-orange">2</div>
+        <h4 class="mt-2" translate>Choose your tutor</h4>
+      </div>
+      <div class="col-md-4">
+        <div class="number-step bg-color-blue">3</div>
+        <h4 class="mt-2" translate>Start or schedule a lesson</h4>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- <section class="sm-padding text-center" id="testimonial">
+  <div class="row no-margin outer">
+    <div class="container">
+      <div class="row no-margin">
+        <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+          <h2 class="color-light-black" translate>What students say about our tutors</h2>
+        </div>
+        <ngx-slick-carousel
+          [config]="slideConfig"
+          class="col-md-12 col-sm-12 col-xs-12 mt-5 testimonial-slide"
+          #slickModal="slick-carousel"
+        >
+          <div ngxSlickItem class="testimonial-list position-relative">
+            <div class="teachers-img">
+              <img src="assets/images/profile/profile-01.png" />
+            </div>
+            <div class="outer">
+              <div class="inner">
+                <div class="content text-center">
+                  <p class="font-md" translate><strong translate>Arlene McCoy</strong>,<span translate>Parent</span></p>
+                  <p class="card-text" translate>This is content of McCoy</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ngxSlickItem class="testimonial-list position-relative">
+            <div class="teachers-img">
+              <img src="assets/images/profile/profile-02.png" />
+            </div>
+            <div class="outer">
+              <div class="inner">
+                <div class="content text-center">
+                  <p class="font-md"><strong translate>Alex San</strong>,<span translate>Ingenieur</span></p>
+                  <p class="card-text" translate>This is content of Alex</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ngxSlickItem class="testimonial-list position-relative">
+            <div class="teachers-img">
+              <img src="assets/images/profile/profile-03.png" />
+            </div>
+            <div class="outer">
+              <div class="inner">
+                <div class="content text-center">
+                  <p class="font-md">
+                    <strong><span translate>David</span>,</strong><span translate>Parent</span>
+                  </p>
+                  <p class="card-text" translate>This is content of David</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ngxSlickItem class="testimonial-list position-relative">
+            <div class="teachers-img">
+              <img src="assets/images/profile/profile-04.png" />
+            </div>
+            <div class="outer">
+              <div class="inner">
+                <div class="content text-center">
+                  <p class="font-md"><strong translate>Alan</strong>,<span translate>Maman</span></p>
+                  <p class="card-text" translate>This is content of Alan</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ngx-slick-carousel>
+      </div>
+    </div>
+  </div>
+</section> -->
+<section class="sm-padding text-center" id="testimonial">
+  <div class="row no-margin outer">
+    <div class="container">
+      <div class="row no-margin">
+        <div class="col-md-12 col-lg-12 col-sm-12 text-center">
+          <h2 class="color-light-black" translate>Verified Teachers - Connect Instantly</h2>
+          <p class="content-title mt-3" translate>
+            Top-notch teachers, limitless learning. Explore any interest over live video chat! Discover fun, social, and
+            safe learning experiences led by passionate teachers
+          </p>
+        </div>
+        <ngx-slick-carousel
+          class="col-md-12 col-sm-12 col-xs-12 mt-5 testimonial-slide"
+          #slickModal="slick-carousel"
+          [config]="slideConfig"
+        >
+          <div ngxSlickItem *ngFor="let tutor of tutors" class="testimonial-list position-relative">
+            <div class="teachers-img">
+              <img src="{{ tutor.avatarUrl }}" />
+            </div>
+            <div class="outer">
+              <div class="inner">
+                <div class="content text-center">
+                  <h5 class="card-title">{{ tutor.name }}</h5>
+                  <div class="rating-stars text-center">
+                    <ul id="stars">
+                      <star-rating [rate]="tutor?.ratingAvg"></star-rating>
+                      <span>{{ tutor?.ratingAvg }} ({{ tutor?.totalRating }})</span>
+                    </ul>
+                  </div>
+                  <hr />
+                </div>
+                <div class="tutor-list text-left">
+                  <h6 translate>I Can Tutor:</h6>
+                  <p class="color-blue text-line-break">
+                    <a
+                      [routerLink]="['/tutors/subject']"
+                      [queryParams]="{ subject: subject.alias }"
+                      *ngFor="let subject of tutor.subjects; let i = index"
+                      >{{ subject.name }}<span *ngIf="i < tutor.subjects.length - 1">, </span>
+                    </a>
+                  </p>
+                </div>
+              </div>
+              <a class="btn btn-footer btn-block" [routerLink]="['/appointments', tutor.username]"
+                ><i class="far fa-paper-plane color-white mr-2"></i>
+                <span> <span translate>Free Trial</span></span>
+              </a>
+            </div>
+          </div>
+        </ngx-slick-carousel>
+      </div>
+    </div>
+  </div>
+</section>

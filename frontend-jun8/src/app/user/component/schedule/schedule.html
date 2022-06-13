@@ -1,0 +1,62 @@
+<section class="sm-padding">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-md-12 col-lg-12 col-sm-12">
+        <h4 class="color-light-black" translate>Available Time Edit</h4>
+      </div>
+      <div class="col-md-12 mt-3">
+        <div class="wizard">
+          <div class="wizard-inner">
+            <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
+              <li role="presentation" [ngClass]="{'active': tab === 'schedule'}">
+                <a href="javascript:void(0)" (click)="onTabSelect('schedule')" translate>Schedule</a>
+              </li>
+              <li role="presentation" [ngClass]="{'active': tab === 'coupon'}">
+                <a href="javascript:void(0)" (click)="onTabSelect('coupon')" translate>Coupon</a>
+              </li>
+              <li role="presentation" [ngClass]="{'active': tab === 'free'}">
+                <a translate href="javascript:void(0)" (click)="onTabSelect('free')">Free Session</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" id="main_form">
+      <div class="" id="step1" [hidden]="tab !=='schedule'">
+        <div class="card-horizontal input-border">
+          <div class="row">
+            <div class="col-md-12">
+              <h5 class="color-light-black mb-4" translate>Create slot for 1on1 classes</h5>
+              <app-schedule-calendar
+                #schedulePaid
+                (onChange)="onChange($event)"
+                [type]="'subject'"
+              ></app-schedule-calendar>
+            </div>
+          </div>
+          <!-- <button class="btn btn-default mt-4">Save</button> -->
+        </div>
+      </div>
+      <div class="" id="coupon" *ngIf="tab==='coupon'">
+        <app-coupon [tutor]="tutor" *ngIf="!loading && tutor" [targetType]="'subject'"></app-coupon>
+      </div>
+      <div class="" id="free" [hidden]="tab!=='free'">
+        <div class="card-horizontal input-border">
+          <div class="row">
+            <div class="col-md-12">
+              <h5 class="color-light-black mb-4" translate>Create free sessions</h5>
+              <app-schedule-calendar
+                #scheduleFree
+                [isFree]="true"
+                (onChange)="onChange($event)"
+                [type]="'subject'"
+              ></app-schedule-calendar>
+            </div>
+          </div>
+          <!-- <button class="btn btn-default mt-4">Save</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

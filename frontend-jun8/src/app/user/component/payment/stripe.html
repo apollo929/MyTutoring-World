@@ -1,0 +1,155 @@
+<div class="payment-box first-pbox sm-padding">
+  <div class="container">
+    <div class="about-stripe card-horizontal">
+      <p>We're using Stripe payment to accept payments, send payouts, and manage all your online classes.</p>
+      <p>
+        Make sure your Stripe account is set up and activated before you can launch lessons or create group classes.
+      </p>
+      <a class="btn about-stripe-btn btn-default" target="blank" href="https://stripe.com/about">About Stripe</a>
+    </div>
+
+    <div class="payment-box card-horizontal mt-5" *ngIf="!currentUser?.accountStripeId">
+      <label class="custom-radio mr-2" translate
+        >I don't have a Stripe account yet.
+        <input type="radio" name="payment" [value]="false" [(ngModel)]="hasAccount" />
+        <span class="checkmark"></span>
+      </label>
+      <label class="custom-radio" translate
+        >I already have a Stripe account
+        <input type="radio" name="payment" [value]="true" [(ngModel)]="hasAccount" />
+        <span class="checkmark"></span>
+      </label>
+      <form
+        #frmHasAccount="ngForm"
+        (submit)="createLink()"
+        class="stripe-form input-border"
+        ngNativeValidate
+        *ngIf="hasAccount"
+      >
+        <div class="form-group">
+          <input
+            type="text"
+            class="mr-4 form-control"
+            placeholder="{{'Enter account Stripe ID' | translate}}"
+            [(ngModel)]="accountId"
+            name="account-id"
+            required
+            #acc="ngModel"
+            autocomplete="off"
+          />
+          <div *ngIf="acc.errors && (acc.dirty || acc.touched || isSubmitted)">
+            <p [hidden]="!acc.errors.required" style="color: red" translate>Please enter Stripe account ID!</p>
+          </div>
+        </div>
+        <div class="form-group" style="text-align: right">
+          <button [disabled]="sending" class="btn btn-default" type="submit" translate>Connect</button>
+        </div>
+      </form>
+      <form
+        #frm="ngForm"
+        (submit)="createAccount()"
+        class="stripe-form input-border"
+        ngNativeValidate
+        *ngIf="!hasAccount"
+      >
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label translate>Email (<span class="icon-requied">*</span>)</label>
+              <input
+                placeholder="Email"
+                required
+                type="text"
+                autocomplete="off"
+                name="email"
+                #email="ngModel"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                [(ngModel)]="account.email"
+                class="form-control"
+              />
+              <div *ngIf="email.errors && (email.dirty || email.touched || isSubmitted)">
+                <p [hidden]="!email.errors.required" class="error" style="color: red">Email is required</p>
+                <p [hidden]="!email.errors.pattern" class="error" style="color: red">Email is invalid format</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Country (<span class="icon-requied">*</span>) </label>
+              <ng-select
+                [items]="countries"
+                appendTo="body"
+                name="country"
+                bindLabel="name"
+                bindValue="code"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [(ngModel)]="account.country"
+                required
+                #country="ngModel"
+                placeholder="Select your country"
+              >
+              </ng-select>
+              <div *ngIf="country.errors && (country.dirty || country.touched || isSubmitted)">
+                <p [hidden]="!country.errors.required" style="color: red">Please select your country!</p>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-12">
+            <div class="form-group">
+              <label><span>Your business</span> (<span class="icon-requied">*</span>) </label>
+              <select class="custom-select" [(ngModel)]="account.business_type" name="business">
+                <option selected value="" translate>Select your business type</option>
+                <option [value]="'individual'">Individual</option>
+                <option [value]="'company'">Company</option>
+                <option [value]="'non_profit'">Non profit</option>
+                <option [value]="'government_entity'" [hidden]="account.country !== 'US'">Government entity</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="col-md-12">
+            <div class="form-group" style="text-align: right">
+              <button [disabled]="sending" class="about-stripe-btn btn btn-default" type="submit" translate>
+                {{hasAccount ? 'Connect' : 'Create account'}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="payment-box card-horizontal mt-5" *ngIf="currentUser?.accountStripeId">
+      <h6>Account ID: <span>{{currentUser.accountStripeId}}</span></h6>
+      <button class="btn-block w-100 my-3 about-stripe-btn btn btn-default" (click)="createLink()">
+        Link Your Account
+      </button>
+      <p>Once logged in, you can view your Stripe dashboard and manage all your payments.</p>
+    </div>
+    <div class="payment-box mt-5 card-horizontal" *ngIf="currentUser?.accountStripeId">
+      <h6 class="pb-3">Your Stripe account status:</h6>
+      <ul class="stripe list-unstyled mb-3">
+        <li>
+          Change Enable
+          <span class="complete label label-light-primary ml-2" *ngIf="statusAccount.charges_enabled">Completed</span
+          ><span class="incomplete label label-light-danger ml-2" *ngIf="!statusAccount.charges_enabled"
+            >In-completed</span
+          >
+        </li>
+        <li>
+          Detail submitted
+          <span class="label label-light-primary ml-2" *ngIf="statusAccount.details_submitted">Completed</span
+          ><span *ngIf="!statusAccount.details_submitted" class="label label-light-danger ml-2">In-completed</span>
+        </li>
+        <li>
+          Payout enable
+          <span class="label label-light-danger ml-2" *ngIf="!statusAccount.payouts_enabled">In-completed</span
+          ><span *ngIf="statusAccount.payouts_enabled" class="label label-light-primary ml-2">Completed</span>
+        </li>
+      </ul>
+      <a
+        class="btn-block w-100 mt-2 about-stripe-btn btn btn-default"
+        href="https://dashboard.stripe.com/account/onboarding/summary"
+        >View Your Dashboard On Stripe</a
+      >
+    </div>
+  </div>
+</div>

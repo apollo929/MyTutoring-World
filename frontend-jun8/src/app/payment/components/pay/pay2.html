@@ -1,0 +1,74 @@
+<section class="sm-padding">
+  <div class="container">
+    <div class="card-horizontal max-width-900 mx-auto">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Make your payment for stock market simulation</h3>
+        </div>
+      </div>
+      <form novalidate class="form-stripe" (ngSubmit)="onSubmit()">
+        <div class="row input-border mt-4" #cardInfo></div>
+        <div class="row input-border mt-4">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input class="form-control" type="text" id="name" placeholder="Jane Doe" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <div id="card-number-element" class="form-control"></div>
+              <span class="brand"><i class="pf pf-credit-card" id="brand-icon"></i></span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <div id="card-expiry-element" class="form-control"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <div id="card-cvc-element" class="form-control"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input id="postal-code" name="postal_code" class="form-control" placeholder="90210" />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="outcome">
+              <div class="error"></div>
+              <div class="success">Success! Your Stripe token is <span class="token"></span></div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="row mb-3 mt-3 row-cols-1 row-cols-lg-2">
+              <div class="col-8">
+                <img src="assets/images/dummy-card2.png" alt="" class="float-left image-md mr-2" />
+                <h5 class="font-md">1234 1234 1234 1234</h5>
+              </div>
+              <div class="col-4 text-right">
+                <span class="font-weight-bold mr-3 font-md">12/23</span>
+                <span class="font-weight-bold font-md">455</span>
+              </div>
+            </div>
+            <div class="row mb-3 mt-3 row-cols-1 row-cols-lg-2">
+              <div class="col-8">
+                <img src="assets/images/dummy-card3.png" alt="" class="float-left image-md mr-2" />
+                <h5 class="font-md">1234 1234 1234 1234</h5>
+              </div>
+              <div class="col-4 text-right">
+                <span class="font-weight-bold mr-3 font-md">12/23</span>
+                <span class="font-weight-bold font-md">455</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <button class="btn btn-green mr-2">Pay Now</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

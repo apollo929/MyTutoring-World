@@ -1,0 +1,12 @@
+<ng-template #t let-fill="fill">
+  <span class="star" [class.full]="fill === 100">
+    <span class="half" [style.width.%]="fill">
+      <i style="font-size:1em" class="fa fa-star"></i>
+    </span>
+    <i style="font-size:1em" class="fa fa-star"></i>
+  </span>
+</ng-template>
+<span class="pos-line-star">
+  <ngb-rating [(rate)]="rate" [starTemplate]="t" [readonly]="true" max="5" class="no-outline"></ngb-rating>
+  <span *ngIf="total" class="pos-line-total">({{total}})</span>
+</span>

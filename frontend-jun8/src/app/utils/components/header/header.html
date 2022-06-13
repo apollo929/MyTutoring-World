@@ -1,0 +1,100 @@
+<!-- Header Starts -->
+<div class="header">
+  <nav class="navbar navbar-expand-lg box-shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" [routerLink]="['/home']"
+        ><img src="{{appConfig?.siteLogo || 'assets/images/logo/livelearn-header-logo.png'}}"
+      /></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggle-icon"></span>
+        <span class="navbar-toggle-icon"></span>
+        <span class="navbar-toggle-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/home']" translate>Home</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/pages/how-does-it-work']" translate>How It Works</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/tutors']" translate>Choose Tutors</a>
+          </li>
+          <!-- <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/pages/teach-with-us']" translate>Teach With Us</a>
+          </li> -->
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/webinars/list']" translate>Group Classes</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/safety/safety']" translate>Safety</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/courses/list']" translate>Course</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" (click)="login()" *ngIf="!currentUser" translate>Log in</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link btn-sign-up" [routerLink]="['/auth/sign-up']" *ngIf="!currentUser" translate>Sign Up</a>
+          </li>
+          <!-- <li class="nav-item" *ngIf="isLoaded">
+            <select class="selectpicker" (change)="changeLang()" [(ngModel)]="userLang">
+              <option *ngFor="let lang of languages" selected="userLang === lang.key" ngValue="{{lang.key}}">
+                {{lang.name}}
+              </option>
+            </select>
+          </li> -->
+          <li class="nav-item" *ngIf="isLoaded" ngbDropdown>
+            <a class="dropdown-toggle nav-link" ngbDropdownToggle role="button" id="dropdownLanguage">
+              <img class="image-sm" [src]="flag" /> <span style="text-transform: uppercase"> {{userLang}}</span>
+            </a>
+            <div
+              ngbDropdownMenu
+              aria-labelledby="dropdownLanguage"
+              class="drop-menu dropdown-language"
+              style="min-width: 94px"
+            >
+              <a class="dropdown-item flags" *ngFor="let lang of languages" (click)="changeLang(lang)">
+                <img class="image-sm" [src]="lang.flag" /> {{lang.name}}
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown" *ngIf="currentUser" ngbDropdown>
+            <a class="dropdown-toggle nav-link" ngbDropdownToggle role="button" id="dropdownMenuLink">
+              <span class="color" translate>Hi </span><span class="name-top">{{currentUser?.name}}</span>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" [routerLink]="['/users/profile']"
+                ><i class="fa fa-user"></i>&nbsp;<span translate>Profile</span></a
+              >
+              <a class="dropdown-item" [routerLink]="" (click)="logout()"
+                ><i class="fa fa-lock"></i>&nbsp;<span translate>Logout</span></a
+              >
+            </div>
+          </li>
+          <!-- <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [href]="'https://kb.pinlearn.com/'" target="_blank"
+              ><i class="far fa-question-circle"></i
+            ></a>
+          </li> -->
+          <!-- <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" href="#"><i class="far fa-bell"></i></a>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+<!-- Header Ends -->

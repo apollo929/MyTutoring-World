@@ -1,0 +1,114 @@
+<div class="modal-header">
+  <h2 class="modal-title" translate>List appointments of {{webinar.name}}</h2>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <table
+    id="table_id"
+    class="table table-horizontal tble-responsive dataTable no-footer"
+    role="grid"
+    aria-describedby="table_id_info"
+  >
+    <thead>
+      <tr>
+        <th
+          tabindex="0"
+          aria-controls="table_id"
+          rowspan="1"
+          colspan="1"
+          aria-label="Start Time: activate to sort column ascending"
+        >
+          <span translate>Start Time</span>
+        </th>
+        <th
+          tabindex="0"
+          aria-controls="table_id"
+          rowspan="1"
+          colspan="1"
+          aria-label="To Time: activate to sort column ascending"
+        >
+          <span translate>To Time</span>
+        </th>
+
+        <th
+          tabindex="0"
+          aria-controls="table_id"
+          rowspan="1"
+          colspan="1"
+          aria-label="Status: activate to sort column ascending"
+        >
+          <span translate>Status</span>
+        </th>
+        <th
+          tabindex="0"
+          aria-controls="table_id"
+          rowspan="1"
+          colspan="1"
+          aria-label="Action: activate to sort column ascending"
+        >
+          <a translate>Action</a>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="!appointments.length">
+        <td translate colspan="9">There are no lessons</td>
+      </tr>
+      <tr *ngFor="let item of appointments, let i = index">
+        <td>{{item?.startTime |dstFormat | date:'dd/MM/yyyy, HH:mma'}}</td>
+        <td>{{item?.toTime |dstFormat | date:'dd/MM/yyyy, HH:mma'}}</td>
+        <td>
+          <app-appointment-status [status]="item?.status"></app-appointment-status>
+        </td>
+        <td *ngIf="type==='student'">
+          <a
+            (click)="close()"
+            [routerLink]="['/users/lessons', item._id ]"
+            class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding mr-2"
+          >
+            <i class="fa fa-eye"></i>
+          </a>
+          <a
+            *ngIf="item?.status==='pending' || item?.status === 'progressing'"
+            href="javascript:void(0)"
+            class="img-zoom"
+            (click)="joinMeeting(item?._id)"
+          >
+            <img src="{{'assets/images/zoom.png'}}" alt="" />
+          </a>
+        </td>
+        <td *ngIf="type==='tutor'">
+          <a
+            (click)="close()"
+            [routerLink]="['/users/appointments', item._id ]"
+            class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding mr-2"
+          >
+            <i class="fa fa-eye"></i>
+          </a>
+          <a
+            *ngIf="item?.status==='pending' || item?.status === 'progressing'"
+            href="javascript:void(0)"
+            class="img-zoom"
+            (click)="startMeeting(item?._id)"
+          >
+            <img src="{{'assets/images/zoom.png'}}" alt="" />
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ngb-pagination
+    [collectionSize]="total"
+    [(page)]="currentPage"
+    [pageSize]="pageSize"
+    [maxSize]="5"
+    (pageChange)="pageChange()"
+    class="float-right"
+  >
+    <ng-template ngbPaginationPrevious translate>Previous</ng-template>
+    <ng-template ngbPaginationNext translate>Next</ng-template>
+    <!-- <ng-template ngbPaginationNumber let-page>{{ currentPage }}</ng-template> -->
+  </ngb-pagination>
+</div>

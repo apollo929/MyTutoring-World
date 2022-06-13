@@ -1,0 +1,38 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "rules": {
+    "comma-dangle": 0,
+    "prefer-destructuring": 0,
+    "no-underscore-dangle": 0,
+    "prefer-promise-reject-errors": 0,
+    "no-plusplus": 0,
+    "no-unused-expressions": 0,
+    "no-console": 0,
+    "max-len": 0,
+    "global-require": 0,
+    "no-bitwise": 0,
+    "linebreak-style": 0
+  },
+  "parserOptions": {
+    "ecmaVersion": 8
+  },
+  "globals": {
+    "PopulateResponse": true,
+    "DB": true,
+    "Helper": true,
+    "Service": true,
+    "Middleware": true,
+    "AppConfig": true,
+    "AppSchema": true,
+    "Log": true,
+    "testUtil": true,
+    "request": true,
+    "expect": true,
+    "adminToken": true
+  }
+}

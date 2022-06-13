@@ -1,0 +1,201 @@
+<div class="sm-padding data-table">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm-12 col-md-2">
+        <div class="dataTables_length" id="table_id_length">
+          <label style="width: 100%" translate>Show entries</label>
+          <select
+            name="table_id_length"
+            aria-controls="table_id"
+            class="custom-select custom-select-sm form-control form-control-sm"
+            [(ngModel)]="pageSize"
+            (change)="query(type)"
+            style="width: 100%"
+          >
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-2">
+        <div class="dataTables_length" id="table_id_length">
+          <label style="width: 100%" translate>Enroll Type</label>
+          <select style="width: 100%" class="form-control" [(ngModel)]="searchFields.targetType" (change)="query(type)">
+            <option value="" selected translate>All</option>
+            <option value="webinar" translate>Webinar</option>
+            <option value="subject" translate>One to One</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-2">
+        <div class="dataTables_length" id="table_id_length">
+          <label style="width: 100%" translate> Status </label>
+          <select style="width: 100%" class="form-control" [(ngModel)]="searchFields.status" (change)="query(type)">
+            <option value="" selected translate>All status</option>
+            <option value="pending" translate>Pending</option>
+            <option value="canceled" translate>Canceled</option>
+            <option value="progressing" translate>In Progress</option>
+            <option value="completed" translate>Completed</option>
+            <option value="pending-refund" translate>Pending refund</option>
+            <option value="approved-refund" translate>Approved refund</option>
+            <option value="refunded" translate>Refunded</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div id="table_id_filter" class="dataTables_filter">
+          <label style="width: 100%" translate>Enter code:</label>
+          <input
+            style="width: 100%"
+            type="text"
+            class="form-control"
+            placeholder="{{'Enter code'|translate}}"
+            [(ngModel)]="searchFields.code"
+          />
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-2">
+        <label style="width: 100%"> </label>
+        <button class="btn btn-primary btn-pink" (click)="query(type)" translate>Filter</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <table
+          id="table_id"
+          id="table_id"
+          class="table table-horizontal tble-responsive table-user dataTable no-footer"
+          role="grid"
+          aria-describedby="table_id_info"
+        >
+          <thead>
+            <tr role="row">
+              <th>
+                <span (click)="sortBy('tutorId', 'asc')" translate>Tutor name</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'tutorId'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('subject', 'asc')" translate>Subject</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'subject'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('webinar', 'asc')" translate>Group Class</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'webinar'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('type', 'asc')" translate>Type</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'type'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('targetType', 'targetType')" translate>Enroll type</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'targetType'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('code', 'asc')" translate>Code</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'code'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('price', 'asc')" translate>Price</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'price'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('createdAt', 'asc')" translate>Created At</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'createdAt'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <span (click)="sortBy('status', 'asc')" translate>Status</span>
+                <app-sort [sortOption]="sortOption" [sortBy]="'status'" (onSort)="onSort($event)"></app-sort>
+              </th>
+              <th>
+                <a translate>Action</a>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngIf="(!transaction || (transaction && transaction.length === 0)) && !loading">
+              <td colspan="10" translate>There are no results</td>
+            </tr>
+            <tr *ngIf="loading">
+              <td colspan="10" translate><span translate>Loading</span>...</td>
+            </tr>
+            <tr *ngFor="let item of transaction, let i = index">
+              <td>{{item?.tutor?.name}}</td>
+              <td>
+                <span *ngIf="item?.tutorSubject?.name">{{item?.tutorSubject?.name}} - </span>{{item.subject &&
+                item.targetType === 'subject' ? item.subject?.name :'-'}}
+              </td>
+              <td>{{item.webinar && item.targetType === 'webinar' ? item?.webinar?.name :'-'}}</td>
+              <td>
+                <span class="label label-light-primary" *ngIf="item?.type === 'booking'" translate>Booking</span>
+                <span class="label label-light-warning" *ngIf="item?.type === 'gift'" translate>Gift</span>
+              </td>
+              <td>
+                <span class="label label-light-primary" *ngIf="item?.targetType === 'webinar'" translate>Webinar</span>
+                <span class="label label-light-info" *ngIf="item?.targetType === 'subject'" translate>One to One</span>
+              </td>
+              <td>{{item?.code}}</td>
+              <td>
+                {{(item?.price + item?.applicationFee) | currency : (config?.currencySymbol ? config?.currencySymbol + '
+                ' : '$ '): 'symbol' : '1.0'}}
+              </td>
+              <td>
+                <span *ngIf="item?.transaction">{{item?.transaction?.createdAt |dstFormat | date}}</span>
+                <span *ngIf="!item.transaction">{{item?.createdAt |dstFormat | date}}</span>
+              </td>
+              <td>
+                <span class="label label-light-warning" *ngIf="item?.status === 'pending'" translate>Pending</span>
+                <span class="label label-light-danger" *ngIf="item?.status === 'canceled'" translate>Canceled</span>
+                <span class="label label-light-primary" *ngIf="item?.status === 'progressing'" translate
+                  >In Progress</span
+                >
+                <span class="label label-light-primary" *ngIf="item?.status === 'completed'" translate>Completed</span>
+                <span class="label label-light-warning" *ngIf="item?.status === 'pending-refund'" translate
+                  >Pending refund</span
+                >
+                <span class="label label-light-primary" *ngIf="item?.status === 'approved-refund'" translate>
+                  Approved refund
+                </span>
+                <span class="label label-light-primary" *ngIf="item?.status === 'refunded'" translate>Refunded</span
+                >&nbsp;
+              </td>
+              <td>
+                <a
+                  [routerLink]="['/users/transaction', item._id ]"
+                  class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding"
+                >
+                  <i class="fa fa-eye"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <!-- <div class="col-sm-12 col-md-5">
+        <div class="dataTables_info" id="table_id_info" role="status" aria-live="polite">
+          Showing 1 to 6 of 6 entries
+        </div>
+      </div> -->
+      <div class="col-sm-12 col-md-12">
+        <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+          <ngb-pagination
+            [collectionSize]="total"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [maxSize]="5"
+            (pageChange)="pageChange(type)"
+            class="float-right"
+          >
+            <ng-template ngbPaginationPrevious translate>Previous</ng-template>
+            <ng-template ngbPaginationNext translate>Next</ng-template>
+            <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

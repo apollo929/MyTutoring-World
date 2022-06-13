@@ -1,0 +1,15 @@
+{% extends '../layouts/default.html' %} {% block content %}
+<p>Hello {{review.rater.name}},</p>
+
+<p>
+  We are sorry your review to {% if review.type === 'webinar' && review.webinar %} the class "{{ review.webinar.name }}" {% endif %} {% if review.type
+  === 'course' && review.course %} the course "{{ review.course.name }}" {% endif %} {% if review.type === 'subject' && review.appointment &&
+  review.tutor %} the appointment with the tutor {{ review.tutor.name }} {% endif %} has been removed by admin.
+</p>
+
+<p>
+  <strong>Rate:</strong> {{review.rating}} <br />
+  <strong>Comment:</strong> {{review.comment}}
+</p>
+
+{% endblock %}

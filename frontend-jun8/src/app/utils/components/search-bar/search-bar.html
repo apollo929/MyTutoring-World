@@ -1,0 +1,35 @@
+<!--Start Banner -->
+<div
+  class="banner-area d-flex justify-content-center align-items-center text-center"
+  [style]="config && config.siteBanner ? { 'background-image': 'url(' + config.siteBanner + ')' } : { 'background-image': 'url(' +  'assets/images/banner/livelearn-main-banner-image.png' + ')' }"
+>
+  <div class="bg-overlay"></div>
+  <div class="container">
+    <div class="banner-heading">
+      <h1 class="color-white" style="font-family: Calibri" translate>Practice Makes Progress</h1>
+      <p class="color-white banner-subtitle mt-n3" translate>Learn at your own space</p>
+      <div class="input-group mb-3 max-width-700 mx-auto">
+        <div class="input-group-prepend">
+          <span class="input-group-text border-left-rounded-md" (click)="submit()">
+            <i class="fas fa-search color-light-red"></i>
+          </span>
+        </div>
+        <ng-template #rt let-r="result" let-t="term">
+          <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+        </ng-template>
+        <input
+          placeholder="{{'What would you like to learn?' | translate}}"
+          id="typeahead-template"
+          type="search"
+          class="form-control border-left-none border-right-rounded-md"
+          [ngbTypeahead]="search"
+          [resultTemplate]="rt"
+          [inputFormatter]="formatter"
+          (selectItem)="onSelect($event)"
+          (keypress)="keyPress($event)"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Ends Banner -->

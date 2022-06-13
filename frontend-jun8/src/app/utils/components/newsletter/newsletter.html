@@ -1,0 +1,24 @@
+<form class="searchform" #frm="ngForm" (submit)="submit(frm)">
+  <div class="input-group mb-3">
+    <input
+      type="email"
+      class="form-control"
+      placeholder="{{'user@example.com' | translate}}"
+      [(ngModel)]="info.email"
+      name="email"
+      required
+      #email="ngModel"
+      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+    />
+    <div class="input-group-append">
+      <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+    </div>
+  </div>
+  <div *ngIf="info.email && email.errors && (email.dirty || email.touched || submitted)">
+    <p [hidden]="!email.errors.required" class="error" translate>Email is required</p>
+    <p [hidden]="!email.errors.pattern" class="error" translate>Please enter a valid email address</p>
+  </div>
+  <p>
+    <span translate>Get the most recent updates from our site and be updated your self...</span>
+  </p>
+</form>

@@ -1,0 +1,143 @@
+<div class="sm-padding data-table">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row align-items-center">
+          <div class="col-sm-12 col-md-6">
+            <form class="form-inline">
+              <div class="dataTables_length" id="table_id_length">
+                <label>
+                  <span translate>Show</span>
+                  <select
+                    name="table_id_length"
+                    aria-controls="table_id"
+                    class="custom-select custom-select-sm form-control form-control-sm"
+                    [(ngModel)]="filterTransactionOptions.pageSize"
+                    (change)="query()"
+                  >
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  <span translate>entries</span>
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <form id="table_id_filter" class="dataTables_filter form-inline float-right">
+              <label translate
+                ><span translate>Search:</span>
+                <input
+                  type="search"
+                  class="form-control form-control-sm"
+                  aria-controls="table_id"
+                  placeholder="{{'Search here'|translate}}"
+                  (keyup)="doSearch($event)"
+                />
+              </label>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <table
+              id="table_id"
+              id="table_id"
+              class="table table-horizontal tble-responsive table-user dataTable no-footer"
+              role="grid"
+              aria-describedby="table_id_info"
+            >
+              <thead>
+                <tr role="row">
+                  <th>
+                    <span (click)="sortBy('name', 'asc')" translate>Course name</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'name'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+
+                  <th>
+                    <span translate>Categories</span>
+                  </th>
+
+                  <th>
+                    <span (click)="sortBy('createdAt', 'asc')" translate>Created At</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'createdAt'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <span (click)="sortBy('progress', 'asc')" translate>Progress</span>
+                    <app-sort [sortOption]="sortOption" [sortBy]="'progress'" (onSort)="onSort($event)"></app-sort>
+                  </th>
+                  <th>
+                    <a translate>Action</a>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngIf="(!course || (course && course.length === 0)) && !loading">
+                  <td colspan="10" translate>There are no course purchased</td>
+                </tr>
+                <tr *ngIf="loading">
+                  <td colspan="10" translate><span translate>Loading</span>...</td>
+                </tr>
+                <tr *ngFor="let item of course, let i = index">
+                  <td>
+                    <a [routerLink]="['/courses/detail/', item?.alias]" routerLinkActive="router-link-active"
+                      >{{item?.name}}</a
+                    >
+                  </td>
+                  <td>
+                    <span *ngFor="let cat of item.categories; let i = index"
+                      >{{ cat.name }}<span *ngIf="i < item.categories.length - 1">, </span></span
+                    >
+                  </td>
+                  <td>
+                    <span>{{item?.createdAt |dstFormat | date}}</span>
+                  </td>
+                  <td>
+                    <span class="label label-light-warning" *ngIf="item?.progress !== '100'" translate
+                      >{{item?.progress ? item?.progress : 0}}%</span
+                    >
+                    <span class="label label-light-primary" *ngIf="item?.progress === '100'" translate>Completed</span>
+                  </td>
+                  <td>
+                    <a
+                      class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding"
+                      [routerLink]="['/courses/detail/', item?.alias]"
+                      routerLinkActive="router-link-active"
+                      ><i class="fa fa-eye"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <!-- <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info" id="table_id_info" role="status" aria-live="polite">
+              Showing 1 to 6 of 6 entries
+            </div>
+          </div> -->
+          <div class="col-sm-12 col-md-12">
+            <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+              <ngb-pagination
+                [collectionSize]="filterTransactionOptions.total"
+                [(page)]="filterTransactionOptions.currentPage"
+                [pageSize]="filterTransactionOptions.pageSize"
+                [maxSize]="5"
+                (pageChange)="pageChange()"
+                class="float-right"
+              >
+                <ng-template ngbPaginationPrevious translate>Previous</ng-template>
+                <ng-template ngbPaginationNext translate>Next</ng-template>
+                <!-- <ng-template ngbPaginationNumber let-page>{{ filterTransactionOptions.currentPage }}</ng-template> -->
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+require('./config.controller');
+require('./auth.controller');
+require('./user.controller');
+require('./post.controller');
+require('./media.controller');
+require('./banner.controller');
+require('./newsletter.controller');
+require('./contact.controller');
+require('./i18n.controller');
+require('./subject.controller');
+require('./tutor.controller');
+require('./appointment.controller');
+require('./transaction.controller');
+require('./calendar.controller');
+require('./booking.controller');
+require('./payout.controller');
+require('./review.controller');

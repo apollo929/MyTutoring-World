@@ -1,0 +1,119 @@
+<div class="d-flex flex-column flex-root">
+  <!--begin::Login-->
+  <div class="login d-flex flex-column flex-lg-row flex-column-fluid">
+    <!--begin::Aside-->
+    <div class="login-aside d-flex flex-column flex-row-auto">
+      <!--begin::Aside Top-->
+      <div class="d-flex flex-column-auto flex-column pt-100">
+        <!--begin::Aside header-->
+        <a [routerLink]="['/home']" class="login-logo text-center pt-lg-25 pb-10">
+          <img src="{{ appConfig?.siteLogo || '../assets/images/logo/livelearn-header-logo.png' }}" class="" alt="" />
+        </a>
+        <!--end::Aside header-->
+        <!--begin::Aside Title-->
+        <p class="mt-4 text-center sub-content" translate>
+          <span translate>Join Pinlearn For Free</span> <br />
+          <span translate>Explore a huge range of subjects.</span>
+        </p>
+        <!--end::Aside Title-->
+      </div>
+      <!--end::Aside Top-->
+      <!--begin::Aside Bottom-->
+      <div
+        class="aside-img"
+        [style]="
+          appConfig && appConfig.signupImage
+            ? { 'background-image': 'url(' + appConfig.signupImage + ')' }
+            : { 'background-image': 'url(' + 'assets/images/login/signup-bg.svg' + ')' }
+        "
+      ></div>
+      <!--end::Aside Bottom-->
+    </div>
+    <!--begin::Aside-->
+    <!--begin::Content-->
+    <div class="login-content d-flex justify-content-center align-items-center w-100">
+      <!--begin::Wrapper-->
+      <div class="d-flex justify-content-center w-100 p-5">
+        <!--begin::Signin-->
+        <div class="login-form">
+          <!--begin::Form-->
+          <form class="form" (submit)="login(frm)" #frm="ngForm">
+            <!--begin::Title-->
+            <div class="pb-4">
+              <h3 class="" translate>Sign In</h3>
+              <p class="text-muted sub-content">
+                <span translate>Don't have an account?</span>&nbsp;
+                <a [routerLink]="['/auth/sign-up']" class="color-light-red" translate>Create Account</a>
+              </p>
+            </div>
+            <!--begin::Title-->
+            <!--begin::Form group-->
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="{{ 'Enter your email' | translate }}"
+                required
+                type="text"
+                autocomplete="off"
+                name="email"
+                #email="ngModel"
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                [(ngModel)]="credentials.email"
+              />
+              <div *ngIf="email.errors && (email.dirty || email.touched || submitted)">
+                <p [hidden]="!email.errors.required" class="error" translate>Email is required</p>
+                <p [hidden]="!email.errors.pattern" class="error" translate>Email is invalid format</p>
+              </div>
+            </div>
+            <!--end::Form group-->
+            <!--begin::Form group-->
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="{{ 'Password' | translate }}"
+                required
+                type="password"
+                autocomplete="off"
+                name="password"
+                [minlength]="6"
+                #password="ngModel"
+                [(ngModel)]="credentials.password"
+              />
+              <div *ngIf="password.errors && (password.dirty || password.touched || submitted)">
+                <p [hidden]="!password.errors.minlength" class="error" translate>
+                  Password must be from 6 characters length
+                </p>
+                <p [hidden]="!password.errors.required" class="error" translate>Password is required</p>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="font-sm pt-3 mt-3 font-weight-600 ml-4">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [(ngModel)]="credentials.rememberMe"
+                  name="rememberMe"
+                />
+                <label translate class="color-light-red font-sm" for="rememberMe"> Remember Me </label>
+              </div>
+              <a [routerLink]="['/auth/forgot']" class="color-light-red pt-3 font-sm mt-3" translate
+                ><span translate>Forgot Password</span> ?</a
+              >
+            </div>
+            <div class="text-center">
+              <button class="btn btn-default mt-5 btn-block" type="submit" translate>Sign In</button>
+            </div>
+            <!--end::Form group-->
+            <!--begin::Action-->
+            <!--end::Action-->
+          </form>
+          <!--end::Form-->
+        </div>
+        <!--end::Signin-->
+      </div>
+      <!--end::Wrapper-->
+    </div>
+    <!--end::Content-->
+  </div>
+  <!--end::Login-->
+</div>
