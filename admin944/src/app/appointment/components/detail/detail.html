@@ -1,0 +1,128 @@
+<div class="row">
+  <div class="col col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>Appointment information</strong>
+      </div>
+      <div class="card-body">
+        <table id="table_id" class="table table-horizontal tble-responsive">
+          <tbody>
+            <tr>
+              <td translate style="min-width: 200px">Tutor name :</td>
+              <td>
+                <a [routerLink]="['/tutor/update', appointment.tutor._id]" *ngIf="appointment && appointment.tutor"
+                  >{{appointment?.tutor?.name}}</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td translate>User name :</td>
+              <td>
+                <a [routerLink]="['/users/update', appointment.user._id]" *ngIf="appointment && appointment.user"
+                  >{{appointment?.user?.name}}</a
+                >
+              </td>
+            </tr>
+            <tr *ngIf="appointment.targetType === 'subject'">
+              <td translate>Subject:</td>
+              <td>
+                <span>{{appointment?.subject?.name}}</span>
+              </td>
+            </tr>
+            <tr *ngIf="appointment.targetType === 'webinar'">
+              <td translate>Group Class:</td>
+              <td>
+                <span>{{appointment?.webinar?.name}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td translate>Start Time :</td>
+              <td><span> {{appointment.startTime | date:'short'}} </span></td>
+            </tr>
+            <tr>
+              <td translate>To Time :</td>
+              <td><span> {{appointment.toTime | date:'short'}} </span></td>
+            </tr>
+            <tr>
+              <td translate>Price:</td>
+              <td>
+                <span *ngIf="appointment?.isFree" translate> Free </span>
+                <span *ngIf="!appointment?.transaction?.couponCode">
+                  {{appointment?.transaction?.price | currency : (config?.currencySymbol ? config?.currencySymbol + ' '
+                  : '$'): 'symbol' : '1.0'}}
+                </span>
+                <span *ngIf="appointment?.transaction?.couponCode">
+                  {{appointment?.transaction?.discountAmount + appointment?.transaction?.discountPrice | currency :
+                  (config?.currencySymbol ? config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="appointment?.transaction?.couponCode">
+              <td translate>Discount Amount:</td>
+              <td>
+                <span class="highlight-red"
+                  >{{appointment?.transaction?.discountAmount | currency : (config?.currencySymbol ?
+                  config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="appointment?.transaction?.couponCode">
+              <td translate>Price Discount:</td>
+              <td>
+                <span class="highlight-red"
+                  >{{appointment?.transaction?.discountPrice | currency : (config?.currencySymbol ?
+                  config?.currencySymbol + ' ' : '$ '): 'symbol' : '1.0'}}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="appointment?.couponCode">
+              <td translate>Coupon code:</td>
+              <td>
+                <span> {{appointment?.couponCode}} </span>
+              </td>
+            </tr>
+            <tr>
+              <td translate>Payment :</td>
+              <td>
+                <span class="label label-light-primary" *ngIf="appointment.paid" translate>Paid</span>
+                <span class="label label-light-danger" *ngIf="!appointment.paid" translate>Unpaid</span>
+              </td>
+            </tr>
+            <tr>
+              <td translate>Status :</td>
+              <td>
+                <appointment-status [status]="appointment?.status"></appointment-status>
+              </td>
+            </tr>
+            <tr *ngIf="appointment.recordings?.shareUrl">
+              <td><span translate>Preview</span> :</td>
+              <td>
+                <a [href]="appointment.recordings?.shareUrl" target="_blank">
+                  <button type="button" class="btn btn-primary btn-pink">
+                    <span translate>Click to view video</span>
+                    <span class="badge badge-light"><i class="fa fa-play"></i></span>
+                  </button>
+                </a>
+              </td>
+            </tr>
+            <tr *ngIf="appointment.recordings?.shareUrl && appointment.recordings?.password">
+              <td><span translate>Password for record</span> :</td>
+              <td>
+                <p>{{appointment.recordings?.password}}</p>
+                <small translate
+                  >If asked to enter a password when viewing the record, please enter the password above.</small
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <app-ngbd-modal-component
+          *ngIf="appointment.status != 'canceled' && appointment.status != 'completed' && appointment.status != 'not-start'"
+          [appoinment]="appointment"
+          (afterCancel)="cancelEvent($event)"
+        ></app-ngbd-modal-component>
+      </div>
+    </div>
+  </div>
+</div>

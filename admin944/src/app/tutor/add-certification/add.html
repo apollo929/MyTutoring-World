@@ -1,0 +1,119 @@
+<div class="modal-header">
+  <h2 class="modal-title">Certificate</h2>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #frm="ngForm" (submit)="submit(frm)">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Title <span class="required">*</span></label>
+          <input
+            type="text"
+            name="title"
+            class="form-control"
+            placeholder="Enter title"
+            [(ngModel)]="certificate.title"
+            required
+            #title="ngModel"
+          />
+          <div *ngIf="title.errors && (title.dirty || title.touched || submitted)">
+            <p [hidden]="!title.errors.required" style="color: red">Title is required!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Description</label>
+          <textarea
+            name="description"
+            rows="3"
+            class="form-control"
+            placeholder="Enter some text here"
+            [(ngModel)]="certificate.description"
+            #description="ngModel"
+          ></textarea>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>From year <span class="required">*</span></label>
+          <input
+            type="number"
+            name="from-year"
+            class="form-control"
+            placeholder="From year"
+            [(ngModel)]="certificate.fromYear"
+            required
+            #fromYear="ngModel"
+            min="1900"
+          />
+          <div *ngIf="fromYear.errors && (fromYear.dirty || fromYear.touched || submitted)">
+            <p [hidden]="!fromYear.errors.required" style="color: red">From year is required!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>To year <span class="required">*</span></label>
+          <input
+            type="number"
+            name="to-year"
+            class="form-control"
+            placeholder="To year"
+            [(ngModel)]="certificate.toYear"
+            required
+            #toYear="ngModel"
+            min="1900"
+          />
+          <div *ngIf="toYear.errors && (toYear.dirty || toYear.touched || submitted)">
+            <p [hidden]="!toYear.errors.required" style="color: red">To year is required!</p>
+          </div>
+          <div *ngIf="certificate.toYear < certificate.fromYear && submitted">
+            <p style="color: red">To year must be greater than from year</p>
+          </div>
+        </div>
+      </div>
+      <div class="col col-md-6">
+        <div class="form-group">
+          <label>Ordering</label>
+          <input
+            type="number"
+            name="ordering"
+            class="form-control"
+            placeholder="Ordering"
+            [(ngModel)]="certificate.ordering"
+            #ordering="ngModel"
+            [pattern]="'^[0-9][0-9]*$'"
+          />
+          <div *ngIf="ordering.errors && (ordering.dirty || ordering.touched || submitted)">
+            <p [hidden]="!ordering.errors.pattern" style="color: red">This minimum ordering is <b>0</b>!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label
+            >Document <span class="required">*</span
+            ><small class="ml-1"> (Maximum size: {{maxFileSize}} mb)</small></label
+          >
+          <br />
+          <span> {{certificate?.document?.name}}</span>
+          <app-file-upload [options]="mediaOptions"></app-file-upload>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Verified</label><br />
+          <input type="checkbox" [(ngModel)]="certificate.verified" name="open" /> Check the box to verify the document
+        </div>
+      </div>
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-outline-success">Submit</button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Close</button>
+      </div>
+    </div>
+  </form>
+</div>

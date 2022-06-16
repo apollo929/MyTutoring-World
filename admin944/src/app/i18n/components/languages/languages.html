@@ -1,0 +1,59 @@
+<p class="total-items"><b>Total languages: {{total}}</b></p>
+<div class="card">
+  <div class="card-block table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Name</th>
+          <th>Default</th>
+          <th>Active</th>
+          <th>Created at</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items, let i = index">
+          <td>{{item.key}}</td>
+          <td>{{item.name}}</td>
+          <td>
+            <a class="badge badge-success" *ngIf="item.isDefault" (click)="update(item, 'isDefault', false)">Y</a>
+            <a class="badge badge-default" *ngIf="!item.isDefault" (click)="update(item, 'isDefault', true)">N</a>
+          </td>
+          <td>
+            <a class="badge badge-success" *ngIf="item.isActive" (click)="update(item, 'isActive', false)">Y</a>
+            <a class="badge badge-danger" *ngIf="!item.isActive" (click)="update(item, 'isActive', true)">N</a>
+          </td>
+          <td>
+            <span>{{item.createdAt | date}}</span>
+          </td>
+          <td>
+            <a (click)="addNew(item)">
+              <i class="fa fa-pencil"></i>
+            </a>
+            &nbsp; &nbsp;
+            <a (click)="remove(item, i)">
+              <i class="fa fa-trash"></i>
+            </a>
+            &nbsp; &nbsp;
+            <a [routerLink]="['/i18n/translations', item.key]">
+              <i class="fa fa-language"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6">
+            <button type="button" class="btn btn-primary" (click)="addNew()">Add new</button>
+          </td>
+        </tr>
+        <tr [hidden]="total <= 10">
+          <td colspan="6">
+            <ngb-pagination [collectionSize]="total" [(page)]="page" (pageChange)="query()"></ngb-pagination>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body table-responsive">
+    <button class="btn btn-warning pull-right" type="button" (click)="pull()">Pull text</button>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Text</th>
+          <th>Translation</th>
+          <th>#</th>
+        </tr>
+        <tr>
+          <th>
+            <input type="text" class="form-control" placeholder="Search text" [(ngModel)]="search.text" name="text" />
+          </th>
+          <th>
+            <input type="text" class="form-control" placeholder="Search translation" [(ngModel)]="search.translation" name="translation" />
+          </th>
+          <th>
+            <button class="btn btn-primary" type="button" (click)="query()">Search</button>
+
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items, let i= index">
+          <td>{{item.text}}</td>
+          <td>
+            <input type="text" class="form-control" [(ngModel)]="item.translation" name="translation{{i}}" />
+          </td>
+          <td>
+            <button (click)="update(item)" class="btn btn-primary">Update</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="display-inline" [hidden]="total <10">
+      <div class="pull-right">
+        <ngb-pagination [collectionSize]="total" [(page)]="page" [maxSize]="5" [pageSize]="10" (pageChange)="query()"></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,195 @@
+<div class="row">
+  <div class="col col-md-12">
+    <p class="total-items"><b>Total students: {{count}}</b></p>
+    <div class="card">
+      <div class="card-block table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                <a (click)="sortBy('name', 'desc')">Name</a>
+                <span *ngIf="sortOption.sortBy=='name'">
+                  <a (click)="sortBy('name', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('name', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('email', 'desc')">Email</a>
+                <span *ngIf="sortOption.sortBy=='email'">
+                  <a (click)="sortBy('email', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('email', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <!-- <th>
+            <a (click)="sortBy('role', 'desc')">Role</a>
+            <span *ngIf="sortOption.sortBy=='role'">
+              <a (click)="sortBy('role', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('role', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th> -->
+              <th>
+                <a (click)="sortBy('isActive', 'desc')">Active</a>
+                <span *ngIf="sortOption.sortBy=='isActive'">
+                  <a (click)="sortBy('isActive', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('isActive', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('emailVerified', 'desc')">Email Verified</a>
+                <span *ngIf="sortOption.sortBy=='emailVerified'">
+                  <a (click)="sortBy('emailVerified', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('emailVerified', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('createdAt', 'desc')">Created at</a>
+                <span *ngIf="sortOption.sortBy=='createdAt'">
+                  <a (click)="sortBy('createdAt', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('createdAt', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>Actions</th>
+            </tr>
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  [(ngModel)]="searchFields.name"
+                  placeholder="Enter name"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  name="email"
+                  class="form-control"
+                  [(ngModel)]="searchFields.email"
+                  placeholder="Enter email"
+                />
+              </td>
+              <!-- <td>
+            <select class="form-control" [(ngModel)]="searchFields.role">
+              <option value="">All</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </td> -->
+              <td>
+                <select class="form-control" [(ngModel)]="searchFields.isActive">
+                  <option value="" selected>All</option>
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
+              </td>
+              <td>
+                <select class="form-control" [(ngModel)]="searchFields.emailVerified">
+                  <option value="" selected>All</option>
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
+              </td>
+              <td></td>
+              <td>
+                <button class="btn btn-primary" (click)="query()">Filter</button>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items, let i = index">
+              <td>{{item.name}}</td>
+              <td>{{item.email}}</td>
+              <!-- <td>{{item.role}}</td> -->
+              <td>
+                <!-- <span class="badge badge-danger" *ngIf="!item.isActive">N</span>
+            <span class="badge badge-success" *ngIf="item.isActive">Y</span> -->
+                <span
+                  class="badge badge-warning badge-update"
+                  *ngIf="!item.isActive"
+                  (click)="update(item, 'isActive', true)"
+                  >N</span
+                >
+                <span
+                  class="badge badge-success badge-update"
+                  *ngIf="item.isActive"
+                  (click)="update(item,'isActive', false)"
+                  >Y</span
+                >
+              </td>
+              <td>
+                <!-- <span class="badge badge-danger" *ngIf="!item.emailVerified">N</span>
+            <span class="badge badge-success" *ngIf="item.emailVerified">Y</span> -->
+                <span
+                  class="badge badge-warning badge-update"
+                  *ngIf="!item.emailVerified"
+                  (click)="update(item, 'emailVerified', true)"
+                  >N</span
+                >
+                <span
+                  class="badge badge-success badge-update"
+                  *ngIf="item.emailVerified"
+                  (click)="update(item,'emailVerified', false)"
+                  >Y</span
+                >
+              </td>
+              <td>
+                <span>{{item.createdAt | date}}</span>
+              </td>
+              <td>
+                <a
+                  [routerLink]="['/users/update', item._id ]"
+                  *ngIf="item.type === 'user' || item.type === 'student' || item.type === 'parent'"
+                >
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a [routerLink]="['/tutor/update', item._id ]" *ngIf="item.type === 'tutor'">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                &nbsp;
+                <a (click)="remove(item, i)">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr *ngIf="count > pageSize">
+              <td colspan="7">
+                <ngb-pagination
+                  [collectionSize]="count"
+                  [(page)]="currentPage"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  (pageChange)="query()"
+                ></ngb-pagination>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

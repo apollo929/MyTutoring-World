@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="card-body" *ngIf="banner">
+    <form (submit)="submit(frm)" #frm>
+      <div class="row">
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              name="bannerName"
+              class="form-control"
+              placeholder="Enter title"
+              [(ngModel)]="banner.title"
+              required
+            />
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label>Content</label>
+            <textarea
+              class="form-control"
+              name="bannerdesc"
+              placeholder="Enter some text"
+              [(ngModel)]="banner.content"
+            ></textarea>
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label>Image <app-media-select> (onSelect)="selectMedia($event)"></app-media-select></label>
+            <div *ngIf="media">
+              <img [src]="media.thumbUrl" class="img-thumbnail" />
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label>Link</label>
+            <input
+              type="text"
+              name="link"
+              class="form-control"
+              placeholder="Enter url of the banner"
+              [(ngModel)]="banner.link"
+              required
+            />
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label>Position</label>
+            <select name="Position" [(ngModel)]="banner.position" class="form-control">
+              <option value="default">Default</option>
+            </select>
+          </div>
+        </div>
+        <div class="col col-md-12">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

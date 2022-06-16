@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add new language</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form (submit)="create(frm)" #frm="ngForm">
+    <div class="form-group">
+      <!-- <label>Select languages</label> -->
+      <div class="form-group">
+        <label>Select languages</label>
+        <ng-select
+          [items]="isoLangs"
+          [hideSelected]="true"
+          bindLabel="text"
+          [closeOnSelect]="true"
+          name="lang"
+          placeholder="Select languages"
+          (change)="changeLang($event)"
+          bindValue="language.code"
+          [(ngModel)]="lang.key"
+        >
+        </ng-select>
+      </div>
+      <!-- <select class="form-control" [(ngModel)]="lang.key" name="key" #key="ngModel">
+        <option *ngFor="let item of langs" [value]="item.language.code">{{item.name}}-{{item.language.name}}</option>
+        >
+      </select> -->
+      <!-- <div *ngIf="key.errors && (key.dirty || key.touched || submitted)">
+        <p [hidden]="!key.errors.required" class="error">Language key is required</p>
+      </div> -->
+    </div>
+    <div class="form-group">
+      <label>Name</label>
+      <input
+        type="text"
+        disabled="true"
+        [(ngModel)]="lang.name"
+        class="form-control"
+        name="name"
+        required
+        #name="ngModel"
+      />
+    </div>
+    <div class="form-group">
+      <label>Default? <input type="checkbox" [(ngModel)]="lang.isDefault" name="default" /></label>
+    </div>
+    <div class="form-group">
+      <label>Active? <input type="checkbox" [(ngModel)]="lang.isActive" name="active" /></label>
+    </div>
+    <div class="form-group">
+      <label>JSON file language</label>
+      <br />
+      <small *ngIf="jsonFile">{{jsonFile?.name}}</small>
+      <small *ngIf="filesSelected">{{filesSelected}} is selected</small>
+      <app-file-upload [options]="jsonOptions"></app-file-upload>
+    </div>
+    <div class="form-group">
+      <button *ngIf="!lang._id" class="btn btn-primary" type="submit">Create</button>
+      <button *ngIf="lang._id" class="btn btn-primary" type="submit">Update</button>
+    </div>
+  </form>
+</div>

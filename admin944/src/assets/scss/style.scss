@@ -1,0 +1,125 @@
+@import 'variable';
+@import '../../../node_modules/bootstrap/scss/bootstrap';
+@import 'app.scss';
+@import 'pages.scss';
+@import 'sidebar.scss';
+@import '../scss/icons/font-awesome/css/font-awesome.min.css';
+@import 'widgets';
+@import 'grid.scss';
+@import 'spinners.scss';
+@import 'animate.css';
+@import 'theme-settings.scss';
+@import 'custom.scss';
+
+@import '../../../node_modules/ngx-toastr/toastr.css';
+@import '../../../node_modules/@ng-select/ng-select/themes/default.theme.css';
+@import '../../../node_modules/froala-editor/css/froala_editor.pkgd.min.css';
+@import '../../../node_modules/froala-editor/css/froala_style.min.css';
+@import '../../../node_modules/fullcalendar/main.min.css';
+
+@import '../../../node_modules/quill/dist/quill.core.css';
+@import '../../../node_modules/quill/dist/quill.bubble.css';
+@import '../../../node_modules/quill/dist/quill.snow.css';
+
+@import 'responsive.scss';
+
+// colors
+
+@import 'colors/default-dark';
+
+.pointer {
+  cursor: pointer;
+}
+
+.media-gallery-item {
+  width: 100px;
+  font-size: 100px;
+}
+
+.upload-zone {
+  padding: 10px 0;
+
+  .my-drop-zone {
+    position: relative;
+    border: dotted 3px lightgray;
+    height: 100px;
+    overflow: hidden;
+
+    p {
+      position: absolute;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
+    }
+
+    label {
+      height: 200px;
+
+      input {
+        height: 200px;
+      }
+    }
+  }
+
+  .nv-file-over {
+    border: dotted 3px red;
+  }
+
+  /* Default class applied to drop zones on over */
+  .another-file-over-class {
+    border: dotted 3px green;
+  }
+}
+
+// trick to hide froala license
+a[href="https://froala.com/wysiwyg-editor"],
+a[href="https://www.froala.com/wysiwyg-editor?k=u"]
+{
+  display: none !important;
+  position: absolute;
+  top: -99999999px;
+}
+
+ul {
+  &.sortable {
+    list-style: none;
+    padding-left: 0;
+  }
+}
+
+.sortable {
+  li {
+    cursor: move;
+  }
+
+  tr {
+    cursor: move;
+  }
+}
+
+.form-group {
+  label {
+    font-weight: 600;
+  }
+}
+
+.modal-media {
+  .modal-dialog {
+    width: 90% !important;
+    max-width: calc(90%);
+
+    .nav-item {
+      .nav-link {
+        &.active {
+          font-weight: bold;
+        }
+      }
+    }
+
+    .media-thumb {
+      .media-gallery-item {
+        width: 100%;
+      }
+    }
+  }
+}

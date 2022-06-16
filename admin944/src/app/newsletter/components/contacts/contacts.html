@@ -1,0 +1,43 @@
+<div class="card">
+  <div class="card-body table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Created at</th>
+          <th>#</th>
+        </tr>
+        <tr>
+          <th colspan="4">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Search keyword" [(ngModel)]="search.text" name="text" />
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button" (click)="query()">Search</button>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items, let i = index">
+          <td>{{item.email}}</td>
+          <td>{{item.name}}</td>
+          <td>
+            <span>{{item.createdAt | date}}</span>
+          </td>
+          <td>
+            <a (click)="remove(item, i)">
+              <i class="fa fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="display-inline" [hidden]="total < 10">
+      <div class="pull-right">
+        <ngb-pagination [collectionSize]="total" [(page)]="page" [maxSize]="5" [pageSize]="10" (pageChange)="query()"></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

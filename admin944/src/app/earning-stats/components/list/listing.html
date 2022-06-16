@@ -1,0 +1,139 @@
+<div class="card">
+  <div class="row" style="padding: 5px">
+    <div class="col-md-3">
+      <div class="input-group input-date">
+        <input
+          id="typeahead-template"
+          type="text"
+          class="form-control"
+          [(ngModel)]="tutorId"
+          [ngbTypeahead]="search"
+          [resultTemplate]="rt"
+          [inputFormatter]="formatter"
+          placeholder="Search tutor"
+        />
+        <ng-template #rt let-r="result" let-t="term">
+          <ngb-highlight [result]="r.name" [term]="t">{{r?.name}}</ngb-highlight>
+        </ng-template>
+        <span *ngIf="searching">searching...</span>
+        <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control" (change)="export($event)">
+        <option value="">Export</option>
+        <option value="csv">Export Csv</option>
+        <option value="excel">Export Excel</option>
+      </select>
+    </div>
+    <div class="col-md-3"><a class="btn btn-success .btn-success" (click)="query()">Filter</a></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            <a (click)="sortBy('tutorId', 'desc')">Tutor name</a>
+            <span *ngIf="sortOption.sortBy=='tutorId'">
+              <a (click)="sortBy('tutorId', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('tutorId', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('tutorId', 'desc')">Tutor email</a>
+            <span *ngIf="sortOption.sortBy=='tutorId'">
+              <a (click)="sortBy('tutorId', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('tutorId', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('total', 'desc')">Admin %</a>
+            <span *ngIf="sortOption.sortBy=='total'">
+              <a (click)="sortBy('total', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('total', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('totalAmountPayoutRequest', 'desc')">Total amount (Incl. Admin commission)</a>
+            <span *ngIf="sortOption.sortBy=='totalAmountPayoutRequest'">
+              <a (click)="sortBy('totalAmountPayoutRequest', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('totalAmountPayoutRequest', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <th class="table-primary text-center">
+            <a (click)="sortBy('totalTutorTillDate', 'desc')">Tutor earnings</a>
+            <span *ngIf="sortOption.sortBy=='totalTutorTillDate'">
+              <a (click)="sortBy('totalTutorTillDate', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('totalTutorTillDate', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <th class="table-success text-center">
+            <a (click)="sortBy('totalAdminTillDate', 'desc')">Admin earnings</a>
+            <span *ngIf="sortOption.sortBy=='totalAdminTillDate'">
+              <a (click)="sortBy('totalAdminTillDate', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('totalAdminTillDate', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items, let i = index">
+          <td>{{item?.tutor?.name}}</td>
+          <td>{{item?.tutor?.email}}</td>
+          <td>{{item?.commissionRate}} %</td>
+          <td>
+            {{item?.total | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' : '1.0'}}
+          </td>
+          <td class="text-center">
+            {{item?.tutorEarnings | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' :
+            '1.0'}}
+          </td>
+          <td class="text-center">
+            {{item?.adminEarnings | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' :
+            '1.0'}}
+          </td>
+
+          <td>
+            <a [routerLink]="['/earnings/stats', item?._id]"><i class="fa fa-eye"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="display-inline" [hidden]="total < take">
+      <div class="pull-right">
+        <ngb-pagination
+          [collectionSize]="total"
+          [(page)]="page"
+          [maxSize]="5"
+          [pageSize]="take"
+          (pageChange)="query()"
+        ></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

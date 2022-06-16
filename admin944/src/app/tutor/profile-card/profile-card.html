@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="card-body">
+    <div class="m-t-30 text-center">
+      <img class="img-circle" [src]="user?.avatarUrl" width="150" />
+      <h4 class="card-title m-t-10">{{user?.name}}</h4>
+      <h6 class="card-subtitle">{{user?.type}}</h6>
+    </div>
+    <div class="form-group">
+      <label
+        >Choose avatar
+        <small class="ml-1"> (Expected size: 320x421 pixels, Maximum size: {{maxFileSize}} mb )</small></label
+      >
+      <app-file-upload [options]="avatarOptions"></app-file-upload>
+    </div>
+  </div>
+  <div>
+    <hr />
+  </div>
+  <div class="card-body">
+    <small class="text-muted">Email address</small>
+    <h6>{{user?.email}}</h6>
+    <small class="text-muted p-t-30 db">Phone</small>
+    <h6>{{user?.phoneNumber || 'N/A'}}</h6>
+    <small class="text-muted p-t-30 db">Address</small>
+    <h6>{{user?.address || 'N/A'}}</h6>
+    <div *ngIf="user?.socialProfile">
+      <small class="text-muted p-t-30 db">Social Profile</small><br />
+      <button class="btn btn-circle btn-secondary"><i class="fa fa-facebook"></i></button>
+      <button class="btn btn-circle btn-secondary"><i class="fa fa-twitter"></i></button
+      ><button class="btn btn-circle btn-secondary"><i class="fa fa-youtube"></i></button>
+    </div>
+  </div>
+  <div>
+    <hr />
+  </div>
+  <div class="card-body">
+    <small class="text-muted">Created / joined at </small>
+    <h6>{{user?.createdAt | date}}</h6>
+  </div>
+</div>

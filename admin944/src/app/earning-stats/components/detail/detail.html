@@ -1,0 +1,44 @@
+<div class="card">
+  <h1 class="card-header" translate>Detail earning</h1>
+  <div class="card-body">
+    <div class="col col-md-12" *ngIf="!item" translate>No information</div>
+    <table class="table table-horizontal tble-responsive" *ngIf="item">
+      <tbody>
+        <tr>
+          <td translate>Tutor name:</td>
+          <td>{{item?.tutor?.name}}</td>
+        </tr>
+        <tr>
+          <td translate>Tutor email:</td>
+          <td>{{item?.tutor?.email}}</td>
+        </tr>
+        <tr>
+          <td translate>Admin %:</td>
+          <td>{{item?.commissionRate}} %</td>
+        </tr>
+        <tr>
+          <td translate>Total amount (Incl. Admin commission):</td>
+          <td>{{item?.total}} %</td>
+        </tr>
+        <tr class="table-primary">
+          <td><h3>Tutor earnings</h3></td>
+          <td>
+            <h3>
+              {{item.tutorEarnings | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' :
+              '1.0'}}
+            </h3>
+          </td>
+        </tr>
+        <tr class="table-success">
+          <td><h3>Admin earnings</h3></td>
+          <td>
+            <h3>
+              {{item.adminEarnings | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' :
+              '1.0'}}
+            </h3>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

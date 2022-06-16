@@ -1,0 +1,7 @@
+<div class="card text-center">
+  <div class="calendar" id="fullcalendar">
+    <div *ngIf="calendarOptions">
+      <full-calendar #calendar *ngIf="calendarVisible" [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
+</div>

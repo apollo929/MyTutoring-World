@@ -1,0 +1,891 @@
+<ngb-tabset>
+  <ngb-tab title="General Info">
+    <ng-template ngbTabContent>
+      <div class="row mt-2">
+        <div class="col-md-3" *ngIf="!loading">
+          <profile-card [user]="info" (afterUpload)="afterUpload($event)"></profile-card>
+        </div>
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-body">
+              <form role="form" #frm="ngForm" (submit)="submit(frm)">
+                <div
+                  class="mb-3"
+                  *ngIf="info.introVideoId"
+                  style="padding-left: 4em; padding-right: 4em"
+                  class="video-intro"
+                >
+                  <video width="100%" src="{{info?.introVideo?.fileUrl}}" controls></video>
+                </div>
+                <div class="mb-3" style="padding-left: 4em; padding-right: 4em" *ngIf="info.introYoutubeId">
+                  <iframe
+                    style="min-height: 25em"
+                    width="100%"
+                    height="100%"
+                    [src]="urlYoutube"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Full name (<span class="icon-requied">*</span>) </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter name"
+                        [(ngModel)]="info.name"
+                        required
+                        name="name"
+                        pattern="^[A-Za-z\s]+$"
+                        #name="ngModel"
+                      />
+                      <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+                        <p [hidden]="!name.errors.required" style="color: red">
+                          Please enter user first name and last name!
+                        </p>
+                        <p [hidden]="!name.errors.pattern" style="color: red">Invalid characters!</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>User name (<span class="icon-requied">*</span>)</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter username"
+                        [(ngModel)]="info.username"
+                        name="username"
+                        required
+                        #username="ngModel"
+                      />
+                      <div *ngIf="username.errors && (username.dirty || username.touched || isSubmitted)">
+                        <p [hidden]="!username.errors.required" style="color: red">Please enter user name!</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label style="font-weight: 600">Timezone</label>
+                    <app-timezone [userTz]="info.timezone" (onChange)="changeTimezone($event)"></app-timezone>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Email (<span class="icon-requied">*</span>)</label>
+                      <input
+                        [disabled]="tutorId"
+                        type="email"
+                        class="form-control"
+                        placeholder="user@example.com"
+                        [(ngModel)]="info.email"
+                        name="email"
+                        #email="ngModel"
+                        required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                      />
+                      <div *ngIf="email.errors && (email.dirty || email.touched || isSubmitted)">
+                        <p [hidden]="!email.errors.required" style="color: red">Please enter email address!</p>
+                        <p [hidden]="!email.errors.pattern" style="color: red">Please enter a valid email address.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Phone number (<span class="icon-requied">*</span>) </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="info.phoneNumber"
+                        name="phone-number"
+                        placeholder="E.g: 0123456789"
+                        pattern="[0-9\+]{9,15}$"
+                        minlength="9"
+                        maxlength="15"
+                        required
+                        #phone="ngModel"
+                      />
+                      <div *ngIf="phone.errors && (phone?.dirty || phone?.touched|| isSubmitted)">
+                        <p [hidden]="!phone?.errors.required" class="error" style="color: red" translate>
+                          Please enter phone number
+                        </p>
+                        <p
+                          *ngIf="phone?.errors.minlength || phone?.errors.maxlength"
+                          class="error"
+                          style="color: red"
+                          translate
+                        >
+                          Phone numbers must be between 9 to 15 digits
+                        </p>
+                        <p [hidden]="!phone?.errors.pattern" class="error" style="color: red" translate>
+                          Phone number is invalid format
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col col-md-6">
+                    <div class="form-group">
+                      <label>Country (<span class="icon-requied">*</span>) </label>
+                      <ng-select
+                        [items]="countries"
+                        appendTo="body"
+                        name="country"
+                        bindLabel="name"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [(ngModel)]="info.country"
+                        required
+                        #country="ngModel"
+                      >
+                      </ng-select>
+                      <div *ngIf="country.errors && (country.dirty || country.touched || isSubmitted)">
+                        <p [hidden]="!country.errors.required" style="color: red">Please select tutor country!</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>State </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="info.state"
+                        name="state"
+                        placeholder="Enter state"
+                        #state="ngModel"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>City</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="info.city"
+                        name="city"
+                        placeholder="Enter city"
+                        #city="ngModel"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Address (<span class="icon-requied">*</span>)</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="info.address"
+                        name="address"
+                        required
+                        placeholder="Enter address"
+                        #address="ngModel"
+                      />
+                      <div *ngIf="address.errors && (address.dirty || address.touched || isSubmitted)">
+                        <p [hidden]="!address.errors.required" style="color: red">Please enter tutor address!</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Zip code (<span class="icon-requied">*</span>)</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="info.zipCode"
+                        name="zipCode"
+                        placeholder="Enter zip code"
+                        required
+                        minlength="5"
+                        maxlength="10"
+                        #zipcode="ngModel"
+                        pattern="[0-9A-Z]+"
+                      />
+                      <div *ngIf="zipcode.errors && (zipcode.dirty || zipcode.touched || isSubmitted)">
+                        <p [hidden]="!zipcode.errors.required" style="color: red">Please enter tutor zip code!</p>
+                        <p
+                          *ngIf="zipcode?.errors.minlength || zipcode?.errors.maxlength"
+                          class="error"
+                          style="color: red"
+                        >
+                          Zip code must be between 5 to 10 charecters
+                        </p>
+                        <p [hidden]="!zipcode?.errors.pattern" class="error" style="color: red" translate>
+                          Zip code is invalid format
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Language (<span class="icon-requied">*</span>)</label>
+                      <ng-select
+                        [items]="languages"
+                        appendTo="body"
+                        name="languages"
+                        bindLabel="name"
+                        [multiple]="true"
+                        [closeOnSelect]="true"
+                        [(ngModel)]="info.languages"
+                        bindValue="id"
+                        required
+                        #language="ngModel"
+                      >
+                      </ng-select>
+                      <div *ngIf="language.errors && (language.dirty || language.touched || isSubmitted)">
+                        <p [hidden]="!language.errors.required" style="color: red">Please select tutor language!</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>ID Youtube (Introduction video)</label>
+                      <input
+                        class="form-control"
+                        name="idYoutube"
+                        placeholder="Enter id youtube"
+                        [(ngModel)]="info.idYoutube"
+                        #idYoutube="ngModel"
+                      />
+                      <small
+                        >EG: https://www.youtube.com/watch?v=<strong>xRjlRfpsHGw</strong>
+                        <br />
+                        id = <strong>xRjlRfpsHGw</strong></small
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Commission rate</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="info.commissionRate"
+                        name="commission-rate"
+                        min="0"
+                        placeholder="Enter commission rate"
+                        #commission="ngModel"
+                        pattern="[0-9.]{0,8}$"
+                        step="any"
+                      />
+                      <div *ngIf="commission.errors && (commission.dirty || commission.touched || isSubmitted)">
+                        <p [hidden]="!commission.errors.required" class="error" translate>
+                          Commission rate is required
+                        </p>
+                        <p [hidden]="!commission.errors.pattern" class="error" translate>Wrong format</p>
+                      </div>
+                      <div *ngIf="commission.value < 0 && (commission.dirty || commission.touched || isSubmitted)">
+                        <p style="color: red">Commission rate must be greater than 0!</p>
+                      </div>
+                      <div *ngIf="commission.value > 1 && (commission.dirty || commission.touched || isSubmitted)">
+                        <p style="color: red">Commission rate must be less than 1!</p>
+                      </div>
+                      <small>Enter decimal number, from 0 - 1. Value 0.2 means admin will get 20% on the booking</small>
+                    </div>
+                  </div>
+                  <div class="col col-md-6">
+                    <div class="form-group">
+                      <label>Password</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        [(ngModel)]="info.password"
+                        name="password"
+                        #password="ngModel"
+                        minlength="6"
+                        placeholder="Enter password"
+                      />
+                      <div *ngIf="password.errors && (password.dirty || password.touched || isSubmitted)">
+                        <p [hidden]="!password.errors.minlength" style="color: red">
+                          Password must be at least 6 characters!
+                        </p>
+                      </div>
+                      <p class="help help-block">
+                        <small>Blank to keep current password</small>
+                      </p>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-6" *ngIf="info._id">
+                    <div class="form-group">
+                      <label>Issue Document</label><br />
+
+                      <a
+                        *ngIf="info.issueDocument&&!isDoc(info.issueDocument)"
+                        [href]="info.issueDocument?.fileUrl"
+                        target="_blank"
+                        download
+                        >{{info.issueDocument?.fileUrl}}</a
+                      >
+                      <a
+                        style="color: #398bf7"
+                        *ngIf="info.issueDocument&& isDoc(info.issueDocument)"
+                        (click)="showDocument(info.issueDocument)"
+                        >{{info.issueDocument?.fileUrl}}</a
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6" *ngIf="info._id">
+                    <div class="form-group">
+                      <label>Resume Document</label><br />
+                      <a
+                        *ngIf="info.resumeDocument&&!isDoc(info.resumeDocument)"
+                        [href]="info.resumeDocument?.fileUrl"
+                        target="_blank"
+                        download
+                        >{{info.resumeDocument?.fileUrl}}</a
+                      >
+                      <a
+                        style="color: #398bf7"
+                        *ngIf="info.resumeDocument&&isDoc(info.resumeDocument)"
+                        (click)="showDocument(info.resumeDocument)"
+                        >{{info.resumeDocument?.fileUrl}}</a
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-6" *ngIf="info._id">
+                    <div class="form-group">
+                      <label>Certification Document</label><br />
+                      <a
+                        *ngIf="info.certificationDocument&&!isDoc(info.certificationDocument)"
+                        [href]="info.certificationDocument?.fileUrl"
+                        target="_blank"
+                        download
+                        >{{info.certificationDocument?.fileUrl}}</a
+                      >
+                      <a
+                        style="color: #398bf7"
+                        *ngIf="info.certificationDocument&&isDoc(info.certificationDocument)"
+                        (click)="showDocument(info.certificationDocument)"
+                        >{{info.certificationDocument?.fileUrl}}</a
+                      >
+                    </div>
+                  </div> -->
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Biography</label>
+                      <quill-editor [(ngModel)]="info.bio" placeholder="Enter Text" [modules]="quillConfig" name="bio">
+                      </quill-editor>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label>
+                      Active?
+                      <input type="checkbox" [(ngModel)]="info.isActive" name="isActive" />
+                    </label>
+                  </div>
+                  <div class="col-md-4">
+                    <label>
+                      Email verified?
+                      <input type="checkbox" [(ngModel)]="info.emailVerified" name="emailVerified" />
+                    </label>
+                  </div>
+                  <div class="col-md-4">
+                    <label>
+                      Phone Verified?
+                      <input type="checkbox" [(ngModel)]="info.phoneVerified" name="phoneVerified" />
+                    </label>
+                  </div>
+                  <div class="col-md-4">
+                    <label>
+                      In Home Page?
+                      <input type="checkbox" [(ngModel)]="info.isHomePage" name="isHomePage" />
+                    </label>
+                  </div>
+                  <div class="col-md-4">
+                    <label>
+                      Featured?
+                      <input type="checkbox" [(ngModel)]="info.featured" name="featured" />
+                    </label>
+                  </div>
+                  <div class="col-md-4">
+                    <label>
+                      Status:&nbsp;
+                      <span class="badge badge-success float-right" *ngIf="!info.pendingApprove&&!info.rejected"
+                        >Approved</span
+                      >
+                      <span class="badge badge-warning float-right" *ngIf="!info.pendingApprove&&info.rejected"
+                        >Rejected</span
+                      >
+                      <span class="badge badge-primary float-right" *ngIf="info.pendingApprove"
+                        >Waiting for approval</span
+                      >
+                    </label>
+                  </div>
+
+                  <div class="col-md-11">
+                    <div class="form-group">
+                      <button class="btn btn-primary" type="submit">Save</button>
+                      <button
+                        class="btn btn-danger float-right"
+                        type="button"
+                        (click)="reject()"
+                        *ngIf="(info.pendingApprove || (!info.pendingApprove && !info.rejected)) && info._id"
+                      >
+                        Reject
+                      </button>
+                      <button
+                        class="btn btn-success .btn-success float-right"
+                        type="button"
+                        (click)="approve()"
+                        style="margin-right: 3px"
+                        *ngIf="(info.pendingApprove || (!info.pendingApprove && info.rejected)) && info._id"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        class="btn btn-success .btn-success float-right mr-2"
+                        type="button"
+                        (click)="inviteTutorJoinZoom()"
+                        style="margin-right: 3px"
+                        *ngIf="!info.isZoomAccount && info._id"
+                      >
+                        Invite tutors to join the zoom
+                      </button>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-12" *ngIf="info._id">
+                    <h4>Subjects of tutor {{info?.name}}</h4>
+                    <p *ngIf="!tutorSubjects.length">Tutor not updated yet</p>
+                    <table
+                      id="table_id"
+                      class="table table-horizontal tble-responsive dataTable no-footer"
+                      role="grid"
+                      aria-describedby="table_id_info"
+                      *ngIf="tutorSubjects.length>0"
+                    >
+                      <thead>
+                        <tr>
+                          <th scope="col" translate>Subject name</th>
+                          <th scope="col" translate>Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of tutorSubjects, let i=index">
+                          <td>{{item?.name}}</td>
+                          <td>{{ item?.price | currency : (config?.currencySymbol ? config?.currencySymbol : '$')}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div> -->
+                  <div class="col-md-12" *ngIf="info._id">
+                    <h4>Resume of tutor {{info?.name}}</h4>
+                    <ngb-tabset>
+                      <ngb-tab title="Education">
+                        <ng-template ngbTabContent>
+                          <div class="row" style="margin-top: 5px">
+                            <div class="col-md-12">
+                              <button type="button" class="btn btn-md btn-outline-primary" (click)="open('education')">
+                                Add education
+                              </button>
+                            </div>
+                          </div>
+                          <div class="row" style="margin-top: 5px">
+                            <div
+                              class="col-md-12"
+                              *ngIf="!info.education || (info.education && info.education.length === 0)"
+                            >
+                              <p>There is no education</p>
+                            </div>
+                            <div class="col-sm-6" *ngFor="let cer of info.education, let i = index">
+                              <div class="card" style="border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{cer.title}}</h5>
+                                  <p class="card-text">{{cer.fromYear}} - {{cer.toYear}}</p>
+                                  <p class="card-text">{{cer.description}}</p>
+                                  <a
+                                    href="javascript:void(0)"
+                                    (click)="open('education',i, cer)"
+                                    class="btn btn-primary"
+                                    >Edit</a
+                                  >&nbsp;
+                                  <a
+                                    href="javascript:void(0)"
+                                    (click)="deleteCer('education',i, cer)"
+                                    class="btn btn-danger"
+                                    >Delete</a
+                                  >&nbsp;
+
+                                  <a
+                                    *ngIf="cer?.document && cer?.document?.fileUrl && !isDoc(cer?.document)"
+                                    [href]="cer?.document?.fileUrl"
+                                    download
+                                    target="_blank"
+                                    class="btn btn-success"
+                                    >View</a
+                                  >
+                                  <a
+                                    *ngIf="cer?.document && cer?.document?.fileUrl && isDoc(cer?.document)"
+                                    (click)="showDocument(cer?.document)"
+                                    class="btn btn-success"
+                                    >View</a
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-tab>
+                      <ngb-tab title="Experience">
+                        <ng-template ngbTabContent>
+                          <div class="row" style="margin-top: 5px">
+                            <div class="col-md-12">
+                              <button type="button" class="btn btn-md btn-outline-primary" (click)="open('experience')">
+                                Add experience
+                              </button>
+                            </div>
+                          </div>
+                          <div class="row" style="margin-top: 5px">
+                            <div
+                              class="col-md-12"
+                              *ngIf="!info.experience || (info.experience && info.experience.length === 0)"
+                            >
+                              <p>There is no experience</p>
+                            </div>
+                            <div class="col-sm-6" *ngFor="let cer of info.experience, let i = index">
+                              <div class="card" style="border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{cer.title}}</h5>
+                                  <p class="card-text">{{cer.fromYear}} - {{cer.toYear}}</p>
+                                  <p class="card-text">{{cer.description}}</p>
+                                  <a
+                                    href="javascript:void(0)"
+                                    (click)="open('experience',i, cer)"
+                                    class="btn btn-primary"
+                                    >Edit</a
+                                  >&nbsp;
+                                  <a
+                                    href="javascript:void(0)"
+                                    (click)="deleteCer('experience',i, cer)"
+                                    class="btn btn-danger"
+                                    >Delete</a
+                                  >&nbsp;
+
+                                  <a
+                                    *ngIf="cer?.document && cer?.document?.fileUrl && !isDoc(cer?.document)"
+                                    [href]="cer?.document?.fileUrl"
+                                    download
+                                    target="_blank"
+                                    class="btn btn-success"
+                                    >View</a
+                                  >
+                                  <a
+                                    *ngIf="cer?.document && cer?.document?.fileUrl && isDoc(cer?.document)"
+                                    (click)="showDocument(cer?.document)"
+                                    class="btn btn-success"
+                                    >View</a
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-tab>
+                      <ngb-tab title="Certification">
+                        <ng-template ngbTabContent>
+                          <div class="row" style="margin-top: 5px">
+                            <div class="col-md-12">
+                              <button
+                                type="button"
+                                class="btn btn-md btn-outline-primary"
+                                (click)="open('certification')"
+                              >
+                                Add certification
+                              </button>
+                            </div>
+                          </div>
+                          <div class="row" style="margin-top: 5px">
+                            <div
+                              class="col-md-12"
+                              *ngIf="!info.certification || (info.certification && info.certification.length === 0)"
+                            >
+                              <p>There is no certification</p>
+                            </div>
+                            <div class="col-sm-6" *ngFor="let cer of info.certification, let i = index">
+                              <div class="card" style="border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{cer.title}}</h5>
+                                  <p class="card-text">{{cer.fromYear}} - {{cer.toYear}}</p>
+                                  <p class="card-text">{{cer.description}}</p>
+                                  <a
+                                    href="javascript:void(0)"
+                                    (click)="open('certification',i, cer)"
+                                    class="btn btn-primary"
+                                    >Edit</a
+                                  >&nbsp;
+                                  <a
+                                    href="javascript:void(0)"
+                                    (click)="deleteCer('certification',i, cer)"
+                                    class="btn btn-danger"
+                                    >Delete</a
+                                  >&nbsp;
+
+                                  <a
+                                    *ngIf="cer?.document && cer?.document?.fileUrl && !isDoc(cer?.document)"
+                                    [href]="cer?.document?.fileUrl"
+                                    download
+                                    target="_blank"
+                                    class="btn btn-success"
+                                    >View</a
+                                  >
+                                  <a
+                                    *ngIf="cer?.document && cer?.document?.fileUrl && isDoc(cer?.document)"
+                                    (click)="showDocument(cer?.document)"
+                                    class="btn btn-success"
+                                    >View</a
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-tab>
+                    </ngb-tabset>
+                  </div>
+                  <div class="col-md-12" *ngIf="info._id">
+                    <h4>Reviews of tutor {{info?.name}}</h4>
+                    <app-review-tutor [tutorId]="tutorId"></app-review-tutor>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Tutor's categories" *ngIf="info._id">
+    <ng-template ngbTabContent>
+      <div class="row mt-2">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="header-my-category">
+                <h3>Categories</h3>
+                <button type="button" class="btn btn-danger" (click)="submitCategory()">
+                  <i class="fa fa-plus font-sm"></i>
+                </button>
+              </div>
+              <table
+                id="table_id"
+                class="table table-horizontal tble-responsive dataTable no-footer"
+                role="grid"
+                aria-describedby="table_id_info"
+                *ngIf="myCategories.length>0"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Is Activated</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="!myCategories.length && !filterMyCategory.loading">
+                    <td translate colspan="3">There are no categories</td>
+                  </tr>
+
+                  <tr *ngIf="filterMyCategory.loading">
+                    <td translate colspan="3">Loading...</td>
+                  </tr>
+                  <tr
+                    *ngFor="let item of myCategories, let i=index"
+                    [ngClass]="{'highlight':selectedCategory &&selectedCategory._id === item._id}"
+                  >
+                    <td>{{item?.name}}</td>
+                    <td>
+                      <span class="badge badge-primary" *ngIf="item?.isActive">Yes</span>
+                      <span class="badge badge-danger" *ngIf="!item?.isActive">No</span>
+                    </td>
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding mr-1"
+                        (click)="submitCategory(item)"
+                      >
+                        <i class="fa fa-edit"></i>
+                      </a>
+                      <a href="javascript:void(0)" (click)="selectMyCategory(item)" class="btn btn-success btn-sm">
+                        <strong>List Subjects</strong>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row" *ngIf="filterMyCategory.total > filterMyCategory.pageSize">
+                <div class="col-sm-12 col-md-12">
+                  <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+                    <ngb-pagination
+                      [collectionSize]="filterMyCategory.total"
+                      [(page)]="filterMyCategory.currentPage"
+                      [pageSize]="filterMyCategory.pageSize"
+                      [maxSize]="5"
+                      (pageChange)="pageChange('category')"
+                      class="float-right"
+                    >
+                      <ng-template ngbPaginationPrevious>Previous</ng-template>
+                      <ng-template ngbPaginationNext>Next</ng-template>
+                    </ngb-pagination>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="header-my-category">
+                <h3>Subjects</h3>
+                <button type="button" class="btn btn-danger" (click)="submitSubject()" *ngIf="selectedCategory">
+                  <i class="fa fa-plus font-sm"></i>
+                </button>
+              </div>
+              <table
+                id="table_id"
+                class="table table-horizontal tble-responsive dataTable no-footer"
+                role="grid"
+                aria-describedby="table_id_info"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Is Activated</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="!mySubjects.length && !filterMySubject.loading && selectedCategory">
+                    <td translate colspan="3">There are no subjects</td>
+                  </tr>
+
+                  <tr *ngIf="!selectedCategory">
+                    <td translate colspan="3">Please select category first!</td>
+                  </tr>
+
+                  <tr *ngIf="filterMySubject.loading">
+                    <td translate colspan="3">Loading...</td>
+                  </tr>
+                  <tr
+                    *ngFor="let item of mySubjects, let i=index"
+                    [ngClass]="{'highlight':selectedSubject &&selectedSubject._id === item._id}"
+                  >
+                    <td>{{item?.name}}</td>
+                    <td>
+                      <span class="badge badge-primary" *ngIf="item?.isActive">Yes</span>
+                      <span class="badge badge-danger" *ngIf="!item?.isActive">No</span>
+                    </td>
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding mr-1"
+                        (click)="submitSubject(item)"
+                      >
+                        <i class="fa fa-edit"></i>
+                      </a>
+                      <a href="javascript:void(0)" (click)="selectMySubject(item)" class="btn btn-success btn-sm">
+                        <strong>List Topics</strong>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row" *ngIf="filterMySubject.total > filterMySubject.pageSize ">
+                <div class="col-sm-12 col-md-12">
+                  <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+                    <ngb-pagination
+                      [collectionSize]="filterMySubject.total"
+                      [(page)]="filterMySubject.currentPage"
+                      [pageSize]="filterMySubject.pageSize"
+                      [maxSize]="5"
+                      (pageChange)="pageChange('subject')"
+                      class="float-right"
+                    >
+                      <ng-template ngbPaginationPrevious>Previous</ng-template>
+                      <ng-template ngbPaginationNext>Next</ng-template>
+                    </ngb-pagination>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="header-my-category">
+                <h3>Topics</h3>
+                <button type="button" class="btn btn-danger" (click)="submitTopic()" *ngIf="selectedSubject">
+                  <i class="fa fa-plus font-sm"></i>
+                </button>
+              </div>
+              <table
+                id="table_id"
+                class="table table-horizontal tble-responsive dataTable no-footer"
+                role="grid"
+                aria-describedby="table_id_info"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Is Activated</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="!myTopics.length && !filterMyTopic.loading && selectedSubject">
+                    <td translate colspan="4">There are no topics</td>
+                  </tr>
+
+                  <tr *ngIf="!selectedSubject || !selectedCategory">
+                    <td translate colspan="4">Please select category and subject first!</td>
+                  </tr>
+
+                  <tr *ngIf="filterMyTopic.loading">
+                    <td translate colspan="4">Loading...</td>
+                  </tr>
+                  <tr *ngFor="let item of myTopics, let i=index">
+                    <td>{{item?.name}}</td>
+                    <td>{{item?.price}}</td>
+                    <td>
+                      <span class="badge badge-primary" *ngIf="item?.isActive">Yes</span>
+                      <span class="badge badge-danger" *ngIf="!item?.isActive">No</span>
+                    </td>
+                    <td>
+                      <a
+                        href="javascript:void(0)"
+                        class="btn btn-light-default btn-hvr-primary btn-sm btn-icon-padding mr-1"
+                        (click)="submitTopic(item)"
+                      >
+                        <i class="fa fa-edit"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row" *ngIf="filterMySubject.total > filterMySubject.pageSize ">
+                <div class="col-sm-12 col-md-12">
+                  <div class="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+                    <ngb-pagination
+                      [collectionSize]="filterMySubject.total"
+                      [(page)]="filterMySubject.currentPage"
+                      [pageSize]="filterMySubject.pageSize"
+                      [maxSize]="5"
+                      (pageChange)="pageChange('subject')"
+                      class="float-right"
+                    >
+                      <ng-template ngbPaginationPrevious>Previous</ng-template>
+                      <ng-template ngbPaginationNext>Next</ng-template>
+                    </ngb-pagination>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>

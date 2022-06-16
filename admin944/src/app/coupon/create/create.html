@@ -1,0 +1,148 @@
+<div class="card">
+  <div class="card-body">
+    <form (submit)="submit(frm)" #frm="ngForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              placeholder="Enter name"
+              [(ngModel)]="coupon.name"
+              required
+              #name="ngModel"
+            />
+            <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+              <p [hidden]="!name.errors.required" style="color: red">Please enter coupon name!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Code</label>
+            <input
+              type="text"
+              class="form-control"
+              name="code"
+              placeholder="Enter code"
+              [(ngModel)]="coupon.code"
+              required
+              #codeCoupon="ngModel"
+              pattern="[a-zA-Z0-9-_%]*"
+            />
+            <div *ngIf="codeCoupon.errors && (codeCoupon.dirty || codeCoupon.touched || isSubmitted)">
+              <p [hidden]="!codeCoupon.errors.required" style="color: red">Please enter coupon code!</p>
+              <p [hidden]="!codeCoupon.errors.pattern" class="error" style="color: red">Code is invalid format</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Discount type</label>
+            <select [(ngModel)]="coupon.type" name="type" class="form-control" required #type="ngModel">
+              <option value="percent" selected>Percent (%)</option>
+              <option value="money">Money</option>
+            </select>
+            <div *ngIf="type.errors && (type.dirty || type.touched || isSubmitted)">
+              <p [hidden]="!type.errors.required" style="color: red">Please choose type!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Discount value</label>
+            <input
+              class="form-control"
+              name="value"
+              placeholder="Enter discount value"
+              [(ngModel)]="coupon.value"
+              required
+              #value="ngModel"
+              pattern="[.0-9]{0,8}"
+            />
+            <div *ngIf="value.errors && (value.dirty || value.touched || isSubmitted)">
+              <p [hidden]="!value.errors.required" style="color: red">Please enter discount value!</p>
+              <p [hidden]="!value.errors.pattern" class="error" style="color: red">Value is invalid format</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Tutor</label>
+            <input
+              id="typeahead-template"
+              type="text"
+              class="form-control"
+              name="tutorId"
+              (selectItem)="selectTutor($event)"
+              [ngbTypeahead]="  search"
+              [resultTemplate]="rt"
+              [inputFormatter]="formatter"
+              placeholder="Search tutor"
+            />
+            <ng-template #rt let-r="result" let-t="term">
+              <ngb-highlight [result]="r.name" [term]="t">{{r?.name}}</ngb-highlight>
+            </ng-template>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" *ngIf="webinars.length">
+            <label>Webinar</label>
+            <ng-select
+              [items]="webinars"
+              [hideSelected]="true"
+              bindLabel="name"
+              [closeOnSelect]="true"
+              name="webinar"
+              placeholder="Choose webinar"
+              [(ngModel)]="coupon.webinarId"
+              bindValue="_id"
+              #webinar="ngModel"
+              required
+            >
+            </ng-select>
+            <div *ngIf="webinar.errors && (webinar.dirty || webinar.touched || isSubmitted)">
+              <p [hidden]="!webinar.errors.required" style="color: red">Please select webinar!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Expiry date</label>
+            <div class="input-group-append">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="expiredDate"
+                [(ngModel)]="expiredDate"
+                ngbDatepicker
+                #a="ngbDatepicker"
+                (dateSelect)="selectDate($event)"
+                #expiredDate1="ngModel"
+              />
+              <button class="btn btn-outline-secondary calendar" (click)="a.toggle()" type="button">
+                <i class="fa fa-calendar"></i>
+              </button>
+            </div>
+            <div *ngIf="(expiredDate.year === 0 || expiredDate.month === 0 || expiredDate.day === 0 ) && isSubmitted">
+              <p style="color: red">Please choose Expiry date!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Active</label> <br />
+            Active <input type="checkbox" name="isActive" [(ngModel)]="coupon.active" />
+          </div>
+        </div>
+        <div class="col col-md-12">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

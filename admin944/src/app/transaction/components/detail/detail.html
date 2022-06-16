@@ -1,0 +1,133 @@
+<div class="card">
+  <h1 class="card-header" translate>Detail payment</h1>
+  <div class="card-body">
+    <div class="col col-md-12" *ngIf="!transaction" translate>No information</div>
+    <table class="table table-horizontal tble-responsive" *ngIf="transaction">
+      <tbody>
+        <tr>
+          <td translate>Tutor name:</td>
+          <td>
+            <a [routerLink]="['/tutor/update', transaction.tutor._id]" *ngIf="transaction && transaction.tutor"
+              >{{transaction?.tutor?.name}}</a
+            >
+          </td>
+        </tr>
+        <tr>
+          <td translate>User name:</td>
+          <td>
+            <a [routerLink]="['/users/update', transaction.user._id]" *ngIf="transaction && transaction.user"
+              >{{transaction?.user?.name}}</a
+            >
+          </td>
+        </tr>
+        <tr>
+          <td translate>Type:</td>
+          <td>
+            <span class="badge badge-primary" *ngIf="transaction?.type === 'booking'" translate>Booking</span>
+            <span class="badge badge-success" *ngIf="transaction?.type === 'gift'" translate>Gift</span>
+          </td>
+        </tr>
+        <tr>
+          <td translate>Enroll Type:</td>
+          <td>
+            <span class="badge badge-primary" *ngIf="transaction?.targetType === 'webinar'" translate>Group Class</span>
+            <span class="badge badge-success" *ngIf="transaction?.targetType === 'subject'" translate>One to One</span>
+          </td>
+        </tr>
+        <tr *ngIf="transaction.targetType === 'webinar'">
+          <td translate>Group Class:</td>
+          <td>
+            <span>{{transaction?.webinar?.name}}</span>
+          </td>
+        </tr>
+        <tr *ngIf="transaction.targetType === 'subject'">
+          <td translate>Subject:</td>
+          <td>
+            <span *ngIf="transaction?.tutorSubject?.name">{{transaction?.tutorSubject?.name}} - </span
+            ><span>{{transaction.subject?.name}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td translate>Code:</td>
+          <td><span>{{transaction?.code}}</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span translate *ngIf="transaction.couponCode">Original price:</span
+            ><span translate *ngIf="!transaction.couponCode">Price:</span>
+          </td>
+          <td>
+            <span *ngIf="!transaction.couponCode">
+              {{transaction.price | currency : (config?.currencySymbol ? config?.currencySymbol: '$'): 'symbol' :
+              '1.0'}}
+            </span>
+            <span *ngIf="transaction.couponCode">
+              {{transaction.discountAmount + transaction.priceDiscount | currency : (config?.currencySymbol ?
+              config?.currencySymbol : '$'): 'symbol' : '1.0'}}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="transaction.couponCode">
+          <td>Discount price:</td>
+          <td>
+            <span
+              >{{transaction?.priceDiscount | currency : (config?.currencySymbol ? config?.currencySymbol : '$'):
+              'symbol' : '1.0'}}</span
+            >
+          </td>
+        </tr>
+        <tr *ngIf="transaction.couponCode">
+          <td translate>Discount amount:</td>
+          <td>
+            <span
+              >{{transaction?.discountAmount | currency : (config?.currencySymbol ? config?.currencySymbol : '$'):
+              'symbol' : '1.0'}}</span
+            >
+          </td>
+        </tr>
+        <tr *ngIf="transaction.couponCode">
+          <td>Coupon code:</td>
+          <td><span>{{transaction?.couponCode}}</span></td>
+        </tr>
+        <tr>
+          <td>Commission:</td>
+          <td>
+            <span
+              >{{transaction?.commission | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol'
+              : '1.0'}}</span
+            >
+          </td>
+        </tr>
+        <tr>
+          <td>Balance:</td>
+          <td>
+            <span
+              >{{transaction?.balance | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' :
+              '1.0'}}</span
+            >
+          </td>
+        </tr>
+        <tr>
+          <td translate>Create at:</td>
+          <td><span>{{transaction?.createdAt | date}}</span></td>
+        </tr>
+        <tr>
+          <td translate>Status:</td>
+          <td>
+            <span class="badge badge-warning" *ngIf="transaction?.status === 'pending'" translate>Pending</span>
+            <span class="badge badge-danger" *ngIf="transaction?.status === 'canceled'" translate>Canceled</span>
+            <span class="badge badge-primary" *ngIf="transaction?.status === 'progressing'" translate>In Progress</span>
+            <span class="badge badge-success" *ngIf="transaction?.status === 'completed'" translate>Completed</span>
+            <span class="badge badge-warning" *ngIf="transaction?.status === 'pending-refund'" translate
+              >Pending refund</span
+            >
+            <span class="badge badge-primary" *ngIf="transaction?.status === 'approved-refund'" translate
+              >Approved refund</span
+            >
+            <span class="badge badge-success" *ngIf="transaction?.status === 'refunded'" translate>Refunded</span>&nbsp;
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

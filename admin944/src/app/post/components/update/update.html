@@ -1,0 +1,62 @@
+<div class="card">
+  <div class="card-body">
+    <form (submit)="submit(frm)" #frm="ngForm">
+      <div class="row">
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              name="title"
+              class="form-control"
+              placeholder="Enter title"
+              [(ngModel)]="post.title"
+              required
+              #title="ngModel"
+            />
+            <div *ngIf="title.errors && (title.dirty || title.touched || submitted)">
+              <p [hidden]="!title.errors.required" style="color: red">TItle is required!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label>Alias</label>
+            <input
+              type="text"
+              name="alias"
+              class="form-control"
+              placeholder="Enter alias"
+              [(ngModel)]="post.alias"
+              required
+              #alias="ngModel"
+            />
+            <div *ngIf="alias.errors && (alias.dirty || alias.touched || submitted)">
+              <p [hidden]="!alias.errors.required" style="color: red">Alias is required!</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col col-md-6">
+          <div class="form-group">
+            <label>Type</label>
+            <select [disabled]="true" [(ngModel)]="post.type" name="type" class="form-control" #type="ngModel">
+              <option selected value="page">Static page</option>
+            </select>
+          </div>
+        </div> -->
+        <div class="col col-md-12">
+          <div class="form-group">
+            <label>Content</label>
+            <quill-editor [(ngModel)]="post.content" placeholder="Enter Text" [modules]="quillConfig" name="bio">
+            </quill-editor>
+          </div>
+        </div>
+        <div class="col col-md-12">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

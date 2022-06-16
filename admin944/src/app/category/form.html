@@ -1,0 +1,94 @@
+<div class="card">
+  <div class="card-body">
+    <ngb-tabset>
+      <ngb-tab title="General Info">
+        <ng-template ngbTabContent>
+          <form (submit)="submit(frm)" #frm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter title"
+                    [(ngModel)]="category.name"
+                    required
+                    #name="ngModel"
+                  />
+                  <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+                    <p [hidden]="!name.errors.required" style="color: red">Please enter category name!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Alias</label>
+                  <input
+                    class="form-control"
+                    name="alias"
+                    placeholder="Enter alias"
+                    [(ngModel)]="category.alias"
+                    required
+                    #alias="ngModel"
+                  />
+                  <div *ngIf="alias.errors && (alias.dirty || alias.touched || isSubmitted)">
+                    <p [hidden]="!alias.errors.required" style="color: red">Please enter category alias!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Ordering</label>
+                  <input
+                    class="form-control"
+                    name="ordering"
+                    placeholder="Enter ordering"
+                    [(ngModel)]="category.ordering"
+                    required
+                    #ordering="ngModel"
+                    [pattern]="'^[0-9][0-9]*$'"
+                  />
+                  <div *ngIf="ordering.errors && (ordering.dirty || ordering.touched || isSubmitted)">
+                    <p [hidden]="!ordering.errors.required" style="color: red">Please enter category ordering!</p>
+                    <p [hidden]="!ordering.errors.pattern" style="color: red">This minimum ordering is <b>0</b>!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Main Image </label
+                  ><small class="ml-1"> (Expected size: 320 x 155 pixels, Maximum size: {{maxFileSize}} mb)</small>
+                  <br />
+                  <img *ngIf="mainImageUrl" width="300px" src="{{mainImageUrl}}" alt="" /><br />
+                  <small *ngIf="imageSelected.length">{{imageSelected[0].file.name}} is selected</small>
+                  <app-file-upload [options]="mainImageOptions"></app-file-upload>
+                  <div *ngIf="isSubmitted && !category.imageId && !category._id">
+                    <p style="color: red">Please select image!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>
+                  Active?
+                  <input type="checkbox" [(ngModel)]="category.isActive" name="isActive" />
+                </label>
+              </div>
+              <div class="col col-md-12">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="List of subjects of category" *ngIf="categoryId">
+        <ng-template ngbTabContent>
+          <app-subject-listing [categoryIds]="categoryId"></app-subject-listing>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

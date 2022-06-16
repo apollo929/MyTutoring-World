@@ -1,0 +1,83 @@
+<div class="card">
+  <div class="card-body">
+    <ngb-tabset>
+      <ngb-tab title="General Info">
+        <ng-template ngbTabContent>
+          <form (submit)="submit(frm)" #frm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter name"
+                    [(ngModel)]="subject.name"
+                    required
+                    #name="ngModel"
+                  />
+                  <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+                    <p [hidden]="!name.errors.required" style="color: red">Please enter subject name!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Alias</label>
+                  <input
+                    class="form-control"
+                    name="alias"
+                    placeholder="Enter alias"
+                    [(ngModel)]="subject.alias"
+                    required
+                    #alias="ngModel"
+                  />
+                  <div *ngIf="alias.errors && (alias.dirty || alias.touched || isSubmitted)">
+                    <p [hidden]="!alias.errors.required" style="color: red">Please enter subject alias!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Category (*)</label>
+                  <ng-select
+                    [items]="categories"
+                    [hideSelected]="true"
+                    multiple="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="category"
+                    placeholder="Choose category"
+                    [(ngModel)]="subject.categoryIds"
+                    bindValue="_id"
+                    #categoryId="ngModel"
+                    required
+                  >
+                  </ng-select>
+                  <div *ngIf="categoryId.errors && (categoryId.dirty || categoryId.touched || isSubmitted)">
+                    <p [hidden]="!categoryId.errors.required" style="color: red" translate>Please choose category!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label>
+                  Active?
+                  <input type="checkbox" [(ngModel)]="subject.isActive" name="isActive" />
+                </label>
+              </div>
+              <div class="col col-md-12">
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="List of topics of subject" *ngIf="subjectId">
+        <ng-template ngbTabContent>
+          <app-topic-listing [subjectIds]="subjectId"></app-topic-listing>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

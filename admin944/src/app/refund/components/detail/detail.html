@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4>Detail request</h4>
+      </div>
+      <div class="card-body">
+        <table class="table table-horizontal tble-responsive" *ngIf="item">
+          <tr>
+            <td>User name:</td>
+            <td>{{item?.user?.name}}</td>
+          </tr>
+          <tr>
+            <td>Paypal email ID:</td>
+            <td>{{item?.user?.paypalEmailId || 'No provide'}}</td>
+          </tr>
+          <tr>
+            <td>Tutor name:</td>
+            <td>{{item?.tutor?.name}}</td>
+          </tr>
+          <tr>
+            <td>Group Class / Subject:</td>
+            <td>
+              {{item?.targetType === 'webinar' ? item?.webinar?.name : item?.targetType === 'course' ?
+              item?.course?.name : item?.subject?.name}}
+            </td>
+          </tr>
+          <tr>
+            <td>Status Request:</td>
+            <td>
+              <span *ngIf="status ==='approved'" class="badge badge-success">Approved</span>
+              <span *ngIf="status ==='refunded'" class="badge badge-primary">Refunded</span>
+              <span *ngIf="status ==='rejected'" class="badge badge-danger">Rejected</span>
+              <span *ngIf="status ==='pending'" class="badge badge-warning">Pending</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Amount Request:</td>
+            <td>
+              {{item?.amount | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' : '1.0'}}
+            </td>
+          </tr>
+          <tr>
+            <td>Admin fee:</td>
+            <td>
+              {{item?.transaction?.commission | currency : (config?.currencySymbol ? config?.currencySymbol : '$'):
+              'symbol' : '1.0'}}
+            </td>
+          </tr>
+          <tr>
+            <td>Tutor fee:</td>
+            <td>
+              {{item?.transaction?.balance | currency : (config?.currencySymbol ? config?.currencySymbol : '$'):
+              'symbol' : '1.0'}}
+            </td>
+          </tr>
+          <tr>
+            <td>Reason</td>
+            <td>" {{item?.reason}} "</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" style="margin-top: 10px">
+    <div class="card">
+      <div class="card-header">
+        <!-- <h4>Action</h4> -->
+      </div>
+      <div class="card-body">
+        <div class="row" *ngIf="status === 'approved'">
+          <div class="col-md-6">
+            <h3>Confirm refunded</h3>
+            <div class="form-group">
+              <button class="btn btn-success .btn-success" (click)="confirm()">Confirm refunded</button>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="status === 'pending'">
+          <div class="col-md-6">
+            <h3>Approve request</h3>
+            <div class="form-group">
+              <label>Note</label>
+              <textarea
+                name="noteApprove"
+                rows="2"
+                class="form-control"
+                placeholder="Enter some text here"
+                [(ngModel)]="approve.note"
+              ></textarea>
+            </div>
+            <button class="btn btn-success .btn-success" (click)="approveRequest()">Approve</button>
+          </div>
+          <div class="col-md-6">
+            <h3>Reject request</h3>
+            <div class="form-group">
+              <label>Note</label>
+              <textarea
+                name="noteReject"
+                rows="2"
+                class="form-control"
+                placeholder="Enter some text here"
+                [(ngModel)]="reject.note"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label>Reject Reason</label>
+              <textarea
+                name="reason"
+                rows="3"
+                class="form-control"
+                placeholder="Enter some text here"
+                [(ngModel)]="reject.rejectReason"
+              ></textarea>
+            </div>
+            <button class="btn btn-danger" (click)="rejectRequest()">Reject</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

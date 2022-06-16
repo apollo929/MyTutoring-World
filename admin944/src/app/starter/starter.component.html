@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>{{ subtitle }}</strong>
+      </div>
+      <div class="card-body">
+        <table id="table_id" class="table table-horizontal tble-responsive">
+          <tbody>
+            <tr>
+              <td translate>Total students registered :</td>
+              <td>
+                {{ stats?.totalStudents }}
+              </td>
+            </tr>
+            <tr>
+              <td translate>Total tutors :</td>
+              <td>
+                {{ stats?.totalTutors }}
+              </td>
+            </tr>
+            <tr>
+              <td translate>Total tutor pending approved :</td>
+              <td>
+                <span>{{ stats?.totalTutorPendingApproved }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td translate>Payout request pending:</td>
+              <td>
+                <span>{{
+                  stats?.payoutRequestPending
+                    | currency: (config?.currencySymbol ? config?.currencySymbol : '$'):'symbol':'1.0'
+                }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td translate>Total Group Classes :</td>
+              <td>
+                <span> {{ stats?.totalWebinars }} </span>
+              </td>
+            </tr>
+            <tr>
+              <td translate>Total revenue:</td>
+              <td>
+                <span>
+                  {{
+                    stats?.totalRevenue
+                      | currency: (config?.currencySymbol ? config?.currencySymbol : '$'):'symbol':'1.0'
+                  }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

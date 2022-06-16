@@ -1,0 +1,265 @@
+<div class="card">
+  <div class="card-body">
+    <ngb-tabset>
+      <ngb-tab title="General Info">
+        <ng-template ngbTabContent>
+          <form (submit)="submit(frm)" #frm="ngForm" class="tab-content-webinar">
+            <div class="row mt-3" *ngIf="webinar?.tutor && webinar?.tutor?.role!=='admin'">
+              <div class="col-md-12 mt-3">
+                <label class="custom-radio" translate
+                  >FREE
+                  <input
+                    type="radio"
+                    style="margin-right: 3em; margin-left: 0.5em"
+                    name="payment"
+                    [value]="true"
+                    [(ngModel)]="webinar.isFree"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="custom-radio" translate
+                  >PAID
+                  <input
+                    type="radio"
+                    style="margin-left: 0.5em"
+                    name="payment"
+                    [value]="false"
+                    [(ngModel)]="webinar.isFree"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Tutor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="tutorId"
+                    [disabled]="true"
+                    [(ngModel)]="webinar?.tutor.name"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter name"
+                    [(ngModel)]="webinar.name"
+                    required
+                    #name="ngModel"
+                  />
+                  <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+                    <p [hidden]="!name.errors.required" style="color: red">Please enter category name!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Maximum strength</label>
+                  <input
+                    class="form-control"
+                    name="maximum"
+                    placeholder="Enter maximum strength"
+                    [(ngModel)]="webinar.maximumStrength"
+                    required
+                    #maximum="ngModel"
+                  />
+                  <div *ngIf="maximum.errors && (maximum.dirty || maximum.touched || isSubmitted)">
+                    <p [hidden]="!maximum.errors.required" style="color: red">Please enter maximum strength!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Price</label>
+                  <input
+                    class="form-control"
+                    name="price"
+                    placeholder="Enter price"
+                    [(ngModel)]="webinar.price"
+                    type="number"
+                    required
+                    [value]="webinar.isFree ? 0 : webinar.price"
+                    #price="ngModel"
+                    pattern="[0-9.]{0,8}$"
+                    [disabled]="webinar.isFree"
+                  />
+                  <div *ngIf="price.errors && (price.dirty || price.touched || isSubmitted)">
+                    <p [hidden]="!price.errors.required" style="color: red">Please enter price!</p>
+                    <p [hidden]="!price.errors.pattern" style="color: red">Cannot exceed 8 characters</p>
+                  </div>
+                  <div *ngIf="price.value <= 0 && (price.dirty || price.touched || isSubmitted) && !webinar.isFree">
+                    <p style="color: red" translate>Price must be greater than 0!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6" *ngIf="webinar?.tutorId">
+                <div class="form-group">
+                  <label>Categories (*)</label>
+                  <ng-select
+                    [items]="myCategories"
+                    multiple="true"
+                    [hideSelected]="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="category"
+                    placeholder="Choose category"
+                    [(ngModel)]="webinar.categoryIds"
+                    bindValue="originalCategoryId"
+                    #categoryId="ngModel"
+                    required
+                    (change)="onSelectMyCategories($event)"
+                  >
+                  </ng-select>
+                  <div *ngIf="categoryId.errors && (categoryId.dirty || categoryId.touched || isSubmitted)">
+                    <p [hidden]="!categoryId.errors.required" style="color: red" translate>Please choose category!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Subjects (*)</label>
+                  <ng-select
+                    [items]="mySubjects"
+                    multiple="true"
+                    [hideSelected]="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="subject"
+                    placeholder="Choose subjects"
+                    [(ngModel)]="webinar.subjectIds"
+                    bindValue="originalSubjectId"
+                    #subjectId="ngModel"
+                    required
+                    (change)="onSelectMySubjects($event)"
+                  >
+                  </ng-select>
+                  <div *ngIf="subjectId.errors && (subjectId.dirty || subjectId.touched || isSubmitted)">
+                    <p [hidden]="!subjectId.errors.required" style="color: red" translate>Please choose subject!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Topics (*)</label>
+                  <ng-select
+                    [items]="myTopics"
+                    multiple="true"
+                    [hideSelected]="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="topic"
+                    placeholder="Choose topic"
+                    [(ngModel)]="webinar.topicIds"
+                    bindValue="originalTopicId"
+                    #topicId="ngModel"
+                    required
+                  >
+                  </ng-select>
+                  <div *ngIf="topicId.errors && (topicId.dirty || topicId.touched || isSubmitted)">
+                    <p [hidden]="!topicId.errors.required" style="color: red" translate>Please choose topic!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Grades</label>
+                  <ng-select
+                    [items]="grades"
+                    multiple="true"
+                    [hideSelected]="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="grades"
+                    placeholder="Choose grade"
+                    [(ngModel)]="webinar.gradeIds"
+                    bindValue="_id"
+                    #subjectIds="ngModel"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Main Image</label
+                  ><small class="ml-1"> (Expected size: 320 x 285 pixels, Maximum size: {{maxFileSize}} mb)</small>
+                  <br />
+                  <img *ngIf="mainImageUrl" width="300px" src="{{mainImageUrl}}" alt="" /> <br />
+                  <small *ngIf="imageSelected.length">{{imageSelected[0].file.name}} is selected</small>
+                  <app-file-upload [options]="mainImageOptions"></app-file-upload>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Course Material<small class="ml-1"> (Maximum size: {{maxFileSize}} mb)</small></label> <br />
+                  <ul *ngIf="medias.length" class="list-media-webinar">
+                    <li *ngFor="let item of medias, let i = index">
+                      <i class="fa fa-file" aria-hidden="true"></i>
+                      <span> {{item?.name}}</span>
+                      <i class="fa fa-times-circle-o" aria-hidden="true" (click)="removeMedia(i)"></i>
+                    </li>
+                  </ul>
+                  <small *ngIf="filesSelected.length">{{filesSelected[0].file.name}} is selected</small>
+                  <app-file-upload [options]="mediaOptions"></app-file-upload>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label> Is featured? </label><br />
+                  <input type="checkbox" [(ngModel)]="webinar.featured" name="featured" /> Check the box if you want the
+                  group class to featured.
+                </div>
+              </div>
+              <!-- <div class="col-md-6">
+                <div class="form-group">
+                  <label> Make the webinar Public </label><br />
+                  <input type="checkbox" [(ngModel)]="webinar.isOpen" name="isOpen" /> Check the box if you want the
+                  webinar to be Public
+                </div>
+              </div> -->
+              <div class="col-md-12">
+                <app-schedule-calendar
+                  class="tab-content-schedule"
+                  [webinarId]="webinarId"
+                  [tutorId]="webinar.tutorId"
+                  [tutorTz]="tutorTz"
+                ></app-schedule-calendar>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Description</label>
+                  <quill-editor
+                    [(ngModel)]="webinar.description"
+                    placeholder="Enter Text"
+                    [modules]="quillConfig"
+                    name="bio"
+                  >
+                  </quill-editor>
+                </div>
+              </div>
+              <div class="col col-md-12">
+                <button type="submit" class="btn btn-primary">Update</button>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </ngb-tab>
+      <!-- <ngb-tab title="Schedule">
+        <ng-template ngbTabContent>
+          <app-schedule-calendar
+            class="tab-content-schedule"
+            [webinarId]="webinarId"
+            [tutorId]="webinar.tutorId"
+          ></app-schedule-calendar>
+        </ng-template>
+      </ngb-tab> -->
+    </ngb-tabset>
+  </div>
+</div>

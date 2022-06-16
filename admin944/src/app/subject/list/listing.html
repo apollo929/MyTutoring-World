@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col col-md-12">
+    <p class="total-items"><b>Total subjects: {{count}}</b></p>
+    <div class="card">
+      <div class="card-block table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                <a (click)="sortBy('name', 'desc')">Name</a>
+                <span *ngIf="sortOption.sortBy=='name'">
+                  <a (click)="sortBy('name', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('name', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('categoryId', 'desc')">Category</a>
+                <span *ngIf="sortOption.sortBy=='categoryId'">
+                  <a (click)="sortBy('categoryId', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('categoryId', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('isActive', 'desc')">Active</a>
+                <span *ngIf="sortOption.sortBy=='isActive'">
+                  <a (click)="sortBy('isActive', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('isActive', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('createdAt', 'desc')">Created at</a>
+                <span *ngIf="sortOption.sortBy=='createdAt'">
+                  <a (click)="sortBy('createdAt', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('createdAt', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>Actions</th>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <form class="form-inline">
+                  <div class="form-group mb-2" style="margin-right: 4px">
+                    <input
+                      type="text"
+                      name="name"
+                      class="form-control"
+                      [(ngModel)]="searchFields.name"
+                      placeholder="Enter name"
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary mb-2" (click)="query()">Filter</button>
+                </form>
+              </td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items, let i = index">
+              <td>{{item.name}}</td>
+              <td><span class="badge badge-primary mr-1" *ngFor="let cat of item?.categories">{{cat?.name}}</span></td>
+              <td>
+                <span class="badge badge-warning badge-update" *ngIf="!item.isActive" (click)="update(item)">N</span>
+                <span class="badge badge-success badge-update" *ngIf="item.isActive" (click)="update(item)">Y</span>
+              </td>
+              <td>
+                <span>{{item.createdAt | date}}</span>
+              </td>
+              <td>
+                <a [routerLink]="['/subjects/update', item._id ]"> <i class="fa fa-pencil"></i> </a>&nbsp;
+                <a>
+                  <span class="badge badge-warning badge-update" *ngIf="!item.isActive" (click)="update(item)"
+                    >Deactivated</span
+                  >
+                  <span class="badge badge-success badge-update" *ngIf="item.isActive" (click)="update(item)"
+                    >Activated</span
+                  >
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr *ngIf="count > pageSize">
+              <td colspan="7">
+                <ngb-pagination
+                  [collectionSize]="count"
+                  [(page)]="currentPage"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  (pageChange)="query()"
+                ></ngb-pagination>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

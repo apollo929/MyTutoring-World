@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h2 class="modal-title">Reason</h2>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+    <div class="modal-body">
+    <h4>Tell me why you want to cancel your appointment?</h4>
+    <input type="text" class="form-control" placeholder="Write the reason" required name="name" [(ngModel)]="reason"/>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" (click)="submit()">Submit</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')">Close</button>
+</div>

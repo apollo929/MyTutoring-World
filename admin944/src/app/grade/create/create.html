@@ -1,0 +1,81 @@
+<div class="card">
+  <div class="card-body">
+    <form (submit)="submit(frm)" #frm="ngForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              placeholder="Enter title"
+              [(ngModel)]="grade.name"
+              required
+              #name="ngModel"
+            />
+            <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+              <p [hidden]="!name.errors.required" style="color: red">Please enter grade name!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Alias</label>
+            <input
+              class="form-control"
+              name="alias"
+              placeholder="Enter alias"
+              [(ngModel)]="grade.alias"
+              required
+              #alias="ngModel"
+            />
+            <div *ngIf="alias.errors && (alias.dirty || alias.touched || isSubmitted)">
+              <p [hidden]="!alias.errors.required" style="color: red">Please enter grade alias!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Ordering</label>
+            <input
+              class="form-control"
+              name="ordering"
+              placeholder="Enter ordering"
+              [(ngModel)]="grade.ordering"
+              required
+              #ordering="ngModel"
+              [pattern]="'^[0-9][0-9]*$'"
+            />
+            <div *ngIf="ordering.errors && (ordering.dirty || ordering.touched || isSubmitted)">
+              <p [hidden]="!ordering.errors.required" style="color: red">Please enter grade ordering!</p>
+              <p [hidden]="!ordering.errors.pattern" style="color: red">This minimum ordering is <b>0</b>!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label>School type</label>
+            <select [(ngModel)]="grade.type" name="type" class="form-control">
+              <option value="elementary">Elementary</option>
+              <option value="middle-school">Middle school</option>
+              <option value="high-school">High school</option>
+              <option value="college">College</option>
+            </select>
+          </div>
+        </div>
+        <!-- <div class="col-md-12">
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="3" class="form-control" placeholder="Enter some text here" [(ngModel)]="grade.description" #description="ngModel"></textarea>
+          </div>
+        </div> -->
+        <div class="col col-md-12">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

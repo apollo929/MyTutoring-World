@@ -1,0 +1,98 @@
+<div class="card">
+  <div class="card-body">
+    <form (submit)="submit(frm)" #frm="ngForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              placeholder="Enter name"
+              [(ngModel)]="testimonial.name"
+              required
+              #name="ngModel"
+            />
+            <div *ngIf="name.errors && (name.dirty || name.touched || isSubmitted)">
+              <p [hidden]="!name.errors.required" style="color: red">Please enter testimonial name!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              class="form-control"
+              name="title"
+              placeholder="Enter title"
+              [(ngModel)]="testimonial.title"
+              required
+              #title="ngModel"
+            />
+            <div *ngIf="title.errors && (title.dirty || title.touched || isSubmitted)">
+              <p [hidden]="!title.errors.required" style="color: red">Please enter testimonial title!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Type</label>
+            <select class="form-control" name="mode" [(ngModel)]="testimonial.type">
+              <option value="parent">Parent</option>
+              <option value="student">Student</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>ID Youtube</label>
+            <input
+              class="form-control"
+              name="idYoutube"
+              placeholder="Enter id youtube"
+              [(ngModel)]="testimonial.idYoutube"
+              required
+              #idYoutube="ngModel"
+            />
+            <small
+              >EG: https://www.youtube.com/watch?v=<strong>xRjlRfpsHGw</strong> <br />
+              id = <strong>xRjlRfpsHGw</strong></small
+            >
+            <div *ngIf="idYoutube.errors && (idYoutube.dirty || idYoutube.touched || isSubmitted)">
+              <p [hidden]="!idYoutube.errors.required" style="color: red">Please enter testimonial ID Youtube!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Image</label>
+            <small class="ml-1"> (Expected size: 210 x 210 pixels, Maximum size: {{maxFileSize}} mb)</small><br />
+            <img *ngIf="imageUrl" width="300px" src="{{imageUrl}}" alt="" /> <br />
+            <small *ngIf="imageSelected.length">{{imageSelected[0].file.name}} is selected</small>
+            <app-file-upload [options]="mainImageOptions"></app-file-upload>
+            <div *ngIf="isSubmitted && !testimonial.imageId">
+              <p style="color: red">Please select image!</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              rows="3"
+              class="form-control"
+              placeholder="Enter some text here"
+              [(ngModel)]="testimonial.description"
+              #description="ngModel"
+            ></textarea>
+          </div>
+        </div>
+        <div class="col col-md-12">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

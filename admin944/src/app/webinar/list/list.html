@@ -1,0 +1,185 @@
+<div class="row">
+  <div class="col col-md-12">
+    <p class="total-items"><b>Total group classes: {{count}}</b></p>
+    <div class="card">
+      <div class="card-block table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                <a (click)="sortBy('name', 'desc')">Name</a>
+                <span *ngIf="sortOption.sortBy=='name'">
+                  <a (click)="sortBy('name', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('name', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('tutor', 'desc')">Tutor name</a>
+                <span *ngIf="sortOption.sortBy=='tutor'">
+                  <a (click)="sortBy('tutor', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('tutor', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a>Categories</a>
+              </th>
+              <th>
+                <a (click)="sortBy('ordering', 'desc')">Maximum strength</a>
+                <span *ngIf="sortOption.sortBy=='maximumStrength'">
+                  <a (click)="sortBy('maximumStrength', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('maximumStrength', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('ordering', 'desc')">Number of people booked</a>
+                <span *ngIf="sortOption.sortBy=='numberParticipants'">
+                  <a (click)="sortBy('numberParticipants', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('numberParticipants', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>
+                <a (click)="sortBy('featured', 'desc')">Is featured?</a>
+                <span *ngIf="sortOption.sortBy=='featured'">
+                  <a (click)="sortBy('featured', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('featured', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+
+              <th>
+                <a (click)="sortBy('createdAt', 'desc')">Created at</a>
+                <span *ngIf="sortOption.sortBy=='createdAt'">
+                  <a (click)="sortBy('createdAt', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                    ><i class="fa fa-caret-down"></i
+                  ></a>
+                  <a (click)="sortBy('createdAt', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                    ><i class="fa fa-caret-up"></i
+                  ></a>
+                </span>
+              </th>
+              <th>Actions</th>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-group mb-2" style="margin-right: 4px">
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    [(ngModel)]="searchFields.name"
+                    placeholder="Enter group class name"
+                  />
+                </div>
+              </td>
+              <td>
+                <input
+                  id="typeahead-template"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="tutorId"
+                  [ngbTypeahead]="search"
+                  [resultTemplate]="rt"
+                  [inputFormatter]="formatter"
+                  placeholder="Search tutor"
+                />
+                <ng-template #rt let-r="result" let-t="term">
+                  <ngb-highlight [result]="r.name" [term]="t">{{r?.name}}</ngb-highlight>
+                </ng-template>
+              </td>
+              <td>
+                <div class="form-group">
+                  <ng-select
+                    [items]="categories"
+                    [hideSelected]="true"
+                    multiple="true"
+                    bindLabel="name"
+                    [closeOnSelect]="true"
+                    name="category"
+                    placeholder="Choose category"
+                    [(ngModel)]="categoryIds"
+                    bindValue="_id"
+                    #categoryId="ngModel"
+                  >
+                  </ng-select>
+                </div>
+              </td>
+              <td><button type="submit" class="btn btn-primary mb-2" (click)="query()">Filter</button></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items, let i = index">
+              <td>{{item.name}}</td>
+              <td>{{item.tutor?.name ? item.tutor?.name : '-' }}</td>
+              <td>
+                <span *ngFor="let cat of item.categories; let i = index"
+                  >{{ cat?.name }}
+                  <span *ngIf="i < item.categories.length - 1">, </span>
+                </span>
+              </td>
+              <td>{{item?.maximumStrength | number}}</td>
+              <td>{{item?.numberParticipants | number}}</td>
+              <td>
+                <span
+                  class="badge badge-warning badge-update"
+                  *ngIf="!item.featured"
+                  (click)="update(item, 'featured', true)"
+                  >N</span
+                >
+                <span
+                  class="badge badge-success badge-update"
+                  *ngIf="item.featured"
+                  (click)="update(item,'featured', false)"
+                  >Y</span
+                >
+              </td>
+
+              <td>
+                <span>{{item?.createdAt | date}}</span>
+              </td>
+              <td>
+                <a [routerLink]="['/webinars/update', item._id ]"> <i class="fa fa-pencil"></i> </a>&nbsp;
+                <a (click)="changeStatus(item)" style="font-size: 20px">
+                  <!-- <i class="fa fa-trash"></i> -->
+                  <i class="fa fa-check-circle" aria-hidden="true" *ngIf="!item.disabled" style="color: green"></i>
+                  <i class="fa fa-times-circle" aria-hidden="true" *ngIf="item.disabled" style="color: red"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr *ngIf="count > pageSize">
+              <td colspan="7">
+                <ngb-pagination
+                  [collectionSize]="count"
+                  [(page)]="currentPage"
+                  [pageSize]="pageSize"
+                  [maxSize]="5"
+                  (pageChange)="query()"
+                ></ngb-pagination>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

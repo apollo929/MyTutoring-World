@@ -1,0 +1,194 @@
+<div class="modal-header">
+  <h4 class="modal-title">Media manager</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" [ngClass]="{active: tab === 'library'}" (click)="changeTab('library')"
+        >Library</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" [ngClass]="{active: tab === 'upload'}" (click)="changeTab('upload')"
+        >Upload</a
+      >
+    </li>
+  </ul>
+  <div class="row" *ngIf="tab === 'library'">
+    <div class="col col-sm-9">
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>#</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter name"
+                [(ngModel)]="keyword.name"
+                name="keyword"
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter description"
+                [(ngModel)]="keyword.description"
+                name="desc"
+              />
+            </th>
+            <th>
+              <button class="btn btn-outline-secondary" type="submit" (click)="search()">Search</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4">
+              <div class="row">
+                <div class="col-sm-2" *ngFor="let media of files; let i = index">
+                  <a (click)="selectToEdit(media)" class="media-thumb">
+                    <media-preview [media]="media"></media-preview>
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">
+              <ngb-pagination
+                [collectionSize]="totalMedia"
+                [(page)]="page"
+                [maxSize]="10"
+                (pageChange)="loadLibrary()"
+              ></ngb-pagination>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="col-sm-3">
+      <form *ngIf="activeEditMedia" (submit)="update(frm)" #frm="ngForm">
+        <div class="form-group">
+          <media-preview [media]="activeEditMedia"></media-preview>
+        </div>
+        <div class="form-group">
+          <label>URL</label>
+          <input type="text" class="form-control" [ngModel]="activeEditMedia.fileUrl" disabled name="url" />
+        </div>
+        <div class="form-group">
+          <label>File name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter media name"
+            [(ngModel)]="activeEditMedia.name"
+            required
+            #name="ngModel"
+            name="name"
+          />
+          <div *ngIf="name.errors && (name.dirty || name.touched || submitted)">
+            <p [hidden]="!name.errors.required" class="error">
+              File name is required
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>File description</label>
+          <textarea
+            class="form-control"
+            placeholder="Enter description"
+            [(ngModel)]="activeEditMedia.description"
+            #desc="ngModel"
+            name="desc"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-dark pull-right">Update</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="tab === 'upload'">
+    <div class="col col-md-12" [hidden]="!imageBase64">
+      <image-cropper
+        [imageBase64]="imageBase64"
+        [maintainAspectRatio]="false"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+      ></image-cropper>
+
+      <hr />
+      <button class="btn btn-primary pull-right" type="button" (click)="crop()">OK</button>
+    </div>
+    <div class="table-responsive" [hidden]="imageBase64">
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>#</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let media of uploadedFiles">
+            <td>
+              <media-preview [media]="media"></media-preview>
+            </td>
+            <td>{{media.name}}</td>
+            <td>{{media.description}}</td>
+            <td>
+              <span class="pointer" (click)="select(media)">Select</span>
+            </td>
+          </tr>
+          <tr *ngFor="let file of filesQueue">
+            <td>
+              <img
+                class="img-fluid img-thumbnail media-gallery-item"
+                [src]="file.previewContent"
+                alt=""
+                *ngIf="file.type === 'photo'"
+              />
+              <i class="ti-video-camera media-gallery-item" *ngIf="file.type === 'video'"></i>
+              <i class="ti-file media-gallery-item" *ngIf="file.type === 'file'"></i>
+
+              <div
+                class="progress-bar progress-bar-striped progress-bar-animated"
+                *ngIf="file.progress"
+                [ngStyle]="{width: file.progress + '%'}"
+              ></div>
+            </td>
+            <td>{{file.file.name}}</td>
+            <td></td>
+            <td>
+              <a class="pointer" (click)="selectCrop(file)" *ngIf="file.type === 'photo'"><i class="fa fa-crop"></i></a>
+              <a (click)="remove(file)"><i class="fa fa-times"></i></a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">
+              <app-file-upload [options]="fileSelectOptions"></app-file-upload>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer" *ngIf="activeEditMedia">
+  <button type="button" class="btn btn-primary" (click)="select(activeEditMedia)">Select</button>
+</div>

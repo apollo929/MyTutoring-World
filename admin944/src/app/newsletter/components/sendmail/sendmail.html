@@ -1,0 +1,55 @@
+<div class="card">
+  <div class="card-body">
+    <form #frm="ngForm" (submit)="submit(frm)" ngNativeValidate>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Subject</label>
+            <input
+              type="text"
+              name="title"
+              class="form-control"
+              placeholder="Enter subject"
+              [(ngModel)]="data.subject"
+              required
+              #subject="ngModel"
+            />
+            <div *ngIf="subject.errors && (subject.dirty || subject.touched || submitted)">
+              <p [hidden]="!subject.errors.required" class="error-require">Subject is required</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>User type</label>
+            <select class="form-control" name="user type" [(ngModel)]="data.userType">
+              <option value="">All</option>
+              <option value="student">Student</option>
+              <!-- <option value="parent">Parent</option> -->
+              <option value="tutor">Tutor</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Content</label>
+            <quill-editor [(ngModel)]="data.content" placeholder="Enter Text" [modules]="quillConfig" name="bio">
+            </quill-editor>
+            <div *ngIf="submitted && !data.content">
+              <p class="error-require">Content is required</p>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-12">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" [disabled]="submitted">
+              <i class="fa fa-refresh fa-spin fa-3x fa-fw fa-wait-send" style="font-size: 20px" *ngIf="submitted"></i>
+              Send</button
+            >&nbsp;
+            <button class="btn btn-warning" [routerLink]="['/newsletter/contacts']">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

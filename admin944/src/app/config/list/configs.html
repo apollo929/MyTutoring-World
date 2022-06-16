@@ -1,0 +1,258 @@
+<div class="card">
+  <div class="card-block table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items">
+          <td width="50%">
+            <strong>{{item.name}}</strong> <br />
+            <small>{{item.description}}</small>
+          </td>
+          <td>
+            <div class="input-group" *ngIf="item.type === 'number'">
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="item.value"
+                name="item{{item._id}}"
+                min="0.01"
+                step="0.01"
+              />
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" (click)="save(item)">Save</button>
+              </span>
+            </div>
+            <div class="input-group" *ngIf="item.type === 'text'">
+              <div
+                class="mb-2"
+                *ngIf="item.key === 'currency'"
+                style="width: 100%; display: flex; align-items: center; justify-content: space-between"
+              >
+                <select class="form-control" (change)="changeCurrency($event)" [(ngModel)]="item.value">
+                  <option [value]="c.name" *ngFor="let c of currencies">
+                    {{c.name}} - {{c['symbol-alt-narrow'] || c.symbol}}
+                  </option>
+                </select>
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="button" (click)="saveCurrency()">Save</button>
+                </span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="item.value"
+                name="item{{item._id}}"
+                [disabled]="item.key === 'currency' || item.key === 'currencySymbol'"
+              />
+              <span class="input-group-btn" *ngIf="item.key !== 'currency' && item.key !== 'currencySymbol'">
+                <button class="btn btn-primary" type="button" (click)="save(item)">Save</button>
+              </span>
+              <div *ngIf="item.key==='siteLogo'" style="width: 100%">
+                <app-file-upload [options]="logoOptions"></app-file-upload>
+              </div>
+              <div *ngIf="item.key==='siteFavicon'" style="width: 100%">
+                <app-file-upload [options]="faviconOptions"></app-file-upload>
+              </div>
+              <div *ngIf="item.key==='siteBanner'" style="width: 100%">
+                <app-file-upload [options]="bannerOptions"></app-file-upload>
+              </div>
+              <div *ngIf="item.key==='signupImage'" style="width: 100%">
+                <app-file-upload [options]="signupImageOptions"></app-file-upload>
+              </div>
+            </div>
+            <div *ngIf="item.type === 'mixed'">
+              <div *ngIf="item.key === 'paypal'">
+                <div class="form-group">
+                  <label>Username</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.username" />
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" class="form-control" [(ngModel)]="item.value.password" />
+                </div>
+                <div class="form-group">
+                  <label>Signature</label>
+                  <input type="password" class="form-control" [(ngModel)]="item.value.signature" />
+                </div>
+                <div class="form-group">
+                  <label>Sandbox <input type="checkbox" [(ngModel)]="item.value.sandbox" /></label>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary" (click)="save(item)">Save</button>
+                </div>
+              </div>
+              <div *ngIf="item.key === 'ccbill'">
+                <div class="form-group">
+                  <label>Account Number</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.accountNumber" />
+                </div>
+                <div class="form-group">
+                  <label>Sub account Number</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.subAccountNumber" />
+                </div>
+                <div class="form-group">
+                  <label>Salt</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.salt" />
+                </div>
+                <div class="form-group">
+                  <label>Flexform subscription id</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.flexformSubscriptionId" />
+                </div>
+                <div class="form-group">
+                  <label>Flexform single payment id</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.flexformSingleId" />
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary" (click)="save(item)">Save</button>
+                </div>
+              </div>
+              <div *ngIf="item.key === 'homeSEO'">
+                <div class="form-group">
+                  <label>Keywords</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.keywords" />
+                </div>
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea class="form-control" [(ngModel)]="item.value.description"></textarea>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary" (click)="save(item)">Save</button>
+                </div>
+              </div>
+
+              <div *ngIf="item.key === 'smtpTransporter'">
+                <div class="form-group">
+                  <label>SMTP type </label>
+                  <select [(ngModel)]="item.value.type" name="type" class="form-control" required #type="ngModel">
+                    <option value="service" selected>Service</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
+                <div *ngIf="item.value.type==='service'">
+                  <div class="form-group">
+                    <select
+                      [(ngModel)]="item.value.service.name"
+                      name="serviceName"
+                      class="form-control"
+                      required
+                      #type="ngModel"
+                    >
+                      <option *ngFor="let item of smtpServices" [value]="item">{{item}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Auth user</label>
+                    <input class="form-control" [(ngModel)]="item.value.service.auth.user" />
+                  </div>
+                  <div class="form-group">
+                    <label>Auth Pass</label>
+                    <input class="form-control" [(ngModel)]="item.value.service.auth.pass" type="password" />
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-primary" (click)="save(item)">Save</button>
+                  </div>
+                </div>
+                <div *ngIf="item.value.type==='custom'">
+                  <div class="form-group">
+                    <label>Host</label>
+                    <input class="form-control" [(ngModel)]="item.value.custom.host" />
+                  </div>
+                  <div class="form-group">
+                    <label>Port</label>
+                    <input class="form-control" [(ngModel)]="item.value.custom.port" type="number" />
+                  </div>
+                  <div class="form-group">
+                    <label class="mr-2"> Is sercure? (true for port 465)</label>
+                    <input type="checkbox" [(ngModel)]="item.value.custom.sercure" />
+                  </div>
+                  <div class="form-group">
+                    <label>User name</label>
+                    <input class="form-control" [(ngModel)]="item.value.custom.auth.user" />
+                  </div>
+                  <div class="form-group">
+                    <label>Pass word</label>
+                    <input class="form-control" [(ngModel)]="item.value.custom.auth.pass" type="password" />
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-primary" (click)="save(item)">Save</button>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="item.key === 'paydunyaSetting'">
+                <div class="form-group">
+                  <label>Master key</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.masterKey" />
+                </div>
+                <div class="form-group">
+                  <label>Private key</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.privateKey" />
+                </div>
+                <div class="form-group">
+                  <label>Public key</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.publicKey" />
+                </div>
+                <div class="form-group">
+                  <label>Token</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.token" />
+                </div>
+                <div class="form-group">
+                  <label>Mode</label>
+                  <select class="form-control" name="mode" [(ngModel)]="item.value.mode">
+                    <option value="test">Test</option>
+                    <option value="live">Live</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Store name</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.storeName" />
+                </div>
+                <div class="form-group">
+                  <label>Phone number</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.storePhone" />
+                </div>
+                <div class="form-group">
+                  <label>Portal address</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.storePortal" />
+                </div>
+                <div class="form-group">
+                  <label>Tagline</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.storeTagline" />
+                </div>
+                <div class="form-group">
+                  <label>Logo url</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.storeLogoUrl" />
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary" (click)="save(item)">Save</button>
+                </div>
+              </div>
+              <div *ngIf="item.key === 'zoomApiKey'">
+                <div class="form-group">
+                  <label>Api key</label>
+                  <input type="text" class="form-control" [(ngModel)]="item.value.apiKey" />
+                </div>
+                <div class="form-group">
+                  <label>Api secret</label>
+                  <input class="form-control" [(ngModel)]="item.value.apiSecret" />
+                </div>
+                <div class="form-group">
+                  <label>Chat token</label>
+                  <input class="form-control" [(ngModel)]="item.value.chatToken" />
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary" (click)="save(item)">Save</button>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

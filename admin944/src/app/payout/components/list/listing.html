@@ -1,0 +1,223 @@
+<div class="card">
+  <div class="row" style="padding: 25px">
+    <div class="col-md-3">
+      <datepicker-range (dateChange)="dateChangeEvent($event)"></datepicker-range>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group input-date">
+        <label>Tutor: &nbsp;</label>
+        <input
+          id="typeahead-template"
+          type="text"
+          class="form-control"
+          [(ngModel)]="tutorId"
+          [ngbTypeahead]="search"
+          [resultTemplate]="rt"
+          [inputFormatter]="formatter"
+          placeholder="Search tutor"
+        />
+        <ng-template #rt let-r="result" let-t="term">
+          <ngb-highlight [result]="r.name" [term]="t">{{r?.name}}</ngb-highlight>
+        </ng-template>
+        <span *ngIf="searching">searching...</span>
+        <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+      </div>
+    </div>
+    <div class="col-md-3"><a class="btn btn-success .btn-success" (click)="queryStats()">Filter Stats</a></div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group" style="padding: 25px; padding-bottom: 0">
+        <label>Pending</label>
+        <h4>
+          Total: {{stats?.pending?.total | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol'
+          : '1.0'}}
+        </h4>
+        <h4>
+          Commission: {{stats?.pending?.commission | currency : (config?.currencySymbol ? config?.currencySymbol : '$'):
+          'symbol' : '1.0'}}
+        </h4>
+        <h4>
+          Tutor Balance: {{stats?.pending?.balance | currency : (config?.currencySymbol ? config?.currencySymbol : '$'):
+          'symbol' : '1.0'}}
+        </h4>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" style="padding: 25px; padding-bottom: 0">
+        <label>Approved</label>
+        <h4>
+          Total: {{stats?.approved?.total | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol'
+          : '1.0'}}
+        </h4>
+        <h4>
+          Commission: {{stats?.approved?.commission | currency : (config?.currencySymbol ? config?.currencySymbol :
+          '$'): 'symbol' : '1.0'}}
+        </h4>
+        <h4>
+          Tutor Balance: {{stats?.approved?.balance | currency : (config?.currencySymbol ? config?.currencySymbol :
+          '$'): 'symbol' : '1.0'}}
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 25px">
+    <div class="col-md-3">
+      <datepicker-range (dateChange)="dateChangeEvent($event)"></datepicker-range>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group input-date">
+        <label>Status: &nbsp;</label>
+        <select class="form-control" [(ngModel)]="searchFields.status">
+          <option value="" selected disabled>Choose status</option>
+          <option value="">All status</option>
+          <option value="pending">Pending</option>
+          <option value="rejected">Rejected</option>
+          <option value="approved">Approved</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group input-date">
+        <label>Tutor: &nbsp;</label>
+        <input
+          id="typeahead-template"
+          type="text"
+          class="form-control"
+          [(ngModel)]="tutorId"
+          [ngbTypeahead]="search"
+          [resultTemplate]="rt"
+          [inputFormatter]="formatter"
+          placeholder="Search tutor"
+        />
+        <ng-template #rt let-r="result" let-t="term">
+          <ngb-highlight [result]="r.name" [term]="t">{{r?.name}}</ngb-highlight>
+        </ng-template>
+        <span *ngIf="searching">searching...</span>
+        <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+      </div>
+    </div>
+    <div class="col-md-3"><a class="btn btn-success .btn-success" (click)="query()">Filter requests</a></div>
+  </div>
+  <div class="card-body table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            <a (click)="sortBy('code', 'desc')">Code</a>
+            <span *ngIf="sortOption.sortBy=='code'">
+              <a (click)="sortBy('code', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('code', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('total', 'desc')">Total</a>
+            <span *ngIf="sortOption.sortBy=='total'">
+              <a (click)="sortBy('total', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('total', 'desc')" *ngIf="sortOption.sortType=='asc'"><i class="fa fa-caret-up"></i></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('commission', 'desc')">Commission</a>
+            <span *ngIf="sortOption.sortBy=='commission'">
+              <a (click)="sortBy('commission', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('commission', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('balance', 'desc')">Tutor Balance</a>
+            <span *ngIf="sortOption.sortBy=='balance'">
+              <a (click)="sortBy('balance', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('balance', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <!-- <th>
+            <a (click)="sortBy('commission', 'desc')">Site Balance</a>
+            <span *ngIf="sortOption.sortBy=='commission'">
+              <a (click)="sortBy('commission', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('commission', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th> -->
+          <th>
+            <a (click)="sortBy('status', 'desc')">Status</a>
+            <span *ngIf="sortOption.sortBy=='status'">
+              <a (click)="sortBy('status', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('status', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <th>
+            <a (click)="sortBy('createdAt', 'desc')">Created At</a>
+            <span *ngIf="sortOption.sortBy=='createdAt'">
+              <a (click)="sortBy('createdAt', 'asc')" *ngIf="sortOption.sortType=='desc'"
+                ><i class="fa fa-caret-down"></i
+              ></a>
+              <a (click)="sortBy('createdAt', 'desc')" *ngIf="sortOption.sortType=='asc'"
+                ><i class="fa fa-caret-up"></i
+              ></a>
+            </span>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items, let i = index">
+          <td>
+            <a [routerLink]="['/payout/requests', item?._id]"> {{item?.code}} </a>
+          </td>
+          <td>
+            {{item?.total | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' : '1.0'}}
+          </td>
+          <td>
+            {{item?.commission | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' : '1.0'}}
+          </td>
+          <td>
+            {{item?.balance | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' : '1.0'}}
+          </td>
+          <!-- <td>
+            {{item?.commission | currency : (config?.currencySymbol ? config?.currencySymbol : '$'): 'symbol' : '1.0'}}
+          </td> -->
+          <td>
+            <span *ngIf="item.status ==='approved'" class="label label-success">Approved</span>
+            <span *ngIf="item.status ==='rejected'" class="label label-danger">Rejected</span>
+            <span *ngIf="item.status ==='pending'" class="label label-warning">Pending</span>
+          </td>
+          <td>{{item?.createdAt | date}}</td>
+          <td>
+            <a [routerLink]="['/payout/requests', item?._id]"><i class="fa fa-eye"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="display-inline" [hidden]="total < take">
+      <div class="pull-right">
+        <ngb-pagination
+          [collectionSize]="total"
+          [(page)]="page"
+          [maxSize]="5"
+          [pageSize]="take"
+          (pageChange)="query()"
+        ></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

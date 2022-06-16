@@ -1,0 +1,25 @@
+<form class="form-inline">
+  <div class="form-group select-date">
+    <input class="form-control" value="{{showDates}}"  *ngIf="showDates" readonly>
+    <input class="form-control" placeholder="MM-dd-yyyy to MM-dd-yyyy"  *ngIf="!showDates" readonly> <!-- {{dateRange?.from}} - {{dateRange?.to}} -->
+    <button class="btn btn-outline-secondary" (click)="toggle()">
+      <i class="fa fa-calendar"></i>
+    </button>
+    <div class="calendar-popup" [class.active]="isShow">
+        <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" [outsideDays]="outsideDays">
+          </ngb-datepicker>
+          <ng-template #t let-date="date" let-focused="focused">
+            <span class="custom-day"
+                  [class.focused]="focused"
+                  [class.range]="isRange(date)"
+                  [class.faded]="isHovered(date) || isInside(date)"
+                  (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null"
+                  [class.outSideDate]="outsideDays">
+              {{ date.day }}
+            </span>
+          </ng-template>
+    </div>
+  </div>
+</form>
+
